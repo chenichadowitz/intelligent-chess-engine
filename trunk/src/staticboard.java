@@ -1,5 +1,5 @@
 
-public class staticboard extends board{
+public class staticBoard extends board{
 	piece[] pieces;
 	board[] subBoards;
 	double score;
