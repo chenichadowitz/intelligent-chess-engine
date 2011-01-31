@@ -1,15 +1,16 @@
 
+import java.util.*;
 public abstract class piece {
 	boolean color; // true = white; false = black
 	int value;
 	int[] position; // [x-coord,y-coord]
-	int[][] moves; //[[x1,y1][x2,y2]...]
+	ArrayList<Integer[]> moves = new ArrayList<Integer[]>(); //[[x1,y1][x2,y2]...]
 	board currentBoard;
 	
 	boolean getColor()	{return color;} 
 	int getValue()		{return value;}
 	int[] getPosition()	{return position;}
-	int[][] getMoves() 	{return moves;}
+	ArrayList<Integer[]> getMoves() 	{return moves;}
 	void setBoard(board newBoard){ currentBoard = newBoard;}	
 	
 	boolean move(int[] newsquare){
@@ -22,8 +23,8 @@ public abstract class piece {
 	}
 	
 	boolean isValidMove(int[] move){
-		for (int searcher = 0; searcher < moves.length; searcher++){
-			if(move[0] == moves[0][searcher] && move[1] == moves[1][searcher]){return true;}
+		for (int searcher = 0; searcher < moves.size(); searcher++){
+			if(moves.contains(move)){return true;}
 		}
 		return false;
 	}
