@@ -1,25 +1,40 @@
+import java.util.*;
 
 public abstract class board {
-	piece[] pieces;
+	boolean playersTurn = true; // whiteturn if true
+	boolean getTurn(){ return playersTurn;}
 	
-	piece[] getPieces() {return pieces;}
+	ArrayList<piece> pieces = new ArrayList<piece>();
+	ArrayList<piece> getPieces(){ return pieces;}
 	
-	int getStatusOfSquare(int[] square){
-		//returns -1 if black; 0 if empty; 1 if white
-		for(int searcher = 0; searcher < pieces.length; searcher ++){
-			if (pieces[searcher].getPosition() == square){
-				if(pieces[searcher].getColor() == true ){
-					return 1;
-				}
-				else return -1;
-			}
+	boolean[] statusOfSquare(int[] square){
+		boolean[] squareStatus = {false,true};
+		//possible returns are:
+		//true,true   = occupied by white piece
+		//true,false  = occupied by black piece 
+		//false,true  = unoccupied on board
+		//false,false = unoccupied off board
+		
+		if(square[0] < 0 || square[1] < 0 || square[0] > 7  || square[1] > 7){
+			squareStatus[1] = false;
+			return squareStatus;
 		}
-		return 0;
+		else{
+			for(int searcher = 0; searcher < pieces.size(); searcher ++){
+                if (pieces.get(searcher).getPosition() == square){
+                	squareStatus[0] = true;
+                    squareStatus[1] = pieces.get(searcher).getColor();
+                    return squareStatus;
+                }
+			}
+        }
+		return squareStatus;
 	}
+	void switchTurn(){playersTurn = !playersTurn;}
 	
-	piece[] getpieces(){
-		return pieces;
-	}	
+	void display(){
+		//cheni's code
+	}
 	
 	abstract boolean movePiece();
 }
