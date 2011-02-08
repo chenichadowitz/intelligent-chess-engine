@@ -1,5 +1,6 @@
 
 public class King extends piece{
+	boolean check = false;
 	King(boolean player, int[] where, board onWhat){
 		color = player;
 		position = where;
@@ -7,18 +8,15 @@ public class King extends piece{
 		value = 0;
 	}
 	void generateMoves(){
-		boolean[] status;
-		int[] square = new int[2];
-		for(int column = -1; column <=1; column++){
-			for(int row = -1; row <= 1; row++){
-				square[0] = position[0] + column;
-				square[1] = position[1] + row;
-				status = currentBoard.statusOfSquare(square);
-				if ((status[0] && status[1] == !color) || (!status[0] && status[1])) {
-					moves.add(square);
-				}
-			}
-		}
-		
+		processSquare(position[0] -1,position[1] -1);
+		processSquare(position[0] -1,position[1]   );
+		processSquare(position[0] -1,position[1] +1);
+		processSquare(position[0]   ,position[1] -1);
+		processSquare(position[0]   ,position[1] +1);
+		processSquare(position[0] +1,position[1] -1);
+		processSquare(position[0] +1,position[1]   );
+		processSquare(position[0] +1,position[1] +1);		
 	}
+	boolean getcheck(){return check;}
+	void setCheck(boolean inCheck){check = inCheck;}
 }
