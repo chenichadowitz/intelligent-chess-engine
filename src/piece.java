@@ -16,7 +16,6 @@ public abstract class piece {
 	void setBoard(board newBoard){ currentBoard = newBoard;}	
 	
 	boolean move(int[] newsquare){
-		generateMoves();
 		if (isValidMove(newsquare)){
 			position = newsquare;
 			return true;
@@ -43,6 +42,7 @@ public abstract class piece {
 		}
 		return false;
 	}
+		
 	
 	abstract void generateMoves();
 
