@@ -1,13 +1,13 @@
 
 import java.util.*;
-public abstract class piece {
+public abstract class Piece {
 	protected boolean color; // true = white; false = black
 	protected int value;
 	protected int[] position; // [x-coord,y-coord]
 	protected ArrayList<Integer[]> moves = new ArrayList<Integer[]>(); //[[x1,y1][x2,y2]...]
 	protected ArrayList<Integer[]> takes = new ArrayList<Integer[]>(); //[[x1,y1][x2,y2]...]
 	protected ArrayList<Integer[]> cover = new ArrayList<Integer[]>();
-	protected board currentBoard;
+	protected Board currentBoard;
 	
 	public  boolean getColor()	{return color;} 
 	public  int getValue()		{return value;}
@@ -15,7 +15,7 @@ public abstract class piece {
 	public  ArrayList<Integer[]> getMoves() 	{return moves;}
 	public  ArrayList<Integer[]> getTakes()		{return takes;}
 	public  ArrayList<Integer[]> getCover()		{return cover;}
-	public  void setBoard(board newBoard){ currentBoard = newBoard;}	
+	public  void setBoard(Board newBoard){ currentBoard = newBoard;}	
 	
 	boolean move(int[] newsquare){
 		if (isValidMove(newsquare)){

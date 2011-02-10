@@ -1,11 +1,11 @@
 
-public class gameBoard extends board{
+public class gameBoard extends Board{
 	
 	
 	
 	
 	
-	boolean movePiece(piece movingPiece, int[] square){
+	boolean movePiece(Piece movingPiece, int[] square){
 		int[] squareInit = movingPiece.getPosition();
 		boolean moved = movingPiece.move(square);
 		if(moved){
