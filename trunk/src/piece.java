@@ -1,21 +1,21 @@
 
 import java.util.*;
 public abstract class piece {
-	boolean color; // true = white; false = black
-	int value;
-	int[] position; // [x-coord,y-coord]
-	ArrayList<Integer[]> moves = new ArrayList<Integer[]>(); //[[x1,y1][x2,y2]...]
-	ArrayList<Integer[]> takes = new ArrayList<Integer[]>(); //[[x1,y1][x2,y2]...]
-	ArrayList<Integer[]> cover = new ArrayList<Integer[]>();
-	board currentBoard;
+	protected boolean color; // true = white; false = black
+	protected int value;
+	protected int[] position; // [x-coord,y-coord]
+	protected ArrayList<Integer[]> moves = new ArrayList<Integer[]>(); //[[x1,y1][x2,y2]...]
+	protected ArrayList<Integer[]> takes = new ArrayList<Integer[]>(); //[[x1,y1][x2,y2]...]
+	protected ArrayList<Integer[]> cover = new ArrayList<Integer[]>();
+	protected board currentBoard;
 	
-	boolean getColor()	{return color;} 
-	int getValue()		{return value;}
-	int[] getPosition()	{return position;}
-	ArrayList<Integer[]> getMoves() 	{return moves;}
-	ArrayList<Integer[]> getTakes()		{return takes;}
-	ArrayList<Integer[]> getCover()		{return cover;}
-	void setBoard(board newBoard){ currentBoard = newBoard;}	
+	public  boolean getColor()	{return color;} 
+	public  int getValue()		{return value;}
+	public  int[] getPosition()	{return position;}
+	public  ArrayList<Integer[]> getMoves() 	{return moves;}
+	public  ArrayList<Integer[]> getTakes()		{return takes;}
+	public  ArrayList<Integer[]> getCover()		{return cover;}
+	public  void setBoard(board newBoard){ currentBoard = newBoard;}	
 	
 	boolean move(int[] newsquare){
 		if (isValidMove(newsquare)){
@@ -25,13 +25,13 @@ public abstract class piece {
 		else return false;
 	}
 	
-	boolean isValidMove(int[] move){
+	public  boolean isValidMove(int[] move){
 		for (int searcher = 0; searcher < moves.size(); searcher++){
 			if(moves.contains(move)){return true;}
 		}
 		return false;
 	}
-	boolean processSquare(int x, int y){ //returns true if square is empty
+	public  boolean processSquare(int x, int y){ //returns true if square is empty
 		int[] square = {x,y};
 		boolean[] status = currentBoard.statusOfSquare(square);
 		Integer[] squareObj = {square[0],square[1]};
@@ -49,6 +49,6 @@ public abstract class piece {
 	}
 		
 	
-	abstract void generateMoves();
+	public  abstract void generateMoves();
 
 }
