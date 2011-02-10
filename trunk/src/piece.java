@@ -6,6 +6,7 @@ public abstract class piece {
 	int[] position; // [x-coord,y-coord]
 	ArrayList<Integer[]> moves = new ArrayList<Integer[]>(); //[[x1,y1][x2,y2]...]
 	ArrayList<Integer[]> takes = new ArrayList<Integer[]>(); //[[x1,y1][x2,y2]...]
+	ArrayList<Integer[]> cover = new ArrayList<Integer[]>();
 	board currentBoard;
 	
 	boolean getColor()	{return color;} 
@@ -13,6 +14,7 @@ public abstract class piece {
 	int[] getPosition()	{return position;}
 	ArrayList<Integer[]> getMoves() 	{return moves;}
 	ArrayList<Integer[]> getTakes()		{return takes;}
+	ArrayList<Integer[]> getCover()		{return cover;}
 	void setBoard(board newBoard){ currentBoard = newBoard;}	
 	
 	boolean move(int[] newsquare){
@@ -35,6 +37,9 @@ public abstract class piece {
 		Integer[] squareObj = {square[0],square[1]};
 		if (status[0] && status[1] == !color) {
 			takes.add(squareObj);
+		}
+		else if (status[0] && status[1] == color){
+			cover.add(squareObj);
 		}
 		else if (!status[0] && status[1]){
 			moves.add(squareObj);

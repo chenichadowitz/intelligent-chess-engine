@@ -6,7 +6,6 @@ public abstract class board {
 	
 	ArrayList<piece> pieces = new ArrayList<piece>();
 	ArrayList<piece> getPieces(){ return pieces;}
-	
 	boolean[] statusOfSquare(int[] square){
 		boolean[] squareStatus = {false,true};
 		//possible returns are:
