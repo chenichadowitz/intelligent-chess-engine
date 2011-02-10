@@ -1,12 +1,13 @@
 import java.util.*;
 
 public abstract class board {
-	boolean playersTurn = true; // whiteturn if true
-	boolean getTurn(){ return playersTurn;}
+	protected  boolean playersTurn = true; // whiteturn if true
+	public  boolean getTurn(){ return playersTurn;}
 	
-	ArrayList<piece> pieces = new ArrayList<piece>();
-	ArrayList<piece> getPieces(){ return pieces;}
-	boolean[] statusOfSquare(int[] square){
+	protected  ArrayList<piece> pieces = new ArrayList<piece>();
+	public  ArrayList<piece> getPieces(){ return pieces;}
+	protected LinkedList<piece>[][] boardState = (LinkedList<piece>[][])new LinkedList[8][8];
+	public  boolean[] statusOfSquare(int[] square){
 		boolean[] squareStatus = {false,true};
 		//possible returns are:
 		//true,true   = occupied by white piece
@@ -29,11 +30,13 @@ public abstract class board {
         }
 		return squareStatus;
 	}
-	void switchTurn(){playersTurn = !playersTurn;}
-	
-	void display(){
+	public  void switchTurn(){playersTurn = !playersTurn;}
+	public  void update(int[] square){
+		//fill in code
+	}
+	public  void display(){
 		//cheni's code
 	}
 	
-	abstract boolean movePiece();
+	abstract boolean movePiece(piece movingPiece, int[] square);
 }
