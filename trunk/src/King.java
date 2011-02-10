@@ -1,8 +1,8 @@
 
-public class King extends piece{
+public class King extends Piece{
 	private boolean check = false;
 	private boolean castle = true;
-	public King(boolean player, int[] where, board onWhat){
+	public King(boolean player, int[] where, Board onWhat){
 		color = player;
 		position = where;
 		currentBoard = onWhat;
@@ -31,7 +31,7 @@ public class King extends piece{
 	public boolean getcheck(){return check;}
 	public void setCheck(boolean inCheck){check = inCheck;}
 	public boolean inCheck(){
-		for(piece p: currentBoard.getPieces()){
+		for(Piece p: currentBoard.getPieces()){
 			check = p.takes.contains(position);
 			if(check){return check;}
 		}

@@ -1,12 +1,12 @@
 import java.util.*;
 
-public abstract class board {
+public abstract class Board {
 	protected  boolean playersTurn = true; // whiteturn if true
 	public  boolean getTurn(){ return playersTurn;}
 	
-	protected  ArrayList<piece> pieces = new ArrayList<piece>();
-	public  ArrayList<piece> getPieces(){ return pieces;}
-	protected LinkedList<piece>[][] boardState = (LinkedList<piece>[][])new LinkedList[8][8];
+	protected  ArrayList<Piece> pieces = new ArrayList<Piece>();
+	public  ArrayList<Piece> getPieces(){ return pieces;}
+	protected LinkedList<Piece>[][] boardState = (LinkedList<Piece>[][])new LinkedList[8][8];
 	public  boolean[] statusOfSquare(int[] square){
 		boolean[] squareStatus = {false,true};
 		//possible returns are:
@@ -38,5 +38,5 @@ public abstract class board {
 		//cheni's code
 	}
 	
-	abstract boolean movePiece(piece movingPiece, int[] square);
+	abstract boolean movePiece(Piece movingPiece, int[] square);
 }
