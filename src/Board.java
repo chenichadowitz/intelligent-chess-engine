@@ -32,16 +32,32 @@ public abstract class Board {
 	}
 	public  void switchTurn(){playersTurn = !playersTurn;}
 	public  void update(int[] square){
-		//fill in code
+		for(Piece currentPiece: boardState[square[0]][square[1]]){
+			currentPiece.generateMoves();
+		}		
 	}
 	public  void display(){
 		//cheni's code
 	}
-	public  void takePiece(Piece taken){
-		for(Integer[] square: taken.getMoves()){
-			//fill in code
+	public  void biuldBoardState(){
+		for(Piece currentPiece: this.getPieces()){
+			currentPiece.generateMoves();
+			currentPiece.addToBoardState();
 		}
 	}
-	
+	public  Piece pieceAt(int[] square){
+		for(Piece currentPiece: pieces){
+			if(currentPiece.getPosition() == square){
+				return currentPiece;
+			}
+		}
+		return null; //no piece at square !!!BOOM!!!
+	}
+	public  void takePiece(Piece taken){
+		taken.removeFromBoardState();
+		taken.setPosition(null);
+		taken.setBoard(null);
+		pieces.remove(taken);
+	}	
 	abstract boolean movePiece(Piece movingPiece, int[] square);
 }
