@@ -37,6 +37,11 @@ public abstract class Board {
 	public  void display(){
 		//cheni's code
 	}
+	public  void takePiece(Piece taken){
+		for(Integer[] square: taken.getMoves()){
+			//fill in code
+		}
+	}
 	
 	abstract boolean movePiece(Piece movingPiece, int[] square);
 }
