@@ -33,7 +33,9 @@ public abstract class Board {
 	public  void switchTurn(){playersTurn = !playersTurn;}
 	public  void update(int[] square){
 		for(Piece currentPiece: boardState[square[0]][square[1]]){
+			currentPiece.removeFromBoardState();
 			currentPiece.generateMoves();
+			currentPiece.addToBoardState();
 		}		
 	}
 	public  void display(){

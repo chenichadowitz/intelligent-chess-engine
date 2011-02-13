@@ -21,12 +21,14 @@ public abstract class Piece {
 		if (moves.contains(newSquare)){
 			removeFromBoardState();
 			position = newSquare;
+			addToBoardState();
 			return true;
 		}
 		else if (takes.contains(newSquare)){
 			removeFromBoardState();
 			currentBoard.takePiece(currentBoard.pieceAt(newSquare));
 			position = newSquare;
+			addToBoardState();
 			return true;
 		}
 		return false;
