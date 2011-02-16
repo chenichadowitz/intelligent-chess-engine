@@ -2,9 +2,10 @@
 public class King extends Piece{
 	private boolean check = false;
 	private boolean castle = true;
-	public King(boolean player, int[] where, Board onWhat){
+	public King(boolean player, int xwhere, int ywhere, Board onWhat){
 		color = player;
-		position = where;
+		position[0] = xwhere;
+		position[1] = ywhere;
 		currentBoard = onWhat;
 		value = 0;
 	}
