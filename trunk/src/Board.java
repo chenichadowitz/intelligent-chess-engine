@@ -8,6 +8,7 @@ public abstract class Board {
 	protected  ArrayList<Piece> pieces = new ArrayList<Piece>();
 	public  ArrayList<Piece> getPieces(){ return pieces;}
 	protected LinkedList<Piece>[][] boardState = (LinkedList<Piece>[][])new LinkedList[8][8];
+	public LinkedList<Piece>[][] getBoardState(){ return boardState;}
 	public  boolean[] statusOfSquare(int[] square){
 		boolean[] squareStatus = {false,true};
 		//possible returns are:
@@ -62,5 +63,5 @@ public abstract class Board {
 		taken.setBoard(null);
 		pieces.remove(taken);
 	}	
-	abstract boolean movePiece(int[] square1, int[] square2);
+	abstract boolean movePiece(int[] squareAB);
 }

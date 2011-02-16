@@ -17,12 +17,12 @@ public class gameBoard extends Board{
 	boolean movePiece(int[] squareAB){
 		int[] square1 = {squareAB[0],squareAB[1]};
 		if(pieceAt(square1) != null){
-			Piece movingPiece = pieceAt(square1);
 			int[] square2 = {squareAB[2],squareAB[3]};
-			boolean moved = movingPiece.move(square2);
+			boolean moved = pieceAt(square1).move(square2);
 		if(moved){
 			update(square1);
 			update(square2);
+			switchTurn();
 		}
 		return moved;
 		}
