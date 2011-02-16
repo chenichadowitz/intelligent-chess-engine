@@ -30,7 +30,6 @@ public class King extends Piece{
 		
 	}
 	public boolean getcheck(){return check;}
-	public void setCheck(boolean inCheck){check = inCheck;}
 	public boolean inCheck(){
 		for(Piece p: currentBoard.getPieces()){
 			check = p.takes.contains(position);
