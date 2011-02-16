@@ -1,9 +1,10 @@
 import java.util.*;
 
 public abstract class Board {
+	Player whitePlayer;
+	Player blackPlayer;
 	protected  boolean playersTurn = true; // whiteturn if true
 	public  boolean getTurn(){ return playersTurn;}
-	
 	protected  ArrayList<Piece> pieces = new ArrayList<Piece>();
 	public  ArrayList<Piece> getPieces(){ return pieces;}
 	protected LinkedList<Piece>[][] boardState = (LinkedList<Piece>[][])new LinkedList[8][8];
@@ -61,5 +62,5 @@ public abstract class Board {
 		taken.setBoard(null);
 		pieces.remove(taken);
 	}	
-	abstract boolean movePiece(Piece movingPiece, int[] square);
+	abstract boolean movePiece(int[] square1, int[] square2);
 }
