@@ -1,3 +1,4 @@
+package ice;
 import java.util.*;
 
 public class staticBoard extends Board{

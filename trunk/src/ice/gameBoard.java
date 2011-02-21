@@ -1,3 +1,4 @@
+package ice;
 
 public class gameBoard extends Board{
 	
