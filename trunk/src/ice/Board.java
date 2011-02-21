@@ -54,7 +54,7 @@ public abstract class Board {
 		int[] place = new int[2];
 		for(int i=7;i>=0;i--){
 			for(int j=0;j<8;j++){
-				place[0] = i; place[1] = j;
+				place[0] = j; place[1] = i;
 				current = pieceAt(place);
 				if(current == null){
 					System.out.print("-- ");
