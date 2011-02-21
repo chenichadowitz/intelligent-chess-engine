@@ -5,11 +5,15 @@ public abstract class Board {
 	Player whitePlayer;
 	Player blackPlayer;
 	protected  boolean playersTurn = true; // whiteturn if true
-	public  boolean getTurn(){ return playersTurn;}
 	protected  ArrayList<Piece> pieces = new ArrayList<Piece>();
+	protected LinkedList<Piece>[][] boardState = (LinkedList<Piece>[][]) new LinkedList[8][8];
+
+	public  boolean getTurn(){ return playersTurn;}
+	
 	public  ArrayList<Piece> getPieces(){ return pieces;}
-	protected LinkedList<Piece>[][] boardState = (LinkedList<Piece>[][])new LinkedList[8][8];
+	
 	public LinkedList<Piece>[][] getBoardState(){ return boardState;}
+
 	public  boolean[] statusOfSquare(int[] square){
 		boolean[] squareStatus = {false,true};
 		//possible returns are:
@@ -24,7 +28,7 @@ public abstract class Board {
 		}
 		else{
 			for(int searcher = 0; searcher < pieces.size(); searcher ++){
-                if (pieces.get(searcher).getPosition() == square){
+                if (Arrays.equals(pieces.get(searcher).getPosition(), square)){
                 	squareStatus[0] = true;
                     squareStatus[1] = pieces.get(searcher).getColor();
                     return squareStatus;
@@ -35,16 +39,39 @@ public abstract class Board {
 	}
 	public  void switchTurn(){playersTurn = !playersTurn;}
 	public  void update(int[] square){
-		for(Piece currentPiece: boardState[square[0]][square[1]]){
+		LinkedList<Piece> temp = new LinkedList<Piece>();
+		for(Piece p : boardState[square[0]][square[1]]){
+			temp.add(p);
+		}
+		for(Piece currentPiece: temp){
 			currentPiece.removeFromBoardState();
 			currentPiece.generateMoves();
 			currentPiece.addToBoardState();
 		}		
 	}
 	public  void display(){
-		//cheni's code
+		Piece current;
+		int[] place = new int[2];
+		for(int i=7;i>=0;i--){
+			for(int j=0;j<8;j++){
+				place[0] = i; place[1] = j;
+				current = pieceAt(place);
+				if(current == null){
+					System.out.print("-- ");
+				} else {
+					System.out.print(current+" ");
+				}
+			}
+			System.out.println();
+		}
 	}
-	public  void biuldBoardState(){
+	public  void buildBoardState(){
+		LinkedList<Piece> dummy = new LinkedList<Piece>();
+		for(int i=0; i<8; i++){
+			for(int j=0; j<8; j++){
+				boardState[i][j] = dummy;
+			}
+		}
 		for(Piece currentPiece: this.getPieces()){
 			currentPiece.generateMoves();
 			currentPiece.addToBoardState();
@@ -52,7 +79,7 @@ public abstract class Board {
 	}
 	public  Piece pieceAt(int[] square){
 		for(Piece currentPiece: pieces){
-			if(currentPiece.getPosition() == square){
+			if(Arrays.equals(currentPiece.getPosition(), square)){
 				return currentPiece;
 			}
 		}
@@ -65,4 +92,8 @@ public abstract class Board {
 		pieces.remove(taken);
 	}	
 	abstract boolean movePiece(int[] squareAB);
+	
+	public String toString(){
+		return "board"; 
+	}
 }

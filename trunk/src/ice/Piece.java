@@ -3,8 +3,9 @@ package ice;
 import java.util.*;
 public abstract class Piece {
 	protected boolean color; // true = white; false = black
+	protected String pieceType;
 	protected int value;
-	protected int[] position; // [x-coord,y-coord]
+	protected int[] position = new int[2]; // [x-coord,y-coord]
 	protected ArrayList<Integer[]> moves = new ArrayList<Integer[]>(); //[[x1,y1][x2,y2]...]
 	protected ArrayList<Integer[]> takes = new ArrayList<Integer[]>(); //[[x1,y1][x2,y2]...]
 	protected ArrayList<Integer[]> cover = new ArrayList<Integer[]>();
@@ -18,14 +19,25 @@ public abstract class Piece {
 	public  ArrayList<Integer[]> getCover()		{return cover;}
 	public  void setBoard(Board newBoard){ currentBoard = newBoard;}
 	public  void setPosition(int[] square){ position = square;}
+	
+	public boolean contains(ArrayList<Integer[]> haystack, int[] needle){
+		Integer[] sqr = new Integer[2];
+		sqr[0] = needle[0]; sqr[1] = needle[1];
+		for(Integer[] move : haystack){
+			if(Arrays.equals(sqr, move)){
+				return true;
+			}
+		}
+		return false;
+	}
 	boolean move(int[] newSquare){
-		if (moves.contains(newSquare)){
+		if (contains(moves, newSquare) && currentBoard.getTurn() == color){
 			removeFromBoardState();
 			position = newSquare;
 			addToBoardState();
 			return true;
 		}
-		else if (takes.contains(newSquare)){
+		else if (contains(takes, newSquare) && currentBoard.getTurn() == color){
 			removeFromBoardState();
 			currentBoard.takePiece(currentBoard.pieceAt(newSquare));
 			position = newSquare;
@@ -34,7 +46,7 @@ public abstract class Piece {
 		}
 		return false;
 	}
-	public  void addToBoardState(){
+	public void addToBoardState(){
 		for(Integer[] square: moves){
 			currentBoard.boardState[square[0]][square[1]].add(this);
 		}
@@ -60,10 +72,10 @@ public abstract class Piece {
 		int[] square = {x,y};
 		boolean[] status = currentBoard.statusOfSquare(square);
 		Integer[] squareObj = {square[0],square[1]};
-		if (status[0] && status[1] == !color) {
+		if (status[0] && (status[1] == !color)) {
 			takes.add(squareObj);
 		}
-		else if (status[0] && status[1] == color){
+		else if (status[0] && (status[1] == color)){
 			cover.add(squareObj);
 		}
 		else if (!status[0] && status[1]){
@@ -76,4 +88,11 @@ public abstract class Piece {
 	
 	public  abstract void generateMoves();
 
+	public String toString(){
+		if(color){
+			return "w"+pieceType;
+		} else {
+			return "b"+pieceType;
+		}
+	}
 }
