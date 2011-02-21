@@ -1,5 +1,7 @@
 package ice;
 
+import java.util.ArrayList;
+
 public class King extends Piece{
 	private boolean check = false;
 	private boolean castle = true;
@@ -9,6 +11,7 @@ public class King extends Piece{
 		position[1] = ywhere;
 		currentBoard = onWhat;
 		value = 0;
+		pieceType = "K";
 	}
 	boolean move(int[] newsquare){
 		if(super.move(newsquare)){
@@ -18,6 +21,9 @@ public class King extends Piece{
 		else{return false;}
 	}
 	public void generateMoves(){
+		moves = new ArrayList<Integer[]>();
+		takes = new ArrayList<Integer[]>();
+		cover = new ArrayList<Integer[]>();
 		processSquare(position[0] -1,position[1] -1);
 		processSquare(position[0] -1,position[1]   );
 		processSquare(position[0] -1,position[1] +1);
@@ -33,7 +39,7 @@ public class King extends Piece{
 	public boolean getcheck(){return check;}
 	public boolean inCheck(){
 		for(Piece p: currentBoard.getPieces()){
-			check = p.takes.contains(position);
+			check = p.contains(p.takes, position);
 			if(check){return check;}
 		}
 		return check;

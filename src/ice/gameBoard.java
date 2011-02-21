@@ -11,7 +11,9 @@ public class gameBoard extends Board{
 		//current implementation is for testing
 		pieces.add(new King(true,  0,0,this));
 		pieces.add(new King(false, 7,7,this));
-		biuldBoardState();
+		pieces.add(new King(true,  6,7,this));
+		pieces.add(new King(false, 7,6,this));
+		buildBoardState();
 		//only for TESTING
 	}
 	
@@ -20,17 +22,13 @@ public class gameBoard extends Board{
 		if(pieceAt(square1) != null){
 			int[] square2 = {squareAB[2],squareAB[3]};
 			boolean moved = pieceAt(square1).move(square2);
-		if(moved){
-			update(square1);
-			update(square2);
-			switchTurn();
-		}
-		return moved;
+			if(moved){
+				update(square1);
+				update(square2);
+			}
+			return moved;
 		}
 		return false;
 	}
-
-	
-	
 
 }
