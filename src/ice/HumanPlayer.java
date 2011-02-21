@@ -1,3 +1,4 @@
+package ice;
 import java.util.*;
 import java.util.regex.*;
 
@@ -5,7 +6,7 @@ public class HumanPlayer extends Player {
 
 	private boolean color;
 	private Scanner moveReader = new Scanner(System.in);
-	private Pattern p = Pattern.compile("[0-7],[0-7] [0-7][0-7]");
+	private Pattern p = Pattern.compile("[0-7],[0-7] [0-7],[0-7]");
 	private int[] lastMove = new int[4];
 	
 	public HumanPlayer(boolean color){
@@ -19,7 +20,9 @@ public class HumanPlayer extends Player {
 		boolean passedCheck = false;
 		while( !passedCheck ){
 			move = moveReader.next();
+			//move = "1,2 3,4";
 			passedCheck = checkMove(move);
+			if (!passedCheck ) System.out.println("Please try again....");
 		}
 		return lastMove;
 	}
@@ -31,10 +34,10 @@ public class HumanPlayer extends Player {
 	private boolean checkMove( String move ){
 		Matcher m = p.matcher(move);
 		if( m.matches() ) {
-			lastMove[0] = move.charAt(0);
-			lastMove[1] = move.charAt(2);
-			lastMove[2] = move.charAt(4);
-			lastMove[3] = move.charAt(6);
+			lastMove[0] = move.charAt(0) - '0';
+			lastMove[1] = move.charAt(2) - '0';
+			lastMove[2] = move.charAt(4) - '0';
+			lastMove[3] = move.charAt(6) - '0';
 			return true;
 		}
 		return false;

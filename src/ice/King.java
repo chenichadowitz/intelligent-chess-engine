@@ -1,3 +1,4 @@
+package ice;
 
 public class King extends Piece{
 	private boolean check = false;
