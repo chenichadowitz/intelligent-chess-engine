@@ -22,13 +22,16 @@ public class Driver {
 			moveResult = false;
 			while(!moveResult){
 				System.out.println("Current player: " + current);
+				System.out.print("Move (e.g. 1122): ");
 				int[] move = current.getMove();
-				System.out.println(move.length);
+				System.out.println();
+				//System.out.println(move.length);
 				if(move.length != 0){
 					for(int i : move) System.out.print(i + " ");
 					System.out.println();
+					for(int i=0;i<4;i++) move[i]--;
 					moveResult = gb.movePiece(move);
-					System.out.println("MoveResult: "+moveResult);
+					//System.out.println("MoveResult: "+moveResult);
 				} else { gb.display(); }
 			}
 			gb.display();
