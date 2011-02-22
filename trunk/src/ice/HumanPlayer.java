@@ -6,7 +6,7 @@ public class HumanPlayer extends Player {
 
 	private boolean color;
 	private Scanner moveReader = new Scanner(System.in);
-	private Pattern p = Pattern.compile("[0-7],[0-7] [0-7],[0-7]");
+	private Pattern p = Pattern.compile("[1-8],[1-8] [1-8],[1-8]");
 	private Pattern q = Pattern.compile("[q|Q][u|U][i|I][t|T]|[e|E][x|X][i|I][t|T]");
 	private int[] lastMove = new int[4];
 	
