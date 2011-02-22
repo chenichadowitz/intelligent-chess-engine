@@ -53,6 +53,7 @@ public abstract class Board {
 		Piece current;
 		int[] place = new int[2];
 		for(int i=7;i>=0;i--){
+			System.out.print(i+1 + " ");
 			for(int j=0;j<8;j++){
 				place[0] = j; place[1] = i;
 				current = pieceAt(place);
@@ -64,6 +65,7 @@ public abstract class Board {
 			}
 			System.out.println();
 		}
+		System.out.println("  a  b  c  d  e  f  g  h");
 	}
 	public  void buildBoardState(){
 		LinkedList<Piece> dummy = new LinkedList<Piece>();
