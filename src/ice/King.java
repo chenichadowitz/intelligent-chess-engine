@@ -3,7 +3,6 @@ package ice;
 import java.util.ArrayList;
 
 public class King extends Piece{
-	private boolean check = false;
 	private boolean castle = true;
 	public King(boolean player, int xwhere, int ywhere, Board onWhat){
 		color = player;
@@ -35,13 +34,5 @@ public class King extends Piece{
 		if(castle){//fill in code!!!
 		}
 		
-	}
-	public boolean getcheck(){return check;}
-	public boolean inCheck(){
-		for(Piece p: currentBoard.getPieces()){
-			check = p.contains(p.takes, position);
-			if(check){return check;}
-		}
-		return check;
 	}
 }

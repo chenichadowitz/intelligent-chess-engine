@@ -72,19 +72,27 @@ public abstract class Piece {
 		int[] square = {x,y};
 		boolean[] status = currentBoard.statusOfSquare(square);
 		Integer[] squareObj = {square[0],square[1]};
-		if (status[0] && (status[1] == !color)) {
-			takes.add(squareObj);
-		}
-		else if (status[0] && (status[1] == color)){
-			cover.add(squareObj);
-		}
-		else if (!status[0] && status[1]){
-			moves.add(squareObj);
-			return true;
-		}
-		return false;
+	//	int[] sqaureAB = {position[0],position[1],x,y};
+	//	if(!willBeInCheck(color, sqaureAB)){
+			if (status[0] && (status[1] == !color)) {
+				takes.add(squareObj);
+			}
+			else if (status[0] && (status[1] == color)){
+				cover.add(squareObj);
+			}
+			else if (!status[0] && status[1]){
+				moves.add(squareObj);
+				return true;
+			}
+			return false;
+//		}
+//		return true;
 	}
-		
+	
+	protected boolean willBeInCheck(boolean colorOfPlayer, int[] possibleMove){
+		staticBoard checkChecker = new staticBoard(currentBoard, possibleMove);
+		return checkChecker.isPlayerInCheck(colorOfPlayer);
+	}
 	
 	public  abstract void generateMoves();
 
