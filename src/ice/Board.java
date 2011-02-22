@@ -1,6 +1,7 @@
 package ice;
 import java.util.*;
 
+@SuppressWarnings("unchecked")
 public abstract class Board {
 	Player whitePlayer;
 	Player blackPlayer;
