@@ -47,6 +47,17 @@ public abstract class Board {
 		for(Piece currentPiece: temp){
 			currentPiece.removeFromBoardState();
 			currentPiece.generateMoves();
+			for(Integer[] kingChecker: currentPiece.getTakes()){
+				int[] checkSquare = {kingChecker[0], kingChecker[1]};
+				if(pieceAt(checkSquare).toString().charAt(1) == 'K'){
+					if(pieceAt(checkSquare).getColor()){
+						whitePlayer.setCheckStatus(true);
+					}
+					else{
+						blackPlayer.setCheckStatus(true);
+					}
+				}
+			}
 			currentPiece.addToBoardState();
 		}		
 	}
@@ -98,5 +109,13 @@ public abstract class Board {
 	
 	public String toString(){
 		return "board"; 
+	}
+	public boolean isPlayerInCheck(boolean player){
+		if(player){
+			return whitePlayer.getCheckStatus();
+		}
+		else {
+			return blackPlayer.getCheckStatus();
+		}
 	}
 }

@@ -11,8 +11,6 @@ public class gameBoard extends Board{
 		//current implementation is for testing
 		pieces.add(new King(true,  0,0,this));
 		pieces.add(new King(false, 7,7,this));
-		pieces.add(new King(true,  6,7,this));
-		pieces.add(new King(false, 7,6,this));
 		buildBoardState();
 		//only for TESTING
 	}

@@ -6,6 +6,8 @@ public class staticBoard extends Board{
 	int[] moveMade;
 	
 	public staticBoard(Board oldBoard, int[] move){
+		whitePlayer = new Player();
+		blackPlayer = new Player();
 		pieces = oldBoard.getPieces();
 		boardState = oldBoard.getBoardState();
 		playersTurn = oldBoard.getTurn();
@@ -13,6 +15,12 @@ public class staticBoard extends Board{
 		for(int updater = 0; updater < pieces.size(); updater++){
 			pieces.get(updater).setBoard(this);
 		}
+		int[] square1 = {move[0],move[1]};
+		int[] square2 = {move[2],move[3]};
+		pieceAt(square1).move(square2);
+		update(square1);
+		update(square2);
+		switchTurn();
 	}
 	public boolean movePiece(int[] squareAB){
 		int[] square1 = {squareAB[0],squareAB[1]};
@@ -20,12 +28,7 @@ public class staticBoard extends Board{
 		if(pieceAt(square1) != null && (pieceAt(square1).getMoves().contains(square2) || pieceAt(square1).getTakes().contains(square2))){
 			boards.add(new staticBoard(this, squareAB));
 			boolean moved = boards.get(boards.size() -1).pieceAt(square1).move(square2);
-		if(moved){
-			boards.get(boards.size() -1).update(square1);
-			boards.get(boards.size() -1).update(square2);
-			boards.get(boards.size() -1).switchTurn();
-		}
-		return moved;
+			return moved;
 		}
 		return false;
 	}
