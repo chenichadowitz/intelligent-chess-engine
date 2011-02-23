@@ -38,8 +38,12 @@ public abstract class Board {
         }
 		return squareStatus;
 	}
-	public  void switchTurn(){playersTurn = !playersTurn;}
+	public  void switchTurn(){
+		playersTurn = !playersTurn;
+		Driver.debug("switched turn");
+	}
 	public  void update(int[] square){
+		Driver.debug("updating " + square[0] + " " + square[1]);
 		LinkedList<Piece> temp = new LinkedList<Piece>();
 		for(Piece p : boardState[square[0]][square[1]]){
 			temp.add(p);
@@ -59,9 +63,10 @@ public abstract class Board {
 				}
 			}
 			currentPiece.addToBoardState();
-		}		
+		}
 	}
 	public  void display(){
+		Driver.debug("displaying Board...");
 		Piece current;
 		int[] place = new int[2];
 		for(int i=7;i>=0;i--){
@@ -80,6 +85,7 @@ public abstract class Board {
 		System.out.println("  a  b  c  d  e  f  g  h");
 	}
 	public  void buildBoardState(){
+		Driver.debug("building boardState");
 		LinkedList<Piece> dummy = new LinkedList<Piece>();
 		for(int i=0; i<8; i++){
 			for(int j=0; j<8; j++){
@@ -100,6 +106,7 @@ public abstract class Board {
 		return null; //no piece at square !!!BOOM!!!
 	}
 	public  void takePiece(Piece taken){
+		Driver.debug("took " + taken);
 		taken.removeFromBoardState();
 		taken.setPosition(null);
 		taken.setBoard(null);
@@ -111,6 +118,7 @@ public abstract class Board {
 		return "board"; 
 	}
 	public boolean isPlayerInCheck(boolean player){
+		Driver.debug("returning check status");
 		if(player){
 			return whitePlayer.getCheckStatus();
 		}
@@ -118,4 +126,5 @@ public abstract class Board {
 			return blackPlayer.getCheckStatus();
 		}
 	}
+
 }
