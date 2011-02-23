@@ -30,7 +30,7 @@ public class HumanPlayer extends Player {
 					if(matchPat.matches()){
 						return ahMoveToInt(s);
 					}
-							return new int[0];
+						return new int[0];
 				}
 			}
 		}
@@ -64,8 +64,8 @@ public class HumanPlayer extends Player {
 		int let2 = s.charAt(2) - 'a' + 1;
 		int num2 = s.charAt(3) - '0';
 		int[] toReturn = new int[4];
-		if( (0 <= let1 && let1 < 8)
-			&& (0 <= let2 && let2 < 8)
+		if( (0 < let1 && let1 < 9)
+			&& (0 < let2 && let2 < 9)
 			&& (0 < num1 && num1 < 9)
 			&& (0 < num2 && num2 < 9) ){
 			//First and third chars are a letter a-h indeed
