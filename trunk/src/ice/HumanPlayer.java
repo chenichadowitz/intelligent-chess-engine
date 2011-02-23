@@ -5,7 +5,7 @@ import java.util.regex.*;
 public class HumanPlayer extends Player {
 
 	private Scanner moveReader = new Scanner(System.in);
-	private Pattern p = Pattern.compile("[1-8],[1-8] [1-8],[1-8]");
+	private Pattern pat = Pattern.compile("[a-h|A-H][1-8][a-h|A-H][1-8]");
 	private Pattern q = Pattern.compile("[q|Q][u|U][i|I][t|T]|[e|E][x|X][i|I][t|T]");
 	private int[] lastMove = new int[4];
 	
@@ -19,24 +19,19 @@ public class HumanPlayer extends Player {
 	}
 	
 	public int[] getMove() {
-		/*System.out.println("Please enter a move in the following form where you are moving a piece from a,b to c,d:");
-		System.out.println("a,b c,d");
-		String move = "";
-		*/
 		int moveNums;
-		/*boolean passedCheck = false;
-		while( !passedCheck ){
-			move = moveReader.next();
-			//move = "1,2 3,4";
-			passedCheck = checkMove(move);
-			if (!passedCheck ) System.out.println("Please try again....");
-		}*/
 		while(!moveReader.hasNextInt()){
 			if(moveReader.hasNext()){
 				String s = moveReader.next();
 				Matcher matchQuit = q.matcher(s);
 				if(matchQuit.matches())	System.exit(0);
-				else return new int[0];
+				else {
+					Matcher matchPat = pat.matcher(s);
+					if(matchPat.matches()){
+						return ahMoveToInt(s);
+					}
+							return new int[0];
+				}
 			}
 		}
 		moveNums = moveReader.nextInt();
@@ -62,15 +57,27 @@ public class HumanPlayer extends Player {
 		return lastMove;
 	}
 	
-	private boolean checkMove( String move ){
-		Matcher m = p.matcher(move);
-		if( m.matches() ) {
-			lastMove[0] = move.charAt(0) - '0';
-			lastMove[1] = move.charAt(2) - '0';
-			lastMove[2] = move.charAt(4) - '0';
-			lastMove[3] = move.charAt(6) - '0';
-			return true;
+	private int[] ahMoveToInt(String s){
+		s = s.toLowerCase();
+		int let1 = s.charAt(0) - 'a' + 1;
+		int num1 = s.charAt(1) - '0';
+		int let2 = s.charAt(2) - 'a' + 1;
+		int num2 = s.charAt(3) - '0';
+		int[] toReturn = new int[4];
+		if( (0 <= let1 && let1 < 8)
+			&& (0 <= let2 && let2 < 8)
+			&& (0 < num1 && num1 < 9)
+			&& (0 < num2 && num2 < 9) ){
+			//First and third chars are a letter a-h indeed
+			//Second and fourth chars are a int 1-8 indeed (now translated to 0-7)
+			toReturn[0] = let1;
+			toReturn[1] = num1;
+			toReturn[2] = let2;
+			toReturn[3] = num2;
+			return toReturn;
+		} else {
+			// If not, then just return an empty int[] array length 0
+			return new int[0];
 		}
-		return false;
 	}
 }
