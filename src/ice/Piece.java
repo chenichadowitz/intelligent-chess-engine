@@ -31,19 +31,22 @@ public abstract class Piece {
 		return false;
 	}
 	boolean move(int[] newSquare){
-		if (contains(moves, newSquare) && currentBoard.getTurn() == color){
-			removeFromBoardState();
-			position = newSquare;
-			addToBoardState();
-			return true;
-		}
-		else if (contains(takes, newSquare) && currentBoard.getTurn() == color){
-			removeFromBoardState();
-			currentBoard.takePiece(currentBoard.pieceAt(newSquare));
-			position = newSquare;
-			addToBoardState();
-			return true;
-		}
+			if (contains(moves, newSquare) && currentBoard.getTurn() == color){
+				removeFromBoardState();
+				position = newSquare;
+				addToBoardState();
+				Driver.debug("moved " + this + " to " + newSquare[0] + " " + newSquare[1]);
+				return true;
+			}
+			else if (contains(takes, newSquare) && currentBoard.getTurn() == color){
+				removeFromBoardState();
+				currentBoard.takePiece(currentBoard.pieceAt(newSquare));
+				position = newSquare;
+				addToBoardState();
+				Driver.debug("moved " + this + " to " + newSquare[0] + " " + newSquare[1]);
+				return true;
+			}
+		Driver.debug("move failed");	
 		return false;
 	}
 	public void addToBoardState(){
@@ -56,6 +59,7 @@ public abstract class Piece {
 		for(Integer[] square: cover){
 			currentBoard.boardState[square[0]][square[1]].add(this);
 		}
+		Driver.debug("added " + this + " to boardState");
 	}
 	public void removeFromBoardState(){
 		for(Integer[] square: moves){
@@ -67,13 +71,12 @@ public abstract class Piece {
 		for(Integer[] square: cover){
 			currentBoard.boardState[square[0]][square[1]].remove(this);
 		}
+		Driver.debug("removed " + this + " from boardState");
 	}
 	public  boolean processSquare(int x, int y){ //returns true if square is empty
 		int[] square = {x,y};
 		boolean[] status = currentBoard.statusOfSquare(square);
 		Integer[] squareObj = {square[0],square[1]};
-	//	int[] sqaureAB = {position[0],position[1],x,y};
-	//	if(!willBeInCheck(color, sqaureAB)){
 			if (status[0] && (status[1] == !color)) {
 				takes.add(squareObj);
 			}
@@ -85,11 +88,10 @@ public abstract class Piece {
 				return true;
 			}
 			return false;
-//		}
-//		return true;
 	}
 	
 	protected boolean willBeInCheck(boolean colorOfPlayer, int[] possibleMove){
+		Driver.debug("checking if move " + possibleMove[0] + " " + possibleMove[1] + " " + possibleMove[2] + " " + possibleMove[3] + " " + "results in check");
 		staticBoard checkChecker = new staticBoard(currentBoard, possibleMove);
 		return checkChecker.isPlayerInCheck(colorOfPlayer);
 	}

@@ -5,6 +5,13 @@ public class Driver {
 	/**
 	 * @param args
 	 */
+	public static void debug(String action){
+		System.out.println(action);
+		//possibly write to file
+	}
+	
+	
+	
 	public static void main(String[] args) {
 		HumanPlayer white = new HumanPlayer(true);
 		HumanPlayer black = new HumanPlayer(false);
