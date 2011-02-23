@@ -6,9 +6,12 @@ public class staticBoard extends Board{
 	int[] moveMade;
 	
 	public staticBoard(Board oldBoard, int[] move){
+		Driver.debug("//////staticBoard created");
 		whitePlayer = new Player();
 		blackPlayer = new Player();
-		pieces = oldBoard.getPieces();
+		for(Piece newPiece : oldBoard.getPieces()){
+			pieces.add(newPiece);
+		}
 		boardState = oldBoard.getBoardState();
 		playersTurn = oldBoard.getTurn();
 		moveMade = move;
@@ -17,7 +20,7 @@ public class staticBoard extends Board{
 		}
 		int[] square1 = {move[0],move[1]};
 		int[] square2 = {move[2],move[3]};
-		pieceAt(square1).move(square2);
+		pieceAt(square1).setPosition(square2);
 		update(square1);
 		update(square2);
 		switchTurn();
