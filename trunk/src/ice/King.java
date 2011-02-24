@@ -20,7 +20,7 @@ public class King extends Piece{
 		else{return false;}
 	}
 	public void generateMoves(){
-		Driver.debug("generating moves for " + this);
+		Driver.debug(this + " generating moves");
 		moves = new ArrayList<Integer[]>();
 		takes = new ArrayList<Integer[]>();
 		cover = new ArrayList<Integer[]>();

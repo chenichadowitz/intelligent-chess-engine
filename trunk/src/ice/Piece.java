@@ -37,8 +37,8 @@ public abstract class Piece {
 				removeFromBoardState();
 				if(contains(takes, newSquare)){currentBoard.takePiece(currentBoard.pieceAt(newSquare));}
 				position = newSquare;
+				Driver.debug(this + " moved to " + newSquare[0] + " " + newSquare[1]);
 				addToBoardState();
-				Driver.debug("moved " + this + " to " + newSquare[0] + " " + newSquare[1]);
 				return true;
 			}
 		}
@@ -55,7 +55,7 @@ public abstract class Piece {
 		for(Integer[] square: cover){
 			currentBoard.boardState[square[0]][square[1]].add(this);
 		}
-		Driver.debug("added " + this + " to boardState");
+		Driver.debug(this + " added to boardState");
 	}
 	public void removeFromBoardState(){
 		for(Integer[] square: moves){
@@ -67,7 +67,7 @@ public abstract class Piece {
 		for(Integer[] square: cover){
 			currentBoard.boardState[square[0]][square[1]].remove(this);
 		}
-		Driver.debug("removed " + this + " from boardState");
+		Driver.debug(this +" removed from boardState");
 	}
 	public  boolean processSquare(int x, int y){ //returns true if square is empty
 		int[] square = {x,y};
@@ -101,5 +101,18 @@ public abstract class Piece {
 		} else {
 			return "b"+pieceType;
 		}
+	}
+	public Piece clone(){
+		switch (toString().charAt(1)){
+			case('K'):{
+				King newPiece = new King(color,position[0],position[1],currentBoard);
+				newPiece.cover = (ArrayList<Integer[]>) cover.clone();
+				newPiece.moves = (ArrayList<Integer[]>) moves.clone();
+				newPiece.takes = (ArrayList<Integer[]>) takes.clone();
+				return newPiece;
+			}
+			default:{return null;}
+		}
+		
 	}
 }
