@@ -20,7 +20,7 @@ public class gameBoard extends Board{
 		int[] square1 = {squareAB[0],squareAB[1]};
 		if(pieceAt(square1) != null){
 			int[] square2 = {squareAB[2],squareAB[3]};
-			Driver.debug("moving piece " + pieceAt(square1) + " to " + square2[0] + " " + square2[1]);
+			Driver.debug(pieceAt(square1) + " trying to move to " + square2[0] + " " + square2[1]);
 			boolean moved = pieceAt(square1).move(square2);
 			if(moved){
 				update(square1);

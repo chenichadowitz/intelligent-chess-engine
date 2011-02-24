@@ -10,7 +10,7 @@ public class staticBoard extends Board{
 		whitePlayer = new Player();
 		blackPlayer = new Player();
 		for(Piece newPiece : oldBoard.getPieces()){
-			pieces.add(newPiece);
+			pieces.add(newPiece.clone());
 		}
 		boardState = oldBoard.getBoardState();
 		playersTurn = oldBoard.getTurn();

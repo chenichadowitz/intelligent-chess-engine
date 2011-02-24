@@ -119,7 +119,6 @@ public abstract class Board {
 		return "board"; 
 	}
 	public boolean isPlayerInCheck(boolean player){
-		Driver.debug("returning check status");
 		if(player){
 			return whitePlayer.getCheckStatus();
 		}
