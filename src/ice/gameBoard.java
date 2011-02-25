@@ -25,6 +25,7 @@ public class gameBoard extends Board{
 			if(moved){
 				update(square1);
 				update(square2);
+				setKingCheck();
 			}
 			return moved;
 		}

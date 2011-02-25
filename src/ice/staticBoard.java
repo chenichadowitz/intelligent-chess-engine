@@ -23,6 +23,7 @@ public class staticBoard extends Board{
 		pieceAt(square1).setPosition(square2);
 		update(square1);
 		update(square2);
+		setKingCheck();
 		switchTurn();
 	}
 	public boolean movePiece(int[] squareAB){
