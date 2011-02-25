@@ -51,17 +51,6 @@ public abstract class Board {
 		for(Piece currentPiece: temp){
 			currentPiece.removeFromBoardState();
 			currentPiece.generateMoves();
-			for(Integer[] kingChecker: currentPiece.getTakes()){
-				int[] checkSquare = {kingChecker[0], kingChecker[1]};
-				if(pieceAt(checkSquare).toString().charAt(1) == 'K'){
-					if(pieceAt(checkSquare).getColor()){
-						whitePlayer.setCheckStatus(true);
-					}
-					else{
-						blackPlayer.setCheckStatus(true);
-					}
-				}
-			}
 			currentPiece.addToBoardState();
 		}
 	}
@@ -124,6 +113,24 @@ public abstract class Board {
 		}
 		else {
 			return blackPlayer.getCheckStatus();
+		}
+	}
+	public void setKingCheck(){
+		boolean inCheck = false;
+		for(Piece pieceFinder: pieces){
+			if(pieceFinder.toString().charAt(1) == 'K'){
+				for(Piece effectedPiece: boardState[pieceFinder.position[0]][pieceFinder.position[1]]){
+					inCheck = inCheck || effectedPiece.color != pieceFinder.color;
+				}
+				if(pieceFinder.color == true){
+					whitePlayer.setCheckStatus(inCheck);
+					Driver.debug("white player in check = " + inCheck);
+				}
+				else{
+					blackPlayer.setCheckStatus(inCheck);
+					Driver.debug("black player in check = " + inCheck);
+				}
+			}
 		}
 	}
 
