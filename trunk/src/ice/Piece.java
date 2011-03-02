@@ -102,17 +102,5 @@ public abstract class Piece {
 			return "b"+pieceType;
 		}
 	}
-	public Piece clone(){
-		switch (toString().charAt(1)){
-			case('K'):{
-				King newPiece = new King(color,position[0],position[1],currentBoard);
-				newPiece.cover = (ArrayList<Integer[]>) cover.clone();
-				newPiece.moves = (ArrayList<Integer[]>) moves.clone();
-				newPiece.takes = (ArrayList<Integer[]>) takes.clone();
-				return newPiece;
-			}
-			default:{return null;}
-		}
-		
-	}
+	public abstract Piece clone(); 
 }

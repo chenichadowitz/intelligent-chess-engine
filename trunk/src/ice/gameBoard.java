@@ -9,8 +9,12 @@ public class gameBoard extends Board{
 	
 	public void setUpBoard(){
 		//current implementation is for testing
-		pieces.add(new King(true,  0,0,this));
-		pieces.add(new King(false, 7,7,this));
+		pieces.add(new King  (true, 4,0 ,this));
+		pieces.add(new Knight(true, 1,0 ,this));
+		pieces.add(new Knight(true, 6,0 ,this));
+		pieces.add(new King  (false, 4,7 ,this));
+		pieces.add(new Knight(false, 1,7 ,this));
+		pieces.add(new Knight(false, 6,7 ,this));
 		buildBoardState();
 		Driver.debug("board set up");
 		//only for TESTING
