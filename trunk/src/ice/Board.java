@@ -53,25 +53,36 @@ public abstract class Board {
 			currentPiece.addToBoardState();
 		}
 	}
-	public  void display(){
+	public String display(){
 		Driver.debug("displaying Board...");
+		StringBuilder sb = new StringBuilder();
 		Piece current;
 		int[] place = new int[2];
 		for(int i=7;i>=0;i--){
-			System.out.print(i+1 + " ");
+			//System.out.print(i+1 + " ");
+			sb.append(i+1 + " ");
 			for(int j=0;j<8;j++){
 				place[0] = j; place[1] = i;
 				current = pieceAt(place);
 				if(current == null){
-					System.out.print("-- ");
+					//System.out.print("-- ");
+					sb.append("-- ");
 				} else {
-					System.out.print(current+" ");
+					//System.out.print(current+" ");
+					sb.append(current+" ");
 				}
 			}
-			System.out.println();
+			//System.out.println();
+			sb.append("\n");
 		}
-		System.out.println("  a  b  c  d  e  f  g  h");
+		//System.out.println("  a  b  c  d  e  f  g  h");
+		sb.append("  a  b  c  d  e  f  g  h\n");
+		return sb.toString();
 	}
+/*	
+	public void display(){
+		System.out.println(display());
+	}*/
 	public  void buildBoardState(){
 		Driver.debug("building boardState");
 		LinkedList<Piece> dummy = new LinkedList<Piece>();
