@@ -6,6 +6,9 @@ public class Player {
 	protected String name = "dummy player " + color;
 	public boolean getCheckStatus(){ return checkStatus; }
 	public void setCheckStatus(boolean inCheck){ checkStatus = inCheck;}
+	public void setName(String newName){
+		name = newName;
+	}
 	public String toString(){
 		return name;
 	}
