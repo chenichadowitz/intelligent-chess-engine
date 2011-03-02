@@ -11,6 +11,7 @@ public class Bishop extends Piece {
 		value = 0;
 		pieceType = "B";
 	}
+	@SuppressWarnings("unchecked")
 	public Piece clone() {
 		Bishop newPiece = new Bishop(color,position[0],position[1],currentBoard);
 		newPiece.cover = (ArrayList<Integer[]>) cover.clone();
@@ -19,10 +20,7 @@ public class Bishop extends Piece {
 		return newPiece;
 	}
 	public void generateMoves() {
-		Driver.debug(this + " generating moves");
-		moves = new ArrayList<Integer[]>();
-		takes = new ArrayList<Integer[]>();
-		cover = new ArrayList<Integer[]>();
+		super.generateMoves();
 		//down-left
 		int length = 1;
 		while(processSquare(position[0] -length,position[1] -length)){

@@ -95,7 +95,12 @@ public abstract class Piece {
 		return checkChecker.isPlayerInCheck(colorOfPlayer);
 	}
 	
-	public  abstract void generateMoves();
+	public  void generateMoves(){
+		Driver.debug(this + " generating moves", 3);
+		moves = new ArrayList<Integer[]>();
+		takes = new ArrayList<Integer[]>();
+		cover = new ArrayList<Integer[]>();
+	}
 
 	public String toString(){
 		if(color){
