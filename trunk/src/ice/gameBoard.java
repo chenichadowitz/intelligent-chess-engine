@@ -3,8 +3,8 @@ package ice;
 public class gameBoard extends Board{
 	
 	public gameBoard(Player player1, Player player2){
-		whitePlayer = player1;
-		blackPlayer = player2;
+		playerMap.put(true, player1);
+		playerMap.put(false, player2);
 	}
 	
 	public void setUpBoard(){

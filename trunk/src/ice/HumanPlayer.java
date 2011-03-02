@@ -12,12 +12,7 @@ public class HumanPlayer extends Player {
 	public HumanPlayer(boolean color){
 		this.color = color;
 	}
-	
-	public String toString(){
-		if(color) return "White";
-		else return "Black";
-	}
-	
+			
 	public int[] getMove() {
 		int moveNums;
 		while(!moveReader.hasNextInt()){

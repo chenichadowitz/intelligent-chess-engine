@@ -7,8 +7,8 @@ public class staticBoard extends Board{
 	
 	public staticBoard(Board oldBoard, int[] move){
 		Driver.debug("//////staticBoard created");
-		whitePlayer = new Player();
-		blackPlayer = new Player();
+		playerMap.put(true, new Player());
+		playerMap.put(false, new Player());
 		for(Piece newPiece : oldBoard.getPieces()){
 			pieces.add(newPiece.clone());
 		}
