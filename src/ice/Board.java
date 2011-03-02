@@ -3,8 +3,7 @@ import java.util.*;
 
 @SuppressWarnings("unchecked")
 public abstract class Board {
-	Player whitePlayer;
-	Player blackPlayer;
+	Map<Boolean, Player> playerMap = new HashMap<Boolean, Player>();
 	protected  boolean playersTurn = true; // whiteturn if true
 	protected  ArrayList<Piece> pieces = new ArrayList<Piece>();
 	protected LinkedList<Piece>[][] boardState = (LinkedList<Piece>[][]) new LinkedList[8][8];
@@ -108,12 +107,7 @@ public abstract class Board {
 		return "board"; 
 	}
 	public boolean isPlayerInCheck(boolean player){
-		if(player){
-			return whitePlayer.getCheckStatus();
-		}
-		else {
-			return blackPlayer.getCheckStatus();
-		}
+		return playerMap.get(player).getCheckStatus();
 	}
 	public void setKingCheck(){
 		boolean inCheck = false;
@@ -122,14 +116,8 @@ public abstract class Board {
 				for(Piece effectedPiece: boardState[pieceFinder.position[0]][pieceFinder.position[1]]){
 					inCheck = inCheck || effectedPiece.color != pieceFinder.color;
 				}
-				if(pieceFinder.color == true){
-					whitePlayer.setCheckStatus(inCheck);
-					Driver.debug("white player in check = " + inCheck);
-				}
-				else{
-					blackPlayer.setCheckStatus(inCheck);
-					Driver.debug("black player in check = " + inCheck);
-				}
+				playerMap.get(pieceFinder.color).setCheckStatus(inCheck);
+				Driver.debug(playerMap.get(pieceFinder.color) + " is in check -> " + inCheck);
 			}
 		}
 	}
