@@ -3,6 +3,7 @@ package ice;
 import java.util.ArrayList;
 
 public class Rook extends Piece {
+	@SuppressWarnings("unused")
 	private boolean castle = true;
 	public Rook(boolean player, int xwhere, int ywhere, Board onWhat){
 		color = player;
@@ -21,6 +22,7 @@ public class Rook extends Piece {
 		else{return false;}
 	}
 
+	@SuppressWarnings("unchecked")
 	public Piece clone() {
 		Rook newPiece = new Rook(color,position[0],position[1],currentBoard);
 		newPiece.cover = (ArrayList<Integer[]>) cover.clone();
@@ -31,10 +33,7 @@ public class Rook extends Piece {
 
 	@Override
 	public void generateMoves() {
-		Driver.debug(this + " generating moves");
-		moves = new ArrayList<Integer[]>();
-		takes = new ArrayList<Integer[]>();
-		cover = new ArrayList<Integer[]>();
+		super.generateMoves();
 		//backwards
 		int length = 1;
 		while(processSquare(position[0],position[1] -length)){

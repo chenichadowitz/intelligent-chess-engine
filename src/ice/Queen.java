@@ -11,6 +11,7 @@ public class Queen extends Piece {
 		value = 0;
 		pieceType = "Q";
 	}
+	@SuppressWarnings("unchecked")
 	public Piece clone() {
 		Queen newPiece = new Queen(color,position[0],position[1],currentBoard);
 		newPiece.cover = (ArrayList<Integer[]>) cover.clone();
@@ -21,10 +22,7 @@ public class Queen extends Piece {
 
 
 	public void generateMoves() {
-		Driver.debug(this + " generating moves");
-		moves = new ArrayList<Integer[]>();
-		takes = new ArrayList<Integer[]>();
-		cover = new ArrayList<Integer[]>();
+		super.generateMoves();
 		//backwards
 		int length = 1;
 		while(processSquare(position[0],position[1] -length)){
