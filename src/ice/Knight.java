@@ -24,7 +24,7 @@ public class Knight extends Piece {
 		processSquare(position[0] -1,position[1] +2);
 		processSquare(position[0] +1,position[1] +2);
 		processSquare(position[0] -1,position[1] -2);
-		processSquare(position[0] +1,position[1] +2);
+		processSquare(position[0] +1,position[1] -2);
 	}
 	public Piece clone(){
 		Knight newPiece = new Knight(color,position[0],position[1],currentBoard);
