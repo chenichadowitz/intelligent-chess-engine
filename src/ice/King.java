@@ -20,7 +20,7 @@ public class King extends Piece{
 		else{return false;}
 	}
 	public void generateMoves(){
-		Driver.debug(this + " generating moves");
+		Driver.debug(this + " generating moves", 3);
 		moves = new ArrayList<Integer[]>();
 		takes = new ArrayList<Integer[]>();
 		cover = new ArrayList<Integer[]>();
@@ -35,6 +35,7 @@ public class King extends Piece{
 		if(castle){//fill in code!!!
 		}	
 	}
+	@SuppressWarnings("unchecked")
 	public Piece clone(){
 		King newPiece = new King(color,position[0],position[1],currentBoard);
 		newPiece.cover = (ArrayList<Integer[]>) cover.clone();

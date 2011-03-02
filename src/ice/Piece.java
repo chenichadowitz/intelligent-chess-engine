@@ -37,12 +37,12 @@ public abstract class Piece {
 				removeFromBoardState();
 				if(contains(takes, newSquare)){currentBoard.takePiece(currentBoard.pieceAt(newSquare));}
 				position = newSquare;
-				Driver.debug(this + " moved to " + newSquare[0] + " " + newSquare[1]);
+				Driver.debug(this + " moved to " + newSquare[0] + " " + newSquare[1],2);
 				addToBoardState();
 				return true;
 			}
 		}
-		Driver.debug("move failed");	
+		Driver.debug("move failed",2);	
 		return false;
 	}
 	public void addToBoardState(){
@@ -55,7 +55,7 @@ public abstract class Piece {
 		for(Integer[] square: cover){
 			currentBoard.boardState[square[0]][square[1]].add(this);
 		}
-		Driver.debug(this + " added to boardState");
+		Driver.debug(this + " added to boardState",3);
 	}
 	public void removeFromBoardState(){
 		for(Integer[] square: moves){
@@ -67,7 +67,7 @@ public abstract class Piece {
 		for(Integer[] square: cover){
 			currentBoard.boardState[square[0]][square[1]].remove(this);
 		}
-		Driver.debug(this +" removed from boardState");
+		Driver.debug(this +" removed from boardState",3);
 	}
 	public  boolean processSquare(int x, int y){ //returns true if square is empty
 		int[] square = {x,y};
@@ -86,10 +86,12 @@ public abstract class Piece {
 			return false;
 	}
 	protected boolean willBeInCheck(boolean colorOfPlayer, int[] possibleMove){
-		Driver.debug("checking if move " + possibleMove[0] + " " + possibleMove[1] + " " + possibleMove[2] + " " + possibleMove[3] + " " + "results in check");
+		Driver.debug("checking if move " + possibleMove[0] + " " 
+				+ possibleMove[1] + " " + possibleMove[2] + " " 
+				+ possibleMove[3] + " " + "results in check", 3);
 		staticBoard checkChecker = new staticBoard(currentBoard, possibleMove);
-		Driver.debug("/////staticBoard exited");
-		Driver.debug("checkStatus is = " + checkChecker.isPlayerInCheck(colorOfPlayer));
+		Driver.debug("/////staticBoard exited",3);
+		Driver.debug("checkStatus is = " + checkChecker.isPlayerInCheck(colorOfPlayer),3);
 		return checkChecker.isPlayerInCheck(colorOfPlayer);
 	}
 	
