@@ -16,7 +16,7 @@ public class gameBoard extends Board{
 		pieces.add(new Knight(false, 1,7 ,this));
 		pieces.add(new Knight(false, 6,7 ,this));
 		buildBoardState();
-		Driver.debug("board set up");
+		Driver.debug("board set up",1);
 		//only for TESTING
 	}
 	
@@ -24,7 +24,7 @@ public class gameBoard extends Board{
 		int[] square1 = {squareAB[0],squareAB[1]};
 		if(pieceAt(square1) != null){
 			int[] square2 = {squareAB[2],squareAB[3]};
-			Driver.debug(pieceAt(square1) + " trying to move to " + square2[0] + " " + square2[1]);
+			Driver.debug(pieceAt(square1) + " trying to move to " + square2[0] + " " + square2[1],1);
 			boolean moved = pieceAt(square1).move(square2);
 			if(moved){
 				update(square1);
@@ -33,7 +33,7 @@ public class gameBoard extends Board{
 			}
 			return moved;
 		}
-		Driver.debug("no piece there");
+		Driver.debug("no piece there",1);
 		return false;
 	}
 

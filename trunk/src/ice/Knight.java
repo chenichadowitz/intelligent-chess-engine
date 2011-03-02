@@ -13,7 +13,7 @@ public class Knight extends Piece {
 		pieceType = "N";
 	}
 	public void generateMoves() {
-		Driver.debug(this + " generating moves");
+		Driver.debug(this + " generating moves", 4);
 		moves = new ArrayList<Integer[]>();
 		takes = new ArrayList<Integer[]>();
 		cover = new ArrayList<Integer[]>();

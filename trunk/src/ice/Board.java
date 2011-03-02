@@ -39,10 +39,10 @@ public abstract class Board {
 	}
 	public  void switchTurn(){
 		playersTurn = !playersTurn;
-		Driver.debug("switched turn");
+		Driver.debug("switched turn", 3);
 	}
 	public  void update(int[] square){
-		Driver.debug("updating " + square[0] + " " + square[1]);
+		Driver.debug("updating " + square[0] + " " + square[1],4);
 		LinkedList<Piece> temp = new LinkedList<Piece>();
 		for(Piece p : boardState[square[0]][square[1]]){
 			temp.add(p);
@@ -54,7 +54,7 @@ public abstract class Board {
 		}
 	}
 	public String display(){
-		Driver.debug("displaying Board...");
+		Driver.debug("displaying Board...", 3);
 		StringBuilder sb = new StringBuilder();
 		Piece current;
 		int[] place = new int[2];
@@ -84,7 +84,7 @@ public abstract class Board {
 		System.out.println(display());
 	}*/
 	public  void buildBoardState(){
-		Driver.debug("building boardState");
+		Driver.debug("building boardState",3);
 		LinkedList<Piece> dummy = new LinkedList<Piece>();
 		for(int i=0; i<8; i++){
 			for(int j=0; j<8; j++){
@@ -106,7 +106,7 @@ public abstract class Board {
 		return null; //no piece at square !!!BOOM!!!
 	}
 	public  void takePiece(Piece taken){
-		Driver.debug("took " + taken);
+		Driver.debug("took " + taken, 3);
 		taken.removeFromBoardState();
 		taken.setPosition(null);
 		taken.setBoard(null);
@@ -128,7 +128,7 @@ public abstract class Board {
 					inCheck = inCheck || effectedPiece.color != pieceFinder.color;
 				}
 				playerMap.get(pieceFinder.color).setCheckStatus(inCheck);
-				Driver.debug(playerMap.get(pieceFinder.color) + " is in check -> " + inCheck);
+				Driver.debug(playerMap.get(pieceFinder.color) + " is in check -> " + inCheck,2);
 			}
 		}
 	}
