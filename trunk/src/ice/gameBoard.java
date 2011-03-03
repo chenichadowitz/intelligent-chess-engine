@@ -8,7 +8,6 @@ public class gameBoard extends Board{
 	}
 	
 	public void setUpBoard(){
-		//current implementation is for testing
 		pieces.add(new Rook  (true, 0,0 ,this));
 		pieces.add(new Knight(true, 1,0 ,this));
 		pieces.add(new Bishop(true, 2,0 ,this));
@@ -26,10 +25,14 @@ public class gameBoard extends Board{
 		pieces.add(new Bishop(false, 5,7 ,this));
 		pieces.add(new Knight(false, 6,7 ,this));
 		pieces.add(new Rook  (false, 7,7 ,this));
+		//pawns
+		for(int pawnAdder = 0; pawnAdder < 8; pawnAdder++){
+			pieces.add(new Pawn(true, pawnAdder,1, this));
+			pieces.add(new Pawn(false,pawnAdder,6, this));
+		}
 		
 		buildBoardState();
 		Driver.debug("board set up",1);
-		//only for TESTING
 	}
 	
 	boolean movePiece(int[] squareAB){

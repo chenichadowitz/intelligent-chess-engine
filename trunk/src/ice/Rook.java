@@ -10,7 +10,7 @@ public class Rook extends Piece {
 		position[0] = xwhere;
 		position[1] = ywhere;
 		currentBoard = onWhat;
-		value = 0;
+		value = 5;
 		pieceType = "R";
 	}
 	
