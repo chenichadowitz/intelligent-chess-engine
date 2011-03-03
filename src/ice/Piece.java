@@ -41,6 +41,7 @@ public abstract class Piece {
 				addToBoardState();
 				return true;
 			}
+			Driver.debug("cannot move into check", 2);
 		}
 		Driver.debug("move failed",2);	
 		return false;
@@ -72,15 +73,14 @@ public abstract class Piece {
 	public  boolean processSquare(int x, int y){ //returns true if square is empty
 		int[] square = {x,y};
 		boolean[] status = currentBoard.statusOfSquare(square);
-		Integer[] squareObj = {square[0],square[1]};
 			if (status[0] && (status[1] == !color)) {
-				takes.add(squareObj);
+				takes.add(new Integer[] {square[0],square[1]});
 			}
 			else if (status[0] && (status[1] == color)){
-				cover.add(squareObj);
+				cover.add(new Integer[] {square[0],square[1]});
 			}
 			else if (!status[0] && status[1]){
-				moves.add(squareObj);
+				moves.add(new Integer[] {square[0],square[1]});
 				return true;
 			}
 			return false;

@@ -23,38 +23,38 @@ public class Pawn extends Piece {
 		super.generateMoves();
 		int delta = 1;
 		if(!color){delta = -1;}
-		Integer[] squareObj = {position[0], position[1] +delta};
+//move up one
 		int[]     square    = {position[0], position[1] +delta};
 		boolean[] status = currentBoard.statusOfSquare(square);
 		if (!status[0] && status[1]){
-			moves.add(squareObj);
+			moves.add(new Integer[] {square[0],square[1]});
+//move up two
 			if(position[1] == 1 || position[1] == 6){
-				Integer[] squareObj2 = {position[0], position[1] +2*delta};;
 				square[1]    += delta;
 				status = currentBoard.statusOfSquare(square);
 				if (!status[0] && status[1]){
-					moves.add(squareObj2);
+					moves.add(new Integer[] {square[0],square[1]});
 				}
 			}
 		}
-		Integer[] squareObj3 = {position[0] +1, position[1] +delta};
-		square[0]    += 1;
-		square[1]     = position[1] +delta;
+//take/cover right
+		square[0] += 1;
+		square[1]  = position[1] +delta;
 		status = currentBoard.statusOfSquare(square);
 		if (status[0] && (status[1] == !color)) {
-			takes.add(squareObj3);
+			takes.add(new Integer[] {square[0],square[1]});
 		}
 		else if (status[0] && (status[1] == color)){
-			cover.add(squareObj3);
+			cover.add(new Integer[] {square[0],square[1]});
 		}
-		Integer[] squareObj4 = {position[0] -1, position[1] +delta};
-		square[0]    -= 2;
+//take/cover left
+		square[0] -= 2;
 		status = currentBoard.statusOfSquare(square);
 		if (status[0] && (status[1] == !color)) {
-			takes.add(squareObj4);
+			takes.add(new Integer[] {square[0],square[1]});
 		}
 		else if (status[0] && (status[1] == color)){
-			cover.add(squareObj4);
+			cover.add(new Integer[] {square[0],square[1]});
 		}
 	}
 
