@@ -8,7 +8,7 @@ public class Queen extends Piece {
 		position[0] = xwhere;
 		position[1] = ywhere;
 		currentBoard = onWhat;
-		value = 0;
+		value = 9;
 		pieceType = "Q";
 	}
 	@SuppressWarnings("unchecked")
