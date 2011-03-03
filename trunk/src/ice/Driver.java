@@ -14,9 +14,7 @@ public class Driver {
 		}
 	}
 	
-	
-	
-	public static void main(String[] args) {
+	public static void humanVShuman(){
 		System.out.print("Max debug level: ");
 		if(genericScanner.hasNextInt()){
 			maxLevel = genericScanner.nextInt();
@@ -71,7 +69,14 @@ public class Driver {
 			System.out.println(gb.display());
 			gb.switchTurn();
 		}
-		
+	}
+
+	public static void main(String[] args) {
+		if(args.length > 0 && args[0].equals("xboard")){
+			Xboard.run();
+		} else {
+			humanVShuman();
+		}
 	}
 
 }
