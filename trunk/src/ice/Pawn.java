@@ -3,6 +3,7 @@ package ice;
 import java.util.ArrayList;
 
 public class Pawn extends Piece {
+	protected ArrayList<Integer[]> listeningSquares = new ArrayList<Integer[]>(); //[[x1,y1][x2,y2]...]
 	public Pawn(boolean player, int xwhere, int ywhere, Board onWhat){
 		color = player;
 		position[0] = xwhere;
@@ -21,17 +22,24 @@ public class Pawn extends Piece {
 	}
 	public void generateMoves(){
 		super.generateMoves();
+		listeningSquares =  new ArrayList<Integer[]>();
 		int delta = 1;
 		if(!color){delta = -1;}
 //move up one
 		int[]     square    = {position[0], position[1] +delta};
 		boolean[] status = currentBoard.statusOfSquare(square);
+		if(status[0]){
+			listeningSquares.add(new Integer[] {position[0], position[1] +delta} );
+		}
 		if (!status[0] && status[1]){
 			moves.add(new Integer[] {square[0],square[1]});
 //move up two
 			if(position[1] == 1 || position[1] == 6){
-				square[1]    += delta;
+				square[1] += delta;
 				status = currentBoard.statusOfSquare(square);
+				if(status[0]){
+					listeningSquares.add(new Integer[] {position[0], position[1] + 2*delta});
+				}
 				if (!status[0] && status[1]){
 					moves.add(new Integer[] {square[0],square[1]});
 				}
@@ -41,6 +49,9 @@ public class Pawn extends Piece {
 		square[0] += 1;
 		square[1]  = position[1] +delta;
 		status = currentBoard.statusOfSquare(square);
+		if(!status[0] && status[1]){
+			listeningSquares.add(new Integer[] {position[0] +1, position[1] +delta});
+		}
 		if (status[0] && (status[1] == !color)) {
 			takes.add(new Integer[] {square[0],square[1]});
 		}
@@ -50,11 +61,26 @@ public class Pawn extends Piece {
 //take/cover left
 		square[0] -= 2;
 		status = currentBoard.statusOfSquare(square);
+		if(!status[0]  && status[1]){
+			listeningSquares.add(new Integer[] {position[0] -1, position[1] +delta});
+		}
 		if (status[0] && (status[1] == !color)) {
 			takes.add(new Integer[] {square[0],square[1]});
 		}
 		else if (status[0] && (status[1] == color)){
 			cover.add(new Integer[] {square[0],square[1]});
+		}
+	}
+	public void addToBoardState(){
+		super.addToBoardState();
+		for(Integer[] square: listeningSquares){
+			currentBoard.boardState[square[0]][square[1]].add(this);
+		}
+	}
+	public void removeFromBoardState(){
+		super.removeFromBoardState();
+		for(Integer[] square: listeningSquares){
+			currentBoard.boardState[square[0]][square[1]].remove(this);
 		}
 	}
 
