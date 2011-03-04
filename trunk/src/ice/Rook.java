@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Rook extends Piece {
 	@SuppressWarnings("unused")
-	private boolean castle = true;
 	public Rook(boolean player, int xwhere, int ywhere, Board onWhat){
 		color = player;
 		position[0] = xwhere;
@@ -12,6 +11,7 @@ public class Rook extends Piece {
 		currentBoard = onWhat;
 		value = 5;
 		pieceType = "R";
+		castle = true;
 	}
 	
 	boolean move(int[] newsquare){

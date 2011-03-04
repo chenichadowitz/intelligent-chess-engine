@@ -5,12 +5,14 @@ public abstract class Piece {
 	protected boolean color; // true = white; false = black
 	protected String pieceType;
 	protected int value;
+	protected boolean castle = false;
 	protected int[] position = new int[2]; // [x-coord,y-coord]
 	protected ArrayList<Integer[]> moves = new ArrayList<Integer[]>(); //[[x1,y1][x2,y2]...]
 	protected ArrayList<Integer[]> takes = new ArrayList<Integer[]>(); //[[x1,y1][x2,y2]...]
 	protected ArrayList<Integer[]> cover = new ArrayList<Integer[]>();
 	protected Board currentBoard;
 	
+	public  boolean canCastle() {return castle;}
 	public  boolean getColor()	{return color;} 
 	public  int getValue()		{return value;}
 	public  int[] getPosition()	{return position;}
