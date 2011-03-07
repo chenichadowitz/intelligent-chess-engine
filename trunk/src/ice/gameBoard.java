@@ -26,7 +26,7 @@ public class gameBoard extends Board{
 		pieces.add(new Knight(false, 6,7 ,this));
 		pieces.add(new Rook  (false, 7,7 ,this));
 		//pawns
-		for(int pawnAdder = 0; pawnAdder < 8; pawnAdder++){
+		for(int pawnAdder = 0; pawnAdder < 8; pawnAdder++){ // Snaaaaaaaaaaakeeee
 			pieces.add(new Pawn(true, pawnAdder,1, this));
 			pieces.add(new Pawn(false,pawnAdder,6, this));
 		}
