@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Xboard {
-	
+	// DIAGRAM: http://www.ascotti.org/programming/chess/xboard.htm
 	private static BufferedReader reader;
 	private static FileWriter writer;
 	
@@ -42,10 +42,6 @@ public class Xboard {
 			input = getInput();
 			parseInput(input);
 		}
-		/*
-		try{
-			writer.close();
-		} catch(Exception e){}*/
 	}
 	
 	private static String getInput(){
@@ -60,30 +56,53 @@ public class Xboard {
 	
 	private static void parseInput(String input){
 		String response = "";
-		Matcher matchMovePat = movePat.matcher(input);
+		Matcher matchMovePat = movePat.matcher(input);		
+		
+		/* QUIT */
 		
 		if(input.equals("quit")){
 			quit = true;
-			return;
+			try{
+				writer.close();
+			} catch(Exception e){}
+			System.exit(0);
 		}
+		
+		/* XBOARD (interface started)*/
 		
 		if(input.equals("xboard")){
 			//Let the interface know that we're here and listening
 			response = "\n";
 		}
+		
+		/* PROTOVER 2 (protocol com v2 */
+		
 		if(input.equals("protover 2")){
 			response = "feature usermove=1 sigint=0 sigterm=0 nps=0 done=1";
 		}
+		
+		/* ACCEPTED (feature accepted) */
+		
 		if(input.startsWith("accepted ")){
 			AcceptedFeatures.add(input.substring(9));
 		}
+		
+		/* REJECTED (feature rejected) */
+		
 		if(input.startsWith("rejected ")){
 			RejectedFeatures.add(input.substring(9));
 		}
+		
+		/* WHITE (play as white?) ****************************** */
+		/**
 		if(input.equals("white")){
 			go = true;
 			response = "move h2h4";
 		}
+		**/
+		
+		/* USERMOVE (opponent made move) */
+		
 		if(input.startsWith("usermove ") || matchMovePat.matches()){
 			String move;
 			if(input.startsWith("usermove ")){
@@ -93,6 +112,7 @@ public class Xboard {
 			}
 			MovesReceived.add(move);
 			//Opponent made move "move"
+			/**
 			if(!go){
 				if(moveCounter == 0){
 					response = "move a7a5";
@@ -110,18 +130,21 @@ public class Xboard {
 					response = "move c2c4";
 				}
 			}
-			
-			
 			moveCounter++;
-			
+			**/
 			MovesMade.add(response);
 		}
+		
+		/* LOG INPUT AND RESPONSE */
 		log(input, response);
+		
+		/* SEND MESSAGE TO XBOARD OPPONENT IN POPUP */
 		System.out.println("tellall "+response);
+		
+		/* Don't send response if it's empty */
 		if(!response.equals("")){
 			System.out.println(response);
 		}
-		//System.out.flush();
 	}
 	/*
 	private static boolean contains(String needle, ArrayList<String> haystack){
