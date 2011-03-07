@@ -14,13 +14,17 @@ public class King extends Piece{
 		castle = true;
 	}
 	boolean move(int[] newsquare){
-		if(Math.abs(newsquare[0] - position[0]) == 2){
-			int[] rookLocation ={7*(newsquare[0]-2)/4,position[1]};
-			int[] rookMove     ={newsquare[0]-(newsquare[0] - position[0])/2,newsquare[1]};
-			currentBoard.pieceAt(rookLocation).move(rookMove);
-		}		
+		int origPos = position[0];
 		if(super.move(newsquare)){
 			castle = false;
+			if(Math.abs(position[0]- origPos) == 2){
+				int[] rookLocation ={7*(newsquare[0]-2)/4,position[1]};
+				int[] rookMove     ={newsquare[0]-(newsquare[0] - origPos)/2,newsquare[1]};
+				currentBoard.pieceAt(rookLocation).move(rookMove);
+				currentBoard.update(rookLocation);
+				currentBoard.update(rookMove);
+			}	
+			System.out.println(castle);
 			return true;
 		}
 		else{return false;}
@@ -36,21 +40,33 @@ public class King extends Piece{
 		processSquare(position[0] +1,position[1] -1);
 		processSquare(position[0] +1,position[1]   );
 		processSquare(position[0] +1,position[1] +1);
-		//castle king side
 		if(castle){
-			System.out.println("king can castle");
+			Driver.debug("checking castling", 3);
+			//castle king side
 			int delta = 1;
-			if(!color){delta = -1;}
 			int[] edge = {position[0],(int)(3.5+3.5*delta)};
-			if(currentBoard.pieceAt(edge).canCastle()){
-				System.out.println("rook can castle");
+			if(currentBoard.pieceAt(edge) != null && currentBoard.pieceAt(edge).canCastle()){
 				int[] possibleMove = {position[0], position[1], position[0]+delta,position[1]};
 				if(!willBeInCheck(color, possibleMove)){
-					System.out.println("safe through check");
 					int[]     square = {position[0] +2*delta, position[1]};
 					boolean[] status = currentBoard.statusOfSquare(square);
 					if (!status[0] && status[1]){
-						System.out.println("unoccupied");
+						moves.add(new Integer[] {square[0],square[1]});
+					}
+					else{
+						listeningSquares.add(new Integer[] {square[0],square[1]});
+					}
+				}
+			}
+			//castle queen side
+			delta = -1;
+			edge[1] = (int)(3.5+3.5*delta);
+			if(currentBoard.pieceAt(edge) != null && currentBoard.pieceAt(edge).canCastle()){
+				int[] possibleMove = {position[0], position[1], position[0]+delta,position[1]};
+				if(!willBeInCheck(color, possibleMove)){
+					int[]     square = {position[0] +2*delta, position[1]};
+					boolean[] status = currentBoard.statusOfSquare(square);
+					if (!status[0] && status[1]){
 						moves.add(new Integer[] {square[0],square[1]});
 					}
 					else{
@@ -66,18 +82,23 @@ public class King extends Piece{
 		newPiece.cover = (ArrayList<Integer[]>) cover.clone();
 		newPiece.moves = (ArrayList<Integer[]>) moves.clone();
 		newPiece.takes = (ArrayList<Integer[]>) takes.clone();
+		newPiece.listeningSquares = (ArrayList<Integer[]>) listeningSquares.clone();
 		return newPiece;
 	}
 	public void addToBoardState(){
 		super.addToBoardState();
-		for(Integer[] square: listeningSquares){
-			currentBoard.boardState[square[0]][square[1]].add(this);
+		if(castle){
+			for(Integer[] square: listeningSquares){
+				currentBoard.boardState[square[0]][square[1]].add(this);
+			}
 		}
 	}
 	public void removeFromBoardState(){
 		super.removeFromBoardState();
-		for(Integer[] square: listeningSquares){
-			currentBoard.boardState[square[0]][square[1]].remove(this);
+		if(castle){
+			for(Integer[] square: listeningSquares){
+				currentBoard.boardState[square[0]][square[1]].remove(this);
+			}
 		}
 	}
 }
