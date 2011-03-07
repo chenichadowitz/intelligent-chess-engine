@@ -3,7 +3,6 @@ package ice;
 import java.util.ArrayList;
 
 public class Rook extends Piece {
-	@SuppressWarnings("unused")
 	public Rook(boolean player, int xwhere, int ywhere, Board onWhat){
 		color = player;
 		position[0] = xwhere;
@@ -13,15 +12,6 @@ public class Rook extends Piece {
 		pieceType = "R";
 		castle = true;
 	}
-	
-	boolean move(int[] newsquare){
-		if(super.move(newsquare)){
-			castle = false;
-			return true;
-		}
-		else{return false;}
-	}
-
 	@SuppressWarnings("unchecked")
 	public Piece clone() {
 		Rook newPiece = new Rook(color,position[0],position[1],currentBoard);

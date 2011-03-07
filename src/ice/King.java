@@ -16,7 +16,6 @@ public class King extends Piece{
 	boolean move(int[] newsquare){
 		int origPos = position[0];
 		if(super.move(newsquare)){
-			castle = false;
 			if(Math.abs(position[0]- origPos) == 2){
 				int[] rookLocation ={7*(newsquare[0]-2)/4,position[1]};
 				int[] rookMove     ={newsquare[0]-(newsquare[0] - origPos)/2,newsquare[1]};
@@ -24,7 +23,6 @@ public class King extends Piece{
 				currentBoard.update(rookLocation);
 				currentBoard.update(rookMove);
 			}	
-			System.out.println(castle);
 			return true;
 		}
 		else{return false;}
