@@ -41,6 +41,7 @@ public abstract class Piece {
 				position = newSquare;
 				Driver.debug(this + " moved to " + newSquare[0] + " " + newSquare[1],2);
 				addToBoardState();
+				castle = false;
 				return true;
 			}
 			Driver.debug("cannot move into check", 2);
