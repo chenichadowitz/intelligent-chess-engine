@@ -60,7 +60,7 @@ public abstract class Board {
 		int[] place = new int[2];
 		for(int i=7;i>=0;i--){
 			//System.out.print(i+1 + " ");
-			sb.append(i+1 + " ");
+			sb.append(i+1 + "| ");
 			for(int j=0;j<8;j++){
 				place[0] = j; place[1] = i;
 				current = pieceAt(place);
@@ -76,7 +76,8 @@ public abstract class Board {
 			sb.append("\n");
 		}
 		//System.out.println("  a  b  c  d  e  f  g  h");
-		sb.append("  a  b  c  d  e  f  g  h\n");
+		sb.append("--------------------------\n");
+		sb.append("    a  b  c  d  e  f  g  h\n");
 		return sb.toString();
 	}
 /*	
