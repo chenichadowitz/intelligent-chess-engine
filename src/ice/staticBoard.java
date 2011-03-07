@@ -21,6 +21,7 @@ public class staticBoard extends Board{
 		int[] square1 = {move[0],move[1]};
 		int[] square2 = {move[2],move[3]};
 		pieceAt(square1).setPosition(square2);
+		pieceAt(square2).castle = false;
 		update(square1);
 		update(square2);
 		setKingCheck();
