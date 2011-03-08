@@ -12,4 +12,7 @@ public class Player {
 	public String toString(){
 		return name;
 	}
+	public int[] getMove() {
+		return null;
+	}
 }

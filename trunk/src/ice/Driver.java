@@ -3,9 +3,10 @@ package ice;
 import java.util.Scanner;
 
 public class Driver {
-
 	private static Scanner genericScanner = new Scanner(System.in);
+
 	private static int maxLevel = 5;
+	private static gameBoard gb;
 	
 	public static void debug(String action, int level){
 		if(level < maxLevel){
@@ -14,68 +15,37 @@ public class Driver {
 		}
 	}
 	
-	public static void humanVShuman(){
-		System.out.print("Max debug level: ");
-		if(genericScanner.hasNextInt()){
-			maxLevel = genericScanner.nextInt();
-		}
+	public static void initializeGame(){
 		HumanPlayer white = new HumanPlayer(true);
 		System.out.print("White player name: ");
 		if(genericScanner.hasNext()){
 			white.setName(genericScanner.next());
 		}
-		System.out.println();
 		HumanPlayer black = new HumanPlayer(false);
 		System.out.print("Black player name: ");
 		if(genericScanner.hasNext()){
 			black.setName(genericScanner.next());
 		}
-		System.out.println();
-		HumanPlayer current;
-		gameBoard gb = new gameBoard(white, black);
+	
+		gb = new gameBoard(white, black);
 		gb.setUpBoard();
-		boolean moveResult;
 		/*
 		BoardFrame frame = new BoardFrame("TEst title");
 		frame.setSize(800,600);
 		frame.setText(gb.display());
 		*/
-		System.out.println(gb.display());
-		while(true){
-			if(gb.getTurn()){
-				current = white;
-			} else {
-				current = black;
-			}
-			moveResult = false;
-			while(!moveResult){
-				System.out.println("Current player: " + current);
-				System.out.print("Move (e.g. 1122): ");
-				int[] move = current.getMove();
-				System.out.println();
-				//System.out.println(move.length);
-				if(move.length != 0){
-					for(int i : move) System.out.print(i + " ");
-					System.out.println();
-					for(int i=0;i<4;i++) move[i]--;
-					moveResult = gb.movePiece(move);
-					//System.out.println("MoveResult: "+moveResult);
-				} else { 
-					//frame.setText(gb.display());
-					System.out.println(gb.display());
-				}
-			}
-			//frame.setText(gb.display());
-			System.out.println(gb.display());
-			gb.switchTurn();
-		}
 	}
 
 	public static void main(String[] args) {
+		System.out.print("Max debug level: ");
+		if(genericScanner.hasNextInt()){
+			maxLevel = genericScanner.nextInt();
+		}	
+		initializeGame();
 		if(args.length > 0 && args[0].equals("xboard")){
 			Xboard.run(args);
 		} else {
-			humanVShuman();
+			gb.playGame();
 		}
 	}
 

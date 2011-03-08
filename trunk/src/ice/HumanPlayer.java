@@ -25,6 +25,8 @@ public class HumanPlayer extends Player {
 	*/
 			
 	public int[] getMove() {
+		System.out.println("Current player: " + this);
+		System.out.print("Command: ");
 		int moveNums;
 		while(!moveReader.hasNextInt()){
 			if(moveReader.hasNext()){
@@ -56,7 +58,9 @@ public class HumanPlayer extends Player {
 				c--;
 			}
 		}
-		return lastMove;
+		Driver.debug(lastMove[1] + " " + lastMove[2] + " " + lastMove[3] + " " + lastMove[4], 1);
+		int[] move = {0,lastMove[1],lastMove[2],lastMove[3],lastMove[4]};
+		return move;
 	}
 	
 	public int[] getLastMove() {
