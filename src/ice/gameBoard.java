@@ -51,33 +51,5 @@ public class gameBoard extends Board{
 		Driver.debug("no piece there",1);
 		return false;
 	}
-	
-	public void playersTurn(){
-		System.out.println(display());
-		Player currentPlayer;
-		currentPlayer = playerMap.get(getTurn());
-		boolean moveResult = false;
-		while(!moveResult){
-			int[] order = currentPlayer.getMove();
-			if(order[0] != 0){
-				runCommand(order);
-			}
-			else{
-				int[] move = {order[1],order[2],order[3],order[4]};
-				moveResult = movePiece(move);
-			}
-		}
-		//frame.setText(gb.display());
-		System.out.println(display());
-		switchTurn();
-	}
-	public void runCommand(int[] order){
-		System.out.println(display());
-	}
-	public void playGame(){
-		while(true){ // check-mate check when implemented
-			playersTurn();
-		}
-	}
 
 }
