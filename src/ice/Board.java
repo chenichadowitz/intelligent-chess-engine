@@ -113,7 +113,8 @@ public abstract class Board {
 		taken.setBoard(null);
 		pieces.remove(taken);
 	}	
-	abstract boolean movePiece(int[] squareAB);
+//	abstract boolean movePiece(int[] squareAB);
+	abstract boolean movePiece(Move action);
 	
 	public String toString(){
 		return "board"; 

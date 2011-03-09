@@ -13,10 +13,6 @@ public class Knight extends Piece {
 		pieceType = "N";
 	}
 	public void generateMoves() {
-		Driver.debug(this + " generating moves", 4);
-		moves = new ArrayList<Integer[]>();
-		takes = new ArrayList<Integer[]>();
-		cover = new ArrayList<Integer[]>();
 		processSquare(position[0] -2,position[1] -1);
 		processSquare(position[0] -2,position[1] +1);
 		processSquare(position[0] +2,position[1] -1);
@@ -29,9 +25,11 @@ public class Knight extends Piece {
 	@SuppressWarnings("unchecked")
 	public Piece clone(){
 		Knight newPiece = new Knight(color,position[0],position[1],currentBoard);
-		newPiece.cover = (ArrayList<Integer[]>) cover.clone();
+/*		newPiece.cover = (ArrayList<Integer[]>) cover.clone();
 		newPiece.moves = (ArrayList<Integer[]>) moves.clone();
 		newPiece.takes = (ArrayList<Integer[]>) takes.clone();
+		*/
+		newPiece.possibleMoves = (ArrayList<Move>) possibleMoves.clone();
 		return newPiece;
 	}
 

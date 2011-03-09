@@ -8,7 +8,7 @@ public class Driver {
 	private static int maxLevel = 5;
 	
 	public static void debug(String action, int level){
-		if(level < maxLevel){
+		if(level <= maxLevel){
 			System.out.println(action);
 			//possibly write to file
 		}
@@ -58,7 +58,8 @@ public class Driver {
 					for(int i : move) System.out.print(i + " ");
 					System.out.println();
 					for(int i=0;i<4;i++) move[i]--;
-					moveResult = gb.movePiece(move);
+					Move moveObj = new Move(gb,move);
+					moveResult = gb.movePiece(moveObj);
 					//System.out.println("MoveResult: "+moveResult);
 				} else { 
 					//frame.setText(gb.display());
