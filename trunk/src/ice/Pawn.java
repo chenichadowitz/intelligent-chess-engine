@@ -15,9 +15,11 @@ public class Pawn extends Piece {
 	@SuppressWarnings("unchecked")
 	public Piece clone() {
 		Pawn newPiece = new Pawn(color,position[0],position[1],currentBoard);
-		newPiece.cover = (ArrayList<Integer[]>) cover.clone();
+/*		newPiece.cover = (ArrayList<Integer[]>) cover.clone();
 		newPiece.moves = (ArrayList<Integer[]>) moves.clone();
 		newPiece.takes = (ArrayList<Integer[]>) takes.clone();
+		*/
+		newPiece.possibleMoves = (ArrayList<Move>) possibleMoves.clone();
 		newPiece.listeningSquares = (ArrayList<Integer[]>) listeningSquares.clone();
 		return newPiece;
 	}
@@ -28,48 +30,63 @@ public class Pawn extends Piece {
 		if(!color){delta = -1;}
 //move up one
 		int[]     square    = {position[0], position[1] +delta};
+		Move possibleMove = new Move(currentBoard,this,square);
 		boolean[] status = currentBoard.statusOfSquare(square);
 		if(status[0]){
 			listeningSquares.add(new Integer[] {position[0], position[1] +delta} );
 		}
 		if (!status[0] && status[1]){
-			moves.add(new Integer[] {square[0],square[1]});
+//			moves.add(new Integer[] {square[0],square[1]});
+			if(possibleMove.moveType == 1){possibleMoves.add(possibleMove);}		
 //move up two
 			if(position[1] == 1 || position[1] == 6){
 				square[1] += delta;
+				possibleMove = new Move(currentBoard,this,square);
 				status = currentBoard.statusOfSquare(square);
 				if(status[0]){
 					listeningSquares.add(new Integer[] {position[0], position[1] + 2*delta});
 				}
 				if (!status[0] && status[1]){
-					moves.add(new Integer[] {square[0],square[1]});
+//					moves.add(new Integer[] {square[0],square[1]});
+					if(possibleMove.moveType == 1){possibleMoves.add(possibleMove);}
 				}
 			}
 		}
 //take/cover right
 		square[0] += 1;
 		square[1]  = position[1] +delta;
+		possibleMove = new Move(currentBoard,this,square);
 		status = currentBoard.statusOfSquare(square);
 		if(!status[0] && status[1]){
 			listeningSquares.add(new Integer[] {position[0] +1, position[1] +delta});
 		}
-		if (status[0] && (status[1] == !color)) {
+/*		if (status[0] && (status[1] == !color)) {
 			takes.add(new Integer[] {square[0],square[1]});
+			
 		}
 		else if (status[0] && (status[1] == color)){
 			cover.add(new Integer[] {square[0],square[1]});
 		}
+		*/
+		else if(possibleMove.moveType != 1){
+			possibleMoves.add(possibleMove);
+		}
 //take/cover left
 		square[0] -= 2;
+		possibleMove = new Move(currentBoard,this,square);
 		status = currentBoard.statusOfSquare(square);
 		if(!status[0]  && status[1]){
 			listeningSquares.add(new Integer[] {position[0] -1, position[1] +delta});
 		}
-		if (status[0] && (status[1] == !color)) {
+/*		if (status[0] && (status[1] == !color)) {
 			takes.add(new Integer[] {square[0],square[1]});
 		}
 		else if (status[0] && (status[1] == color)){
 			cover.add(new Integer[] {square[0],square[1]});
+		}
+		*/
+		else if(possibleMove.moveType != 1){
+			possibleMoves.add(possibleMove);
 		}
 	}
 	public void addToBoardState(){

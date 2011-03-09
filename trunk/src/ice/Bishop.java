@@ -14,9 +14,11 @@ public class Bishop extends Piece {
 	@SuppressWarnings("unchecked")
 	public Piece clone() {
 		Bishop newPiece = new Bishop(color,position[0],position[1],currentBoard);
-		newPiece.cover = (ArrayList<Integer[]>) cover.clone();
+/*		newPiece.cover = (ArrayList<Integer[]>) cover.clone();
 		newPiece.moves = (ArrayList<Integer[]>) moves.clone();
 		newPiece.takes = (ArrayList<Integer[]>) takes.clone();
+*/
+		newPiece.possibleMoves = (ArrayList<Move>) possibleMoves.clone();
 		return newPiece;
 	}
 	public void generateMoves() {
