@@ -33,7 +33,7 @@ public class Move {
 			validMove = true;
 			moveType = 1; // move
 		}
-		Driver.debug("move created " + this, 5);
+		Driver.debug(this.toString(), 5);
 	}
 	public Move(Board place, int[] square1, int[] square2){
 		this(place, square1[0],square1[1],square2[0], square2[1]);
@@ -41,11 +41,11 @@ public class Move {
 	public Move(Board place, int[] squareAB){
 		this(place, squareAB[0],squareAB[1],squareAB[2], squareAB[3]);
 	}
-	public Move(Board place, Piece movee, int[] newSquare){
-		this(place,movee.position,newSquare);
+	public Move(Board place, Piece mover, int[] newSquare){
+		this(place,mover.position,newSquare);
 	}
-	public Move(Board place, Piece movee, int x, int y){
-		this(place,movee.position[0], movee.position[1],x,y);
+	public Move(Board place, Piece mover, int x, int y){
+		this(place,mover.position[0], mover.position[1],x,y);
 	}
 	
 	public void setCurrentBoard(Board newBoard){
@@ -56,8 +56,8 @@ public class Move {
 		equals = equals && Arrays.equals(OrigPos, test.OrigPos);
 		equals = equals && Arrays.equals(FinalPos, test.FinalPos);
 		equals = equals && (movingPiece.equals(test.movingPiece));
-		equals = equals && (validMove = test.validMove);
-		equals = equals && (owner = test.owner);
+		equals = equals && (validMove == test.validMove);
+		equals = equals && (owner == test.owner);
 		equals = equals && (currentBoard.equals(test.currentBoard));
 		return equals;
 	}
@@ -71,19 +71,19 @@ public class Move {
 	}
 	public String toString(){
 		String action = " ";
-		if(moveType == 1){
-			action = " moves to ";
-		}
-		else if(moveType == 2){
-			action = " takes " + currentBoard.pieceAt(FinalPos) + " ";
-		}
-		else if(moveType == 3){
-			action = " covers " + currentBoard.pieceAt(FinalPos) + " ";
+		switch(moveType){
+			case(1):action = " moves to "; break;
+			case(2):action = " takes " + currentBoard.pieceAt(FinalPos) + " "; break;
+			case(3):action = " covers " + currentBoard.pieceAt(FinalPos) + " "; break;
 		}
 		return movingPiece + " at " 
 			+ OrigPos[0] + " " + OrigPos[1] + action
 			+  FinalPos[0] + " " + FinalPos[1];
 	}
+	public Move clone(){
+		return new Move(currentBoard,OrigPos,FinalPos);
+	}
+
 	public boolean execute(boolean Force){
 		if(!contains(movingPiece.possibleMoves,this)){
 			Driver.debug(movingPiece + " does not have that move", 1);

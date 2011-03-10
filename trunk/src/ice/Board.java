@@ -59,31 +59,22 @@ public abstract class Board {
 		Piece current;
 		int[] place = new int[2];
 		for(int i=7;i>=0;i--){
-			//System.out.print(i+1 + " ");
 			sb.append(i+1 + "| ");
 			for(int j=0;j<8;j++){
 				place[0] = j; place[1] = i;
 				current = pieceAt(place);
 				if(current == null){
-					//System.out.print("-- ");
 					sb.append("-- ");
 				} else {
-					//System.out.print(current+" ");
 					sb.append(current+" ");
 				}
 			}
-			//System.out.println();
 			sb.append("\n");
 		}
-		//System.out.println("  a  b  c  d  e  f  g  h");
 		sb.append("--------------------------\n");
 		sb.append("    a  b  c  d  e  f  g  h\n");
 		return sb.toString();
 	}
-/*	
-	public void display(){
-		System.out.println(display());
-	}*/
 	public  void buildBoardState(){
 		Driver.debug("building boardState",3);
 		LinkedList<Piece> dummy = new LinkedList<Piece>();
@@ -113,7 +104,6 @@ public abstract class Board {
 		taken.setBoard(null);
 		pieces.remove(taken);
 	}	
-//	abstract boolean movePiece(int[] squareAB);
 	abstract boolean movePiece(Move action);
 	
 	public String toString(){

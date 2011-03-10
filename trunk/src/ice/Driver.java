@@ -35,11 +35,6 @@ public class Driver {
 		gameBoard gb = new gameBoard(white, black);
 		gb.setUpBoard();
 		boolean moveResult;
-		/*
-		BoardFrame frame = new BoardFrame("TEst title");
-		frame.setSize(800,600);
-		frame.setText(gb.display());
-		*/
 		System.out.println(gb.display());
 		while(true){
 			if(gb.getTurn()){
@@ -53,20 +48,14 @@ public class Driver {
 				System.out.print("Move (e.g. 1122): ");
 				int[] move = current.getMove();
 				System.out.println();
-				//System.out.println(move.length);
 				if(move.length != 0){
-					for(int i : move) System.out.print(i + " ");
-					System.out.println();
 					for(int i=0;i<4;i++) move[i]--;
 					Move moveObj = new Move(gb,move);
 					moveResult = gb.movePiece(moveObj);
-					//System.out.println("MoveResult: "+moveResult);
 				} else { 
-					//frame.setText(gb.display());
 					System.out.println(gb.display());
 				}
 			}
-			//frame.setText(gb.display());
 			System.out.println(gb.display());
 			gb.switchTurn();
 		}
