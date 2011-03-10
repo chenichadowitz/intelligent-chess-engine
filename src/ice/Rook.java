@@ -1,7 +1,5 @@
 package ice;
 
-import java.util.ArrayList;
-
 public class Rook extends Piece {
 	public Rook(boolean player, int xwhere, int ywhere, Board onWhat){
 		color = player;
@@ -12,18 +10,14 @@ public class Rook extends Piece {
 		pieceType = "R";
 		castle = true;
 	}
-	@SuppressWarnings("unchecked")
 	public Piece clone() {
 		Rook newPiece = new Rook(color,position[0],position[1],currentBoard);
-/*		newPiece.cover = (ArrayList<Integer[]>) cover.clone();
-		newPiece.moves = (ArrayList<Integer[]>) moves.clone();
-		newPiece.takes = (ArrayList<Integer[]>) takes.clone();
-		*/
-		newPiece.possibleMoves = (ArrayList<Move>) possibleMoves.clone();
+		for(Move moveCloner: possibleMoves){
+			newPiece.possibleMoves.add(moveCloner.clone());
+		}
 		return newPiece;
 	}
 
-	@Override
 	public void generateMoves() {
 		super.generateMoves();
 		//backwards

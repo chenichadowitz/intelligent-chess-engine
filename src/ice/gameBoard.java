@@ -35,30 +35,19 @@ public class gameBoard extends Board{
 		Driver.debug("board set up",1);
 	}
 	
-	boolean movePiece(/*int[] squareAB*/ Move action){
-//		int[] square1 = {squareAB[0],squareAB[1]};
-//		if(pieceAt(square1) != null){
-//			int[] square2 = {squareAB[2],squareAB[3]};
-//			Driver.debug(pieceAt(square1) + " trying to move to " + square2[0] + " " + square2[1],1);
-			Driver.debug(action.toString(), 1);
-//			boolean moved = pieceAt(square1).move(square2);
-			if(action.owner != getTurn()){
-				Driver.debug("wrong piece color", 1);
-				return false;
-			}
-			boolean moved = action.execute();
-			if(moved){
-	/*			update(square1);
-				update(square2);
-	*/
-				update(action.OrigPos);
-				update(action.FinalPos);
-				setKingCheck();
-			}
-			return moved;
-	//	}
-//		Driver.debug("no piece there",1);
-//		return false;
+	boolean movePiece(Move action){
+		Driver.debug(action.toString(), 1);
+		if(action.owner != getTurn()){
+			Driver.debug("wrong piece color", 1);
+			return false;
+		}
+		boolean moved = action.execute();
+		if(moved){
+			update(action.OrigPos);
+			update(action.FinalPos);
+			setKingCheck();
+		}
+		return moved;
 	}
 
 }

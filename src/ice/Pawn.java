@@ -15,12 +15,9 @@ public class Pawn extends Piece {
 	@SuppressWarnings("unchecked")
 	public Piece clone() {
 		Pawn newPiece = new Pawn(color,position[0],position[1],currentBoard);
-/*		newPiece.cover = (ArrayList<Integer[]>) cover.clone();
-		newPiece.moves = (ArrayList<Integer[]>) moves.clone();
-		newPiece.takes = (ArrayList<Integer[]>) takes.clone();
-		*/
-		newPiece.possibleMoves = (ArrayList<Move>) possibleMoves.clone();
-		newPiece.listeningSquares = (ArrayList<Integer[]>) listeningSquares.clone();
+		for(Move moveCloner: possibleMoves){
+			newPiece.possibleMoves.add(moveCloner.clone());
+		}		newPiece.listeningSquares = (ArrayList<Integer[]>) listeningSquares.clone();
 		return newPiece;
 	}
 	public void generateMoves(){
@@ -36,7 +33,6 @@ public class Pawn extends Piece {
 			listeningSquares.add(new Integer[] {position[0], position[1] +delta} );
 		}
 		if (!status[0] && status[1]){
-//			moves.add(new Integer[] {square[0],square[1]});
 			if(possibleMove.moveType == 1){possibleMoves.add(possibleMove);}		
 //move up two
 			if(position[1] == 1 || position[1] == 6){
@@ -47,7 +43,6 @@ public class Pawn extends Piece {
 					listeningSquares.add(new Integer[] {position[0], position[1] + 2*delta});
 				}
 				if (!status[0] && status[1]){
-//					moves.add(new Integer[] {square[0],square[1]});
 					if(possibleMove.moveType == 1){possibleMoves.add(possibleMove);}
 				}
 			}
@@ -60,14 +55,6 @@ public class Pawn extends Piece {
 		if(!status[0] && status[1]){
 			listeningSquares.add(new Integer[] {position[0] +1, position[1] +delta});
 		}
-/*		if (status[0] && (status[1] == !color)) {
-			takes.add(new Integer[] {square[0],square[1]});
-			
-		}
-		else if (status[0] && (status[1] == color)){
-			cover.add(new Integer[] {square[0],square[1]});
-		}
-		*/
 		else if(possibleMove.moveType != 1){
 			possibleMoves.add(possibleMove);
 		}
@@ -78,13 +65,6 @@ public class Pawn extends Piece {
 		if(!status[0]  && status[1]){
 			listeningSquares.add(new Integer[] {position[0] -1, position[1] +delta});
 		}
-/*		if (status[0] && (status[1] == !color)) {
-			takes.add(new Integer[] {square[0],square[1]});
-		}
-		else if (status[0] && (status[1] == color)){
-			cover.add(new Integer[] {square[0],square[1]});
-		}
-		*/
 		else if(possibleMove.moveType != 1){
 			possibleMoves.add(possibleMove);
 		}

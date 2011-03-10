@@ -13,17 +13,6 @@ public class HumanPlayer extends Player {
 		this.color = color;
 	}
 	
-	/*
-	public String readUserInput(){
-		if(moveReader.hasNext()){
-			return moveReader.next();
-		} else {
-			return null;
-		}
-		
-	}
-	*/
-			
 	public int[] getMove() {
 		int moveNums;
 		while(!moveReader.hasNextInt()){
