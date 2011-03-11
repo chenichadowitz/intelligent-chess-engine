@@ -42,6 +42,13 @@ public abstract class Piece {
 		possibleMoves = new ArrayList<Move>();
 	}
 
+	public Move getMoveTo(int[] square){
+		for(Move finder: possibleMoves){
+			if(Arrays.equals(finder.FinalPos,square)){return finder;}
+		}
+		return null; // no move to 'square'
+	}
+	
 	public String toString(){
 		if(color){
 			return "w"+pieceType;

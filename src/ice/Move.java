@@ -28,8 +28,7 @@ public class Move {
 				validMove = true;
 				moveType = 2; // take
 			}
-		}
-		else{
+		}else{
 			validMove = true;
 			moveType = 1; // move
 		}
