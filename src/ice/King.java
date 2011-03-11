@@ -13,22 +13,6 @@ public class King extends Piece{
 		pieceType = "K";
 		castle = true;
 	}
-	 boolean move(Move action){
-         int origPos = position[0];
-         int[] newsquare = action.FinalPos;
-         if(action.execute()){
-                 if(Math.abs(position[0]- origPos) == 2){
-                         int[] rookLocation ={7*(newsquare[0]-2)/4,position[1]};
-                         int[] rookMove     ={newsquare[0]-(newsquare[0] - origPos)/2,newsquare[1]};
-                         currentBoard.pieceAt(rookLocation).setPosition(rookMove);
-                         currentBoard.update(rookLocation);
-                         currentBoard.update(rookMove);
-                 }       
-                 return true;
-         }
-         else{return false;}
- }
-
 	public void generateMoves(){
 		super.generateMoves();
 		listeningSquares =  new ArrayList<Integer[]>();

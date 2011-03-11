@@ -36,7 +36,7 @@ public class gameBoard extends Board{
 	}
 	
 	boolean movePiece(Move action){
-		Driver.debug(action.toString(), 1);
+		Driver.debug(action.toString(), 2);
 		if(action.owner != getTurn()){
 			Driver.debug("wrong piece color", 1);
 			return false;
