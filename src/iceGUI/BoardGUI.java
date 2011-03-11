@@ -6,10 +6,13 @@ import javax.swing.*;
 public class BoardGUI{
 
 	public static void main(String[] args){
-		BoardFrame frame = new BoardFrame("Test title");
-		frame.setSize(800,600);
-		frame.setText("changed");
-
+		DisplayWindow dw = new DisplayWindow("ICE", 800, 600);
+		JMenuBar menuBar = new JMenuBar();
+	    dw.setJMenuBar(menuBar);
+		BoardPanel bp = new BoardPanel(menuBar);
+		bp.setVisible(true);
+		dw.addPanel(bp);
+		dw.showFrame();
 	}
 	
 }
