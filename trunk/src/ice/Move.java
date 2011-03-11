@@ -32,6 +32,9 @@ public class Move {
 			validMove = true;
 			moveType = 1; // move
 		}
+		if(movingPiece.type() == 'K' && Math.abs(FinalPos[0] - OrigPos[0]) == 2){
+			moveType = 4; // castle
+		}		
 		Driver.debug(this.toString(), 5);
 	}
 	public Move(Board place, int[] square1, int[] square2){
@@ -74,6 +77,7 @@ public class Move {
 			case(1):action = " moves to "; break;
 			case(2):action = " takes " + currentBoard.pieceAt(FinalPos) + " "; break;
 			case(3):action = " covers " + currentBoard.pieceAt(FinalPos) + " "; break;
+			case(4):action = " castles to "; break;
 		}
 		return movingPiece + " at " 
 			+ OrigPos[0] + " " + OrigPos[1] + action
@@ -93,12 +97,22 @@ public class Move {
 		}
 		if(validMove){
 			movingPiece.removeFromBoardState();
-			if(moveType == 1){
-				movingPiece.setPosition(FinalPos);
-			}
-			else if(moveType == 2){
+			switch(moveType){
+			case(1):
+				movingPiece.setPosition(FinalPos);				
+				break;
+			case(2):
 				currentBoard.takePiece(currentBoard.pieceAt(FinalPos));
 				movingPiece.setPosition(FinalPos);
+				break;
+			case(4): 
+				movingPiece.setPosition(FinalPos);
+				int[] rookLocation ={7*(FinalPos[0]-2)/4,OrigPos[1]};
+				int[] rookMove     ={FinalPos[0]-(FinalPos[0] - OrigPos[0])/2,FinalPos[1]};
+				currentBoard.pieceAt(rookLocation).setPosition(rookMove);
+				currentBoard.update(rookLocation);
+				currentBoard.update(rookMove);
+				break;
 			}
 			movingPiece.generateMoves();
 			movingPiece.addToBoardState();

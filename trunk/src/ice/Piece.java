@@ -12,12 +12,16 @@ public abstract class Piece {
 	
 	public  boolean canCastle() {return castle;}
 	public  boolean getColor()	{return color;} 
+	public  char type(){return pieceType.charAt(0);}
 	public  int getValue()		{return value;}
 	public  int[] getPosition()	{return position;}
 	public  void setBoard(Board newBoard){ currentBoard = newBoard;}
 	public  void setPosition(int[] square){ position = square;}
 	public void addToBoardState(){
 		for(Move action: possibleMoves){
+			if(currentBoard.boardState[action.FinalPos[0]][action.FinalPos[1]].contains(this)){
+				Driver.debug("WARNING: " +this+ " already exists on boardState", 1);
+			}			
 			currentBoard.boardState[action.FinalPos[0]][action.FinalPos[1]].add(this);
 		}
 		Driver.debug(this + " added to boardState",3);
@@ -32,6 +36,10 @@ public abstract class Piece {
 		int[] square = {x,y};
 		boolean[] status = currentBoard.statusOfSquare(square);
 		if(status[0] || status[1]){
+			Move newMove = new Move(currentBoard,this,square);
+			if(possibleMoves.contains(newMove)){
+				Driver.debug("WARNING: " +this+ " already has that Move", 1);
+			}			
 			possibleMoves.add(new Move(currentBoard,this,square));
 			if(!status[0] && status[1]){return true;}
 		}		
