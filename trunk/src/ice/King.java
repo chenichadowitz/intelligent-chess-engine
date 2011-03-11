@@ -13,21 +13,22 @@ public class King extends Piece{
 		pieceType = "K";
 		castle = true;
 	}
-	boolean move(Move action){
-		int origPos = position[0];
-		int[] newsquare = action.FinalPos;
-		if(action.execute()){
-			if(Math.abs(position[0]- origPos) == 2){
-				int[] rookLocation ={7*(newsquare[0]-2)/4,position[1]};
-				int[] rookMove     ={newsquare[0]-(newsquare[0] - origPos)/2,newsquare[1]};
-				currentBoard.pieceAt(rookLocation).setPosition(rookMove);
-				currentBoard.update(rookLocation);
-				currentBoard.update(rookMove);
-			}	
-			return true;
-		}
-		else{return false;}
-	}
+	 boolean move(Move action){
+         int origPos = position[0];
+         int[] newsquare = action.FinalPos;
+         if(action.execute()){
+                 if(Math.abs(position[0]- origPos) == 2){
+                         int[] rookLocation ={7*(newsquare[0]-2)/4,position[1]};
+                         int[] rookMove     ={newsquare[0]-(newsquare[0] - origPos)/2,newsquare[1]};
+                         currentBoard.pieceAt(rookLocation).setPosition(rookMove);
+                         currentBoard.update(rookLocation);
+                         currentBoard.update(rookMove);
+                 }       
+                 return true;
+         }
+         else{return false;}
+ }
+
 	public void generateMoves(){
 		super.generateMoves();
 		listeningSquares =  new ArrayList<Integer[]>();
@@ -45,31 +46,30 @@ public class King extends Piece{
 			int delta = 1;
 			int[] edge = {position[0],(int)(3.5+3.5*delta)};
 			if(currentBoard.pieceAt(edge) != null && currentBoard.pieceAt(edge).canCastle()){
-				Move possibleMove = new Move(currentBoard,this,position[0]+delta,position[1]);
-				if(possibleMove.moveType == 1){
+				int[] possibleMove = {position[0]+delta,position[1]};
+				Move moveChecker = this.getMoveTo(possibleMove);
+				if(moveChecker.moveType == 1){
 					int[]     square = {position[0] +2*delta, position[1]};
 					boolean[] status = currentBoard.statusOfSquare(square);
 					if (!status[0] && status[1]){
-						if(possibleMove.moveType == 1){possibleMoves.add(possibleMove);}
-					}
-					else{
+						possibleMoves.add(new Move(currentBoard,this,square));
+					} else {
 						listeningSquares.add(new Integer[] {square[0],square[1]});
 					}
 				}
 			}
-	
 			//castle queen side
 			delta = -1;
 			edge[1] = (int)(3.5+3.5*delta);
 			if(currentBoard.pieceAt(edge) != null && currentBoard.pieceAt(edge).canCastle()){
-				Move possibleMove = new Move(currentBoard,this,position[0]+delta,position[1]);
-				if(possibleMove.moveType == 1){
+				int[] possibleMove = {position[0]+delta,position[1]};
+				Move moveChecker = this.getMoveTo(possibleMove);
+				if(moveChecker.moveType == 1){
 					int[]     square = {position[0] +2*delta, position[1]};
 					boolean[] status = currentBoard.statusOfSquare(square);
 					if (!status[0] && status[1]){
-						if(possibleMove.moveType == 1){possibleMoves.add(possibleMove);}
-					}
-					else{
+						possibleMoves.add(new Move(currentBoard,this,square));
+					} else {
 						listeningSquares.add(new Integer[] {square[0],square[1]});
 					}
 				}
