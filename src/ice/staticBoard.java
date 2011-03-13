@@ -24,7 +24,7 @@ public class staticBoard extends Board{
 		Move staticAction = action.clone();
 		staticAction.setCurrentBoard(this);
 		staticAction.movingPiece = pieceAt(staticAction.OrigPos);
-		staticAction.execute(true);//forcing move
+		staticAction.execute();//forcing move
 		update(staticAction.OrigPos);
 		update(staticAction.FinalPos);
 		setKingCheck();

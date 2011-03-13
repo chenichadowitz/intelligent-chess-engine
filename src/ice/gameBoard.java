@@ -45,7 +45,6 @@ public class gameBoard extends Board{
 		if(moved){
 			update(action.OrigPos);
 			update(action.FinalPos);
-			setKingCheck();
 		}
 		return moved;
 	}

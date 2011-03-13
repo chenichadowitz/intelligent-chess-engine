@@ -10,6 +10,7 @@ public class Move {
 	protected boolean owner;
 	protected Board currentBoard;
 	protected Piece movingPiece;
+	protected boolean oldCastle;
 	
 	public Move(Board place, int x1, int y1, int x2, int y2, boolean valid){
 		currentBoard = place;
@@ -17,11 +18,6 @@ public class Move {
 		OrigPos[1] = y1;
 		FinalPos[0] = x2;
 		FinalPos[1] = y2;
-		
-		if(x2 > 7 || x2< 0 || y2> 7 || y2 < 0){
-			Debug.debug("WARNING: move created off the board",1);
-		}
-		
 		movingPiece = currentBoard.pieceAt(OrigPos);
 		owner = movingPiece.getColor();
 		if(valid){	
@@ -43,7 +39,7 @@ public class Move {
 			}
 		}else{
 			validMove = false;
-			moveType = 0;
+			moveType = 0; // listen
 		}
 		Debug.debug(this.toString(), 5);
 	}
@@ -100,14 +96,18 @@ public class Move {
 		return new Move(currentBoard,OrigPos,FinalPos);
 	}
 
-	public boolean execute(boolean Force){
+	public boolean execute(){
 		if(!contains(movingPiece.possibleMoves,this)){
 			Debug.debug(movingPiece + " does not have that move", 1);
 			return false;
-		}		
-		if(!Force){
-			if(isMoveIntoCheck()){Debug.debug("that moves into check", 1);}
 		}
+		if(moveType == 4){
+			int delta = (FinalPos[0] - OrigPos[0])/2;
+			for(Piece effectingPiece: currentBoard.boardState[movingPiece.position[0]+delta][movingPiece.position[1]]){
+				if(effectingPiece.color != movingPiece.color){validMove = false;}
+			}
+		}		
+		Piece takenPiece = currentBoard.pieceAt(FinalPos);
 		if(validMove){
 			movingPiece.removeFromBoardState();
 			switch(moveType){
@@ -127,27 +127,37 @@ public class Move {
 				currentBoard.update(rookMove);
 				break;
 			}
+			oldCastle = movingPiece.castle;
+			movingPiece.castle = false;
 			movingPiece.generateMoves();
 			movingPiece.addToBoardState();
-			movingPiece.castle = false;
-		}
+		}		
+		currentBoard.setKingCheck();
+		if(currentBoard.playerMap.get(owner).getCheckStatus()){
+			movingPiece.removeFromBoardState();
+			switch(moveType){
+			case(1):
+				movingPiece.setPosition(OrigPos);				
+				break;
+			case(2):
+				currentBoard.pieces.add(takenPiece);
+				movingPiece.setPosition(OrigPos);
+				break;
+			case(4): 
+				movingPiece.setPosition(OrigPos);
+				int[] rookMove ={7*(FinalPos[0]-2)/4,OrigPos[1]};
+				int[] rookLocation ={FinalPos[0]-(FinalPos[0] - OrigPos[0])/2,FinalPos[1]};
+				currentBoard.pieceAt(rookLocation).setPosition(rookMove);
+				currentBoard.update(rookLocation);
+				currentBoard.update(rookMove);
+				break;
+			}
+			movingPiece.generateMoves();
+			movingPiece.addToBoardState();
+			currentBoard.setKingCheck();
+			movingPiece.castle = oldCastle;
+			return false;
+		}		
 		return validMove;
 	}
-	public boolean execute(){
-		return execute(false);
-	}
-	public boolean isMoveIntoCheck(){
-		Debug.debug("checking if move " + this + " results in check", 3);
-		staticBoard checkChecker = new staticBoard(currentBoard, this);
-		Debug.debug("/////staticBoard exited",3);
-		Debug.debug("checkStatus is = " + checkChecker.isPlayerInCheck(owner),3);
-		validMove = !checkChecker.isPlayerInCheck(owner);
-		return !validMove;
-	}
-	
-
-	
-	
-	
-
 }
