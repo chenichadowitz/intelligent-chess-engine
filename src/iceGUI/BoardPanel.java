@@ -15,8 +15,6 @@ public class BoardPanel extends JPanel implements ActionListener{
 	JLabel infoTitle = new JLabel("Information Pane");
 	BoardArea ba = new BoardArea();
 	
-	
-	
 	public BoardPanel(JMenuBar bar) {
 		super();
 		menubar = bar;
@@ -31,21 +29,6 @@ public class BoardPanel extends JPanel implements ActionListener{
 		infoPanel.add(infoTitle);
 		add(infoPanel, BorderLayout.EAST);
 		add(ba, BorderLayout.CENTER);
-		
-		//northPanel.setBorder(BorderFactory.createLineBorder(Color.blue));
-		
-		//setOpaque(false); // we don't paint all our bits
-		//setBorder(BorderFactory.createLineBorder(Color.black));
-	}
-
-	
-	public Dimension getPreferredSize() {
-		// Figure out what the layout manager needs and
-		// then add 100 to the largest of the dimensions
-		// in order to enforce a 'round' bullseye 
-		Dimension layoutSize = super.getPreferredSize();
-		int max = Math.max(layoutSize.width,layoutSize.height);
-		return new Dimension(max+100,max+100);
 	}
 	
 	/*
@@ -54,9 +37,13 @@ public class BoardPanel extends JPanel implements ActionListener{
 	}
 	*/
 
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void actionPerformed(ActionEvent e) {
+		Object src = e.getSource();
+		if(src == newgame){
+			//Not implemented yet
+		}
+		else if(src == quit){
+			System.exit(0);
+		}
 	}
 }

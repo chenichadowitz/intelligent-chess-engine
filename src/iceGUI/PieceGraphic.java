@@ -2,6 +2,7 @@ package iceGUI;
 
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Point;
 
 import javax.swing.ImageIcon;
 
@@ -54,15 +55,24 @@ public class PieceGraphic {
 	}	
 	
 	/**
-	 * @return x-coordinate in pixels where the piece should be drawn
+	 * @return x-coordinate of the piece on the board
 	 */
 	public int getX(){
 		return boardCoord[0] * lastSize.width / 8;
 	}
 	/**
-	 * @return y-coordinate in pixels where the piece should be drawn
+	 * @return y-coordinate of the piece on the board
 	 */
 	public int getY(){
 		return boardCoord[1] * lastSize.height / 8;
+	}
+	
+	public Point getBoardPos(){
+		return new Point(boardCoord[0], boardCoord[1]);
+	}
+	
+	public void moveTo(Point move){
+		boardCoord[0] = move.x;
+		boardCoord[1] = move.y;
 	}
 }
