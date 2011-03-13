@@ -50,7 +50,7 @@ public class BoardPanel extends JPanel implements ActionListener{
 	
 	/*
 	protected void paintComponent(Graphics g) {
-		
+
 	}
 	*/
 
