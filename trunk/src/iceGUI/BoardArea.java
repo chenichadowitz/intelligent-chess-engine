@@ -69,7 +69,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 						break;
 				}
 			} else {
-				switch(p.type()){
+					switch(p.type()){
 					case 'K':
 						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/blackKing.png"), boardXY, p));
 						break;
