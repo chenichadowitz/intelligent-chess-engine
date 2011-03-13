@@ -36,11 +36,11 @@ public abstract class Piece {
 		int[] square = {x,y};
 		boolean[] status = currentBoard.statusOfSquare(square);
 		if(status[0] || status[1]){
-			Move newMove = new Move(currentBoard,this,square);
+			Move newMove = new Move(currentBoard,this,square,true);
 			if(possibleMoves.contains(newMove)){
 				Driver.debug("WARNING: " +this+ " already has that Move", 1);
 			}			
-			possibleMoves.add(new Move(currentBoard,this,square));
+			possibleMoves.add(new Move(currentBoard,this,square,true));
 			if(!status[0] && status[1]){return true;}
 		}		
 		return false;
