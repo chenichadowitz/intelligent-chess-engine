@@ -20,9 +20,11 @@ public class BoardGUI{
 		JMenuBar menuBar = new JMenuBar();
 	    dw.setJMenuBar(menuBar);
 		bp = new BoardPanel(menuBar);
+		
 		bp.setVisible(true);
 		dw.addPanel(bp);
 		dw.showFrame();
+		humanVShuman();
 	}
 	
 	public static void humanVShuman(){
