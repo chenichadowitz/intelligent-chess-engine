@@ -4,6 +4,8 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import ice.Piece;
 
 public class BoardPanel extends JPanel implements ActionListener{
 	
@@ -13,6 +15,7 @@ public class BoardPanel extends JPanel implements ActionListener{
 	JMenuItem quit = new JMenuItem("Quit");
 	JPanel infoPanel = new JPanel();
 	JLabel infoTitle = new JLabel("Information Pane");
+	JLabel opponents = new JLabel();
 	BoardArea ba = new BoardArea();
 	
 	public BoardPanel(JMenuBar bar) {
@@ -27,8 +30,17 @@ public class BoardPanel extends JPanel implements ActionListener{
 		    
 		setLayout(new BorderLayout());
 		infoPanel.add(infoTitle);
+		infoPanel.add(opponents);
 		add(infoPanel, BorderLayout.EAST);
 		add(ba, BorderLayout.CENTER);
+	}
+	
+	public void setOpponents(String a, String b){
+		opponents.setText(a + " vs. " + b);
+	}
+	
+	public void setupBoard(ArrayList<Piece> pieces){
+		ba.setupBoard(pieces);
 	}
 	
 	/*

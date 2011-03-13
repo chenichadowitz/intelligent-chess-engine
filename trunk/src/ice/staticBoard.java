@@ -6,7 +6,7 @@ public class staticBoard extends Board{
 	int[] moveMade;
 	
 	public staticBoard(Board oldBoard,Move action){
-		Driver.debug("//////staticBoard created",3);
+		Debug.debug("//////staticBoard created",3);
 		playerMap.put(true, new Player());
 		playerMap.put(false, new Player());
 		for(Piece newPiece : oldBoard.getPieces()){
