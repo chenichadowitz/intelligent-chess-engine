@@ -30,8 +30,8 @@ public class BoardArea extends JPanel {
 		// Will eventually (?) call ChessGrid(Piece[] pieces) from here with a standard layout?
 		// For now let's just experiment with a king
 		
-		ImageIcon king = new ImageIcon("/home/cheni/Desktop/chessking.jpg");
-		ImageIcon queen = new ImageIcon("/home/cheni/Desktop/chessqueen.jpg");
+		ImageIcon king = new ImageIcon("resources/blackKing.jpg");
+		ImageIcon queen = new ImageIcon("resources/blackQueen.jpg");
 		pieceImgs.add(king); pieceImgs.add(queen);
 		JLabel kingLabel = new JLabel(king);
 		JLabel queenLabel = new JLabel(queen);
