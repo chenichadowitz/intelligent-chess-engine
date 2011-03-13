@@ -73,21 +73,24 @@ public class PieceGraphic {
 	 */
 	public void resize(Dimension size){
 		lastSize = size;
+		 // Current imgs have weird issue with the bottom
+		//scaledImg = new ImageIcon(DEFAULT_IMG.getImage().getScaledInstance(
+		//		size.width / 8, size.height / 8, Image.SCALE_DEFAULT));
 		scaledImg = new ImageIcon(DEFAULT_IMG.getImage().getScaledInstance(
-				size.width / 8, size.height / 8, Image.SCALE_DEFAULT));
+				(size.width - 8)/ 8, (size.height - 8) / 8, Image.SCALE_DEFAULT));
 	}	
 	
 	/**
 	 * @return x-coordinate of the piece on the board
 	 */
 	public int getX(){
-		return boardCoord[0] * lastSize.width / 8;
+		return boardCoord[0] * lastSize.width / 8 - 1;
 	}
 	/**
 	 * @return y-coordinate of the piece on the board
 	 */
 	public int getY(){
-		return boardCoord[1] * lastSize.height / 8;
+		return boardCoord[1] * lastSize.height / 8 - 1;
 	}
 	/**
 	 * Returns the current board coordinates of the piece

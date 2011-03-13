@@ -29,23 +29,23 @@ public class BoardGUI{
 	
 	public static void humanVShuman(){
 		Scanner genericScanner = new Scanner(System.in);
-		System.out.print("Max debug level: ");
-		if(genericScanner.hasNextInt()){
-			Debug.setDebugLevel(genericScanner.nextInt());
-		}
+		Debug.setDebugLevel(1);
 		HumanPlayer white = new HumanPlayer(true);
-		System.out.print("White player name: ");
-		if(genericScanner.hasNext()){
+		System.out.print("White player name: c");
+		white.setName("c");
+		/*if(genericScanner.hasNext()){
 			white.setName(genericScanner.next());
 		}
 		System.out.println();
+		*/
 		HumanPlayer black = new HumanPlayer(false);
-		System.out.print("Black player name: ");
-		if(genericScanner.hasNext()){
+		System.out.print("Black player name: j");
+		black.setName("j");
+		/*if(genericScanner.hasNext()){
 			black.setName(genericScanner.next());
 		}
-		
 		System.out.println();
+		*/
 		bp.setOpponents(white.toString(), black.toString());
 		HumanPlayer current;
 		gameBoard gb = new gameBoard(white, black);

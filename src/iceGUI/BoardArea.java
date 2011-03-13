@@ -59,7 +59,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/whitePawn.png"), boardXY, p));
 						break;
 				}
-			} else {
+			} /*else {
 				switch(p.type()){
 					case 'K':
 						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/blackKing.png"), boardXY, p));
@@ -80,8 +80,9 @@ public class BoardArea extends JPanel implements MouseInputListener {
 						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/blackPawn.png"), boardXY, p));
 						break;
 				}
-			}
+			}*/
 		}
+		repaint();
 	}
 	
 	
@@ -133,7 +134,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		int[] pgPt;
 		for(PieceGraphic pg : pieceGraphics){
 			pgPt = pg.getBoardPos();
-			if(pgPt[0] == pt[0] && pgPt[0] == pt[0]){
+			if(pgPt[0] == pt[0] && pgPt[1] == pt[1]){
 				return pg;
 			}
 		}
@@ -152,6 +153,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 
 	public void mouseClicked(MouseEvent e) {
 		int[] mXY = {e.getX(), e.getY()};
+		//System.out.println("MouseClickEvent: " + mXY[0] + "," + mXY[1]);
 		int[] pt = convertPixToBoard(mXY);
 		if(lastClick == null){
 			PieceGraphic pg = findPiece(pt);
@@ -160,9 +162,9 @@ public class BoardArea extends JPanel implements MouseInputListener {
 				clickedPiece = pg;
 			}
 		} else {
-			if(findPiece(pt) == null){
+			//if(findPiece(pt) == null){
 				movePiece(clickedPiece, lastClick, pt);
-			}
+			//}
 			lastClick = null;
 		}
 		repaint();
@@ -183,12 +185,13 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		int[] mXY = {e.getX(), e.getY()};
+		//System.out.println("MousePressEvent:" + mXY[0] + "," + mXY[1]);
 		PieceGraphic pg = findPiece(convertPixToBoard(mXY));
 		if(lastClick == null && pg != null){
 			dragging = true;
 			draggingPiece = pg;
 			// Let's reorder the list of PieceGraphics so that this piece is on the end
-			// And is thus drawn on TOP of everything else
+			// and is thus drawn on TOP of everything else
 			pieceGraphics.remove(pg);
 			pieceGraphics.add(pg);
 		} else {
@@ -207,6 +210,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	public void mouseDragged(MouseEvent e) {
 		if(dragging){
 			int[] mXY = {e.getX(), e.getY()};
+			//System.out.println("DragEvent: " + mXY[0] + "," + mXY[1]);
 			draggingPiece.moveTo(convertPixToBoard(mXY));
 			repaint();
 		}
