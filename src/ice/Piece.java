@@ -20,17 +20,17 @@ public abstract class Piece {
 	public void addToBoardState(){
 		for(Move action: possibleMoves){
 			if(currentBoard.boardState[action.FinalPos[0]][action.FinalPos[1]].contains(this)){
-				Driver.debug("WARNING: " +this+ " already exists on boardState", 1);
+				Debug.debug("WARNING: " +this+ " already exists on boardState", 1);
 			}			
 			currentBoard.boardState[action.FinalPos[0]][action.FinalPos[1]].add(this);
 		}
-		Driver.debug(this + " added to boardState",3);
+		Debug.debug(this + " added to boardState",3);
 	}
 	public void removeFromBoardState(){
 		for(Move action: possibleMoves){
 			currentBoard.boardState[action.FinalPos[0]][action.FinalPos[1]].remove(this);
 		}
-		Driver.debug(this +" removed from boardState",3);
+		Debug.debug(this +" removed from boardState",3);
 	}
 	public  boolean processSquare(int x, int y){ //returns true if square is empty
 		int[] square = {x,y};
@@ -38,7 +38,7 @@ public abstract class Piece {
 		if(status[0] || status[1]){
 			Move newMove = new Move(currentBoard,this,square,true);
 			if(possibleMoves.contains(newMove)){
-				Driver.debug("WARNING: " +this+ " already has that Move", 1);
+				Debug.debug("WARNING: " +this+ " already has that Move", 1);
 			}			
 			possibleMoves.add(new Move(currentBoard,this,square,true));
 			if(!status[0] && status[1]){return true;}
@@ -46,7 +46,7 @@ public abstract class Piece {
 		return false;
 	}
 	public  void generateMoves(){
-		Driver.debug(this + " generating moves", 3);
+		Debug.debug(this + " generating moves", 3);
 		possibleMoves = new ArrayList<Move>();
 	}
 

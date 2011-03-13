@@ -1,5 +1,7 @@
 package iceGUI;
 
+import ice.Piece;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -9,6 +11,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -17,7 +20,7 @@ import javax.swing.event.MouseInputListener;
 
 public class BoardArea extends JPanel implements MouseInputListener {
 	
-	private ArrayList<PieceGraphic> pieceGraphics = new ArrayList<PieceGraphic>();
+	private LinkedList<PieceGraphic> pieceGraphics = new LinkedList<PieceGraphic>();
 	private boolean flipBoard = false; // Flip board after each move?
 	private int[] lastClick = null;
 	private boolean dragging = true;
@@ -28,10 +31,60 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		super();
 		addMouseListener(this);
 		addMouseMotionListener(this);
-		PieceGraphic king = new PieceGraphic(new ImageIcon("resources/blackKing.png"));
-		PieceGraphic queen = new PieceGraphic(new ImageIcon("resources/blackQueen.png"), 2,2);
-		pieceGraphics.add(king); pieceGraphics.add(queen);
 	}
+	
+	public void setupBoard(ArrayList<Piece> pieces){
+		int[] boardXY = new int[2];
+		for(Piece p : pieces){
+			boardXY = p.getPosition();
+			boardXY[1] = 7 - boardXY[1];
+			if(p.getColor()){
+				switch(p.type()){
+					case 'K':
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/whiteKing.png"), boardXY, p));
+						break;
+					case 'Q':
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/whiteQueen.png"), boardXY, p));
+						break;
+					case 'R':
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/whiteRook.png"), boardXY, p));
+						break;
+					case 'B':
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/whiteBishop.png"), boardXY, p));
+						break;
+					case 'N':
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/whiteKnight.png"), boardXY, p));
+						break;
+					case 'P':
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/whitePawn.png"), boardXY, p));
+						break;
+				}
+			} else {
+				switch(p.type()){
+					case 'K':
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/blackKing.png"), boardXY, p));
+						break;
+					case 'Q':
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/blackQueen.png"), boardXY, p));
+						break;
+					case 'R':
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/blackRook.png"), boardXY, p));
+						break;
+					case 'B':
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/blackBishop.png"), boardXY, p));
+						break;
+					case 'N':
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/blackKnight.png"), boardXY, p));
+						break;
+					case 'P':
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/blackPawn.png"), boardXY, p));
+						break;
+				}
+			}
+		}
+	}
+	
+	
 
 	private void setIconSize(Dimension d){
 		for(PieceGraphic pg : pieceGraphics){
@@ -134,6 +187,10 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		if(lastClick == null && pg != null){
 			dragging = true;
 			draggingPiece = pg;
+			// Let's reorder the list of PieceGraphics so that this piece is on the end
+			// And is thus drawn on TOP of everything else
+			pieceGraphics.remove(pg);
+			pieceGraphics.add(pg);
 		} else {
 			dragging = false;
 			draggingPiece = null;

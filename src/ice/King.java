@@ -22,7 +22,7 @@ public class King extends Piece{
 		processSquare(position[0] +1,position[1]   );
 		processSquare(position[0] +1,position[1] +1);
 		if(castle){
-			Driver.debug("checking castling", 3);
+			Debug.debug("checking castling", 3);
 			//castle king side
 			int delta = 1;
 			int[] edge = {position[0],(int)(3.5+3.5*delta)};

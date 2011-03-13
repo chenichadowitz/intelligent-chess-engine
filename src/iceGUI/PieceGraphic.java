@@ -1,5 +1,7 @@
 package iceGUI;
 
+import ice.Piece;
+
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
@@ -15,19 +17,40 @@ public class PieceGraphic {
 	/** current pixel coordinate location */
 	private int[] boardCoord = {0,0};
 	/** Piece object to be linked with */
-	//private Piece pc;
+	private Piece pc;
+	/** Last Dimension to be received */
 	private Dimension lastSize;
 	
-	
+	/**
+	 * Create a PieceGraphic with the provided ImageIcon by default at (0,0)
+	 * where (0,0) is equivalent to a8 from white's perspective and (7,7) is h1
+	 * @param orig ImageIcon to use for this piece
+	 */
+	/*
 	public PieceGraphic(ImageIcon orig){
 		DEFAULT_IMG = orig;
 		scaledImg = DEFAULT_IMG;
 	}
+	*/
 	
-	public PieceGraphic(ImageIcon orig, int x, int y){
-		this(orig);
+	/**
+	 * Create a PieceGraphic with the provided ImageIcon at the board coordinates
+	 * where (0,0) is equivalent to a8 from white's perspective and (7,7) is h1
+	 * @param orig ImageIcon to use for this piece
+	 * @param x int for the board's x-coordinate
+	 * @param y int for the board's y-coordinate
+	 * @param p Piece that this is linked to
+	 */
+	public PieceGraphic(ImageIcon orig, int x, int y, Piece p){
+		DEFAULT_IMG = orig;
+		scaledImg = DEFAULT_IMG;
 		boardCoord[0] = x;
 		boardCoord[1] = y;
+		pc = p;
+	}
+	
+	public PieceGraphic(ImageIcon orig, int[] xy, Piece p){
+		this(orig, xy[0], xy[1], p);
 	}
 	
 	/**
@@ -66,11 +89,17 @@ public class PieceGraphic {
 	public int getY(){
 		return boardCoord[1] * lastSize.height / 8;
 	}
-	
+	/**
+	 * Returns the current board coordinates of the piece
+	 * @return int[] representing the current board coordinates
+	 */
 	public int[] getBoardPos(){
 		return boardCoord;
 	}
-	
+	/**
+	 * Moves this piece to the provided board coordinate
+	 * @param move int[] representing the board coordinate to move this piece to
+	 */
 	public void moveTo(int[] move){
 		boardCoord[0] = move[0];
 		boardCoord[1] = move[1];

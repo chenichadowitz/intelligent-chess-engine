@@ -5,19 +5,11 @@ import java.util.Scanner;
 public class Driver {
 
 	private static Scanner genericScanner = new Scanner(System.in);
-	private static int maxLevel = 5;
-	
-	public static void debug(String action, int level){
-		if(level <= maxLevel){
-			System.out.println(action);
-			//possibly write to file
-		}
-	}
 	
 	public static void humanVShuman(){
 		System.out.print("Max debug level: ");
 		if(genericScanner.hasNextInt()){
-			maxLevel = genericScanner.nextInt();
+			Debug.setDebugLevel(genericScanner.nextInt());
 		}
 		HumanPlayer white = new HumanPlayer(true);
 		System.out.print("White player name: ");

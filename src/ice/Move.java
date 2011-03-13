@@ -19,7 +19,7 @@ public class Move {
 		FinalPos[1] = y2;
 		
 		if(x2 > 7 || x2< 0 || y2> 7 || y2 < 0){
-			Driver.debug("WARNING: move created off the board",1);
+			Debug.debug("WARNING: move created off the board",1);
 		}
 		
 		
@@ -46,7 +46,7 @@ public class Move {
 			validMove = false;
 			moveType = 0;
 		}
-		Driver.debug(this.toString(), 5);
+		Debug.debug(this.toString(), 5);
 	}
 	public Move(Board place, int[] square1, int[] square2){
 		this(place, square1[0],square1[1],square2[0], square2[1], true);
@@ -103,11 +103,11 @@ public class Move {
 
 	public boolean execute(boolean Force){
 		if(!contains(movingPiece.possibleMoves,this)){
-			Driver.debug(movingPiece + " does not have that move", 1);
+			Debug.debug(movingPiece + " does not have that move", 1);
 			return false;
 		}		
 		if(!Force){
-			if(isMoveIntoCheck()){Driver.debug("that moves into check", 1);}
+			if(isMoveIntoCheck()){Debug.debug("that moves into check", 1);}
 		}
 		if(validMove){
 			movingPiece.removeFromBoardState();
@@ -138,10 +138,10 @@ public class Move {
 		return execute(false);
 	}
 	public boolean isMoveIntoCheck(){
-		Driver.debug("checking if move " + this + " results in check", 3);
+		Debug.debug("checking if move " + this + " results in check", 3);
 		staticBoard checkChecker = new staticBoard(currentBoard, this);
-		Driver.debug("/////staticBoard exited",3);
-		Driver.debug("checkStatus is = " + checkChecker.isPlayerInCheck(owner),3);
+		Debug.debug("/////staticBoard exited",3);
+		Debug.debug("checkStatus is = " + checkChecker.isPlayerInCheck(owner),3);
 		validMove = !checkChecker.isPlayerInCheck(owner);
 		return !validMove;
 	}

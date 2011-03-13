@@ -32,13 +32,13 @@ public class gameBoard extends Board{
 		}
 		
 		buildBoardState();
-		Driver.debug("board set up",1);
+		Debug.debug("board set up",1);
 	}
 	
-	boolean movePiece(Move action){
-		Driver.debug(action.toString(), 2);
+	public boolean movePiece(Move action){
+		Debug.debug(action.toString(), 2);
 		if(action.owner != getTurn()){
-			Driver.debug("wrong piece color", 1);
+			Debug.debug("wrong piece color", 1);
 			return false;
 		}
 		boolean moved = action.execute();
