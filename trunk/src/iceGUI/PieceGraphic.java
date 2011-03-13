@@ -67,12 +67,12 @@ public class PieceGraphic {
 		return boardCoord[1] * lastSize.height / 8;
 	}
 	
-	public Point getBoardPos(){
-		return new Point(boardCoord[0], boardCoord[1]);
+	public int[] getBoardPos(){
+		return boardCoord;
 	}
 	
-	public void moveTo(Point move){
-		boardCoord[0] = move.x;
-		boardCoord[1] = move.y;
+	public void moveTo(int[] move){
+		boardCoord[0] = move[0];
+		boardCoord[1] = move[1];
 	}
 }
