@@ -17,7 +17,7 @@ public class PieceGraphic {
 	/** current pixel coordinate location */
 	private int[] boardCoord = {0,0};
 	/** Piece object to be linked with */
-	private Piece pc;
+	private final Piece pc;
 	/** Last Dimension to be received */
 	private Dimension lastSize;
 	
@@ -67,6 +67,13 @@ public class PieceGraphic {
 		return scaledImg.getImage();
 	}
 	
+	public boolean removePiece(){
+		if(pc.getPosition() == null && pc.getBoard() == null){
+			return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * Resizes the image for the 8x8 board of the given size
 	 * @param size
@@ -106,5 +113,9 @@ public class PieceGraphic {
 	public void moveTo(int[] move){
 		boardCoord[0] = move[0];
 		boardCoord[1] = move[1];
+	}
+	
+	public Piece getPiece(){
+		return pc;
 	}
 }

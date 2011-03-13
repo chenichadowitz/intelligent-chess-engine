@@ -16,6 +16,7 @@ public abstract class Piece {
 	public  int getValue()		{return value;}
 	public  int[] getPosition()	{return position;}
 	public  void setBoard(Board newBoard){ currentBoard = newBoard;}
+	public Board getBoard(){ return currentBoard;}
 	public  void setPosition(int[] square){ position = square;}
 	public void addToBoardState(){
 		for(Move action: possibleMoves){

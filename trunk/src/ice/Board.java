@@ -53,8 +53,8 @@ public abstract class Board {
 			currentPiece.addToBoardState();
 		}
 	}
-	public String display(){
-		Debug.debug("displaying Board...", 3);
+	public String buildDisplay(){
+		Debug.debug("building board display...", 3);
 		StringBuilder sb = new StringBuilder();
 		Piece current;
 		int[] place = new int[2];
