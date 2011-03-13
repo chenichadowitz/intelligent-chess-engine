@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import ice.Piece;
+import ice.gameBoard;
 
 public class BoardPanel extends JPanel implements ActionListener{
 	
@@ -39,9 +40,10 @@ public class BoardPanel extends JPanel implements ActionListener{
 		opponents.setText(a + " vs. " + b);
 	}
 	
-	public void setupBoard(ArrayList<Piece> pieces){
-		ba.setupBoard(pieces);
+	public void setupBoard(gameBoard gb){
+		ba.setupBoard(gb);
 	}
+	
 	
 	/*
 	protected void paintComponent(Graphics g) {

@@ -22,10 +22,9 @@ public class Move {
 			Debug.debug("WARNING: move created off the board",1);
 		}
 		
-		
 		movingPiece = currentBoard.pieceAt(OrigPos);
 		owner = movingPiece.getColor();
-		if(valid){		
+		if(valid){	
 			if(currentBoard.pieceAt(FinalPos) != null){
 				if(currentBoard.pieceAt(FinalPos).color == movingPiece.color){
 					validMove = false;

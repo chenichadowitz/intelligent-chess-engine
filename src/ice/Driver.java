@@ -27,7 +27,7 @@ public class Driver {
 		gameBoard gb = new gameBoard(white, black);
 		gb.setUpBoard();
 		boolean moveResult;
-		System.out.println(gb.display());
+		System.out.println(gb.buildDisplay());
 		while(true){
 			if(gb.getTurn()){
 				current = white;
@@ -45,10 +45,10 @@ public class Driver {
 					Move moveObj = new Move(gb,move);
 					moveResult = gb.movePiece(moveObj);
 				} else { 
-					System.out.println(gb.display());
+					System.out.println(gb.buildDisplay());
 				}
 			}
-			System.out.println(gb.display());
+			System.out.println(gb.buildDisplay());
 			gb.switchTurn();
 		}
 	}

@@ -1,6 +1,9 @@
 package iceGUI;
 
+import ice.Debug;
+import ice.Move;
 import ice.Piece;
+import ice.gameBoard;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -24,19 +27,25 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	private boolean flipBoard = false; // Flip board after each move?
 	private int[] lastClick = null;
 	private boolean dragging = true;
+	private int[] draggingOldLocation;
 	private PieceGraphic draggingPiece;
 	private PieceGraphic clickedPiece;
+	private gameBoard gb;
 	
 	public BoardArea(){
 		super();
 		addMouseListener(this);
 		addMouseMotionListener(this);
 	}
+	//*****************************************************************************************//
+	//TODO: CONSIDER MAKING A "updatePieces" METHOD TO KEEP PieceGraphics and Pieces in sync
+	//*****************************************************************************************//
 	
-	public void setupBoard(ArrayList<Piece> pieces){
+	public void setupBoard(gameBoard gb){
+		this.gb = gb;
 		int[] boardXY = new int[2];
-		for(Piece p : pieces){
-			boardXY = p.getPosition();
+		for(Piece p : gb.getPieces()){
+			boardXY = p.getPosition().clone();
 			boardXY[1] = 7 - boardXY[1];
 			if(p.getColor()){
 				switch(p.type()){
@@ -59,7 +68,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/whitePawn.png"), boardXY, p));
 						break;
 				}
-			} /*else {
+			} else {
 				switch(p.type()){
 					case 'K':
 						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/blackKing.png"), boardXY, p));
@@ -80,12 +89,10 @@ public class BoardArea extends JPanel implements MouseInputListener {
 						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/blackPawn.png"), boardXY, p));
 						break;
 				}
-			}*/
+			}
 		}
 		repaint();
-	}
-	
-	
+	}	
 
 	private void setIconSize(Dimension d){
 		for(PieceGraphic pg : pieceGraphics){
@@ -118,6 +125,11 @@ public class BoardArea extends JPanel implements MouseInputListener {
 			}
 		}
 		for(PieceGraphic pg : pieceGraphics){
+			if(pg.removePiece()){
+				pieceGraphics.remove(pg);
+			}
+		}
+		for(PieceGraphic pg : pieceGraphics){
 			g.drawImage(pg.getScaledImg(), pg.getX(), pg.getY(), this);
 		}
 		if(lastClick != null){
@@ -126,46 +138,64 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		}
 	}
 	
+	private void toggleTurn(){
+		gb.switchTurn();
+	}
+	
 	/**
 	 * @param pt int[] representing board coord to search for a piece at
 	 * @return PieceGraphic obj if found, null if not
 	 */
 	private PieceGraphic findPiece(int[] pt){
 		int[] pgPt;
+		boolean turn = gb.getTurn();
 		for(PieceGraphic pg : pieceGraphics){
 			pgPt = pg.getBoardPos();
-			if(pgPt[0] == pt[0] && pgPt[1] == pt[1]){
+			if(pgPt[0] == pt[0] && pgPt[1] == pt[1] && (pg.getPiece().getColor() == turn)){
 				return pg;
 			}
 		}
 		return null;
 	}
 	
-	private int[] convertPixToBoard(int[] pix){
+	private int[] convertPixelToBoard(int[] pixels){
 		Dimension size = this.getSize();
-		int[] transPt = {pix[0] / (size.width / 8), pix[1] / (size.height / 8)};
+		Debug.debug("pixels:"+pixels[0]+","+pixels[1],1);
+		int[] transPt = {pixels[0] / (size.width / 8), pixels[1] / (size.height / 8)};
+		Debug.debug("coords:"+transPt[0]+","+transPt[1],1);
 		return transPt;
 	}
 	
 	private void movePiece(PieceGraphic pg, int[] moveFrom, int[] moveTo){
-		pg.moveTo(moveTo);
+		int[] move = {moveFrom[0], 7-moveFrom[1], moveTo[0], 7-moveTo[1]};
+		Move moveobj = new Move(gb, move);
+		if(gb.movePiece(moveobj)){
+			pg.moveTo(moveTo);
+			toggleTurn();
+		} else {
+			pg.moveTo(moveFrom);
+		}
 	}
 
 	public void mouseClicked(MouseEvent e) {
 		int[] mXY = {e.getX(), e.getY()};
 		//System.out.println("MouseClickEvent: " + mXY[0] + "," + mXY[1]);
-		int[] pt = convertPixToBoard(mXY);
+		int[] pt = convertPixelToBoard(mXY);
 		if(lastClick == null){
 			PieceGraphic pg = findPiece(pt);
 			if(pg != null){
+				Debug.debug("Piece has been selected", 1);
+				Debug.debug(""+pt[0]+","+pt[1], 1);
 				lastClick = pt;
 				clickedPiece = pg;
 			}
 		} else {
 			//if(findPiece(pt) == null){
+			Debug.debug("Piece has been moved", 1);
 				movePiece(clickedPiece, lastClick, pt);
 			//}
 			lastClick = null;
+			clickedPiece = null;
 		}
 		repaint();
 	}
@@ -186,32 +216,47 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	public void mousePressed(MouseEvent e) {
 		int[] mXY = {e.getX(), e.getY()};
 		//System.out.println("MousePressEvent:" + mXY[0] + "," + mXY[1]);
-		PieceGraphic pg = findPiece(convertPixToBoard(mXY));
-		if(lastClick == null && pg != null){
+		PieceGraphic pg = findPiece(convertPixelToBoard(mXY));
+		if(lastClick == null && pg != null && (pg.getPiece().getColor() == gb.getTurn())){
+			Debug.debug("Piece is being dragged....", 1);
 			dragging = true;
+			draggingOldLocation = pg.getBoardPos().clone();
 			draggingPiece = pg;
 			// Let's reorder the list of PieceGraphics so that this piece is on the end
 			// and is thus drawn on TOP of everything else
 			pieceGraphics.remove(pg);
 			pieceGraphics.add(pg);
 		} else {
+			Debug.debug("MousePressed-piece NOT being dragged", 1);
 			dragging = false;
 			draggingPiece = null;
 		}
 	}
 
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void mouseReleased(MouseEvent e) {
+		int[] mXY = {e.getX(), e.getY()};
+		PieceGraphic pg = findPiece(convertPixelToBoard(mXY));
+		Debug.debug("Mouse released",1);
+		if(lastClick == null && pg != null){
+			int[] newPos = pg.getBoardPos();
+			if(draggingOldLocation != null &&
+					(draggingOldLocation[0] != newPos[0] || draggingOldLocation[1] != newPos[1])){
+				Debug.debug("Piece released", 1);
+				System.out.println("draglocation: "+draggingOldLocation[0]+","+draggingOldLocation[1]);
+				movePiece(pg, draggingOldLocation, pg.getBoardPos());
+			}
+		}
+		draggingOldLocation = null;
+		dragging = false;
+		draggingPiece = null;
 	}
 
-	@Override
 	public void mouseDragged(MouseEvent e) {
+		Debug.debug("mouse dragged", 1);
 		if(dragging){
 			int[] mXY = {e.getX(), e.getY()};
 			//System.out.println("DragEvent: " + mXY[0] + "," + mXY[1]);
-			draggingPiece.moveTo(convertPixToBoard(mXY));
+			draggingPiece.moveTo(convertPixelToBoard(mXY));
 			repaint();
 		}
 	}
