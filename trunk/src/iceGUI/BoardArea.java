@@ -112,7 +112,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		this.setIconSize(size);	
 		for(int a=0; a<8; a++){
 			for(int b=0; b<8; b++){
-				g.setColor((a+b)%2==0 ? Color.white : Color.black);
+				g.setColor((a+b)%2==0 ? Color.white : Color.gray);
 				g.fillRect(size.width / 8 * a, size.height / 8 * b, size.width / 8, size.height / 8);
 			}
 		}
