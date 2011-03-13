@@ -50,54 +50,48 @@ public class BoardArea extends JPanel implements MouseInputListener {
 			if(p.getColor()){
 				switch(p.type()){
 					case 'K':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/whiteKing.png"), boardXY, p));
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whiteKing.png"), boardXY, p));
 						break;
 					case 'Q':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/whiteQueen.png"), boardXY, p));
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whiteQueen.png"), boardXY, p));
 						break;
 					case 'R':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/whiteRook.png"), boardXY, p));
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whiteRook.png"), boardXY, p));
 						break;
 					case 'B':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/whiteBishop.png"), boardXY, p));
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whiteBishop.png"), boardXY, p));
 						break;
 					case 'N':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/whiteKnight.png"), boardXY, p));
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whiteKnight.png"), boardXY, p));
 						break;
 					case 'P':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/whitePawn.png"), boardXY, p));
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whitePawn.png"), boardXY, p));
 						break;
 				}
 			} else {
 					switch(p.type()){
 					case 'K':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/blackKing.png"), boardXY, p));
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackKing.png"), boardXY, p));
 						break;
 					case 'Q':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/blackQueen.png"), boardXY, p));
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackQueen.png"), boardXY, p));
 						break;
 					case 'R':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/blackRook.png"), boardXY, p));
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackRook.png"), boardXY, p));
 						break;
 					case 'B':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/blackBishop.png"), boardXY, p));
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackBishop.png"), boardXY, p));
 						break;
 					case 'N':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/blackKnight.png"), boardXY, p));
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackKnight.png"), boardXY, p));
 						break;
 					case 'P':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/blackPawn.png"), boardXY, p));
+						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackPawn.png"), boardXY, p));
 						break;
 				}
 			}
 		}
 		repaint();
-	}	
-
-	private void setIconSize(Dimension d){
-		for(PieceGraphic pg : pieceGraphics){
-			pg.resize(d);
-		}
 	}
 	
 	private boolean isSquare(Dimension size){
@@ -117,7 +111,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 			}
 			size = this.getSize();
 		}
-		this.setIconSize(size);	
+		//this.setIconSize(size);	
 		for(int a=0; a<8; a++){
 			for(int b=0; b<8; b++){
 				g.setColor((a+b)%2==0 ? Color.white : Color.gray);
@@ -130,7 +124,14 @@ public class BoardArea extends JPanel implements MouseInputListener {
 			}
 		}
 		for(PieceGraphic pg : pieceGraphics){
-			g.drawImage(pg.getScaledImg(), pg.getX(), pg.getY(), this);
+			Image img = pg.getImg();
+			pg.setSize(size);
+			 // Current imgs have weird issue with the bottom
+			// replace (size.(width/height) - 8) / 8
+			// with (size.(width/height) / 8)
+			int width = (size.width - 8) / 8;
+			int height = (size.height - 8) / 8;
+			g.drawImage(img, pg.getX(), pg.getY(), width, height, this);
 		}
 		if(lastClick != null){
 			g.setColor(Color.magenta);
