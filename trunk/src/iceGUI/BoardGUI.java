@@ -29,7 +29,7 @@ public class BoardGUI{
 	
 	public static void humanVShuman(){
 		//Scanner genericScanner = new Scanner(System.in);
-		Debug.setDebugLevel(3);
+		Debug.setDebugLevel(1);
 		HumanPlayer white = new HumanPlayer(true);
 		System.out.print("White player name: c");
 		white.setName("c");
