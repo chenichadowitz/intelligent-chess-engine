@@ -58,14 +58,13 @@ public class BoardPanel extends JPanel implements ActionListener{
 		gbc.gridy++;
 		northInfo.add(logTitle,gbc);
 		gbc.gridy++;
-		logViewer = new JTextArea(30, 10);
+		logViewer = new JTextArea(0, 10);
 		JScrollPane scrollPane = new JScrollPane(logViewer,
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		logViewer.setAutoscrolls(true);
-		logViewer.setIgnoreRepaint(true);
 		logViewer.setWrapStyleWord(true);
 		logViewer.setEditable(false);
+		logViewer.setCaretPosition(0);
 		northInfo.add(scrollPane, gbc);
 		gbc.gridy++;
 		northInfo.add(flip, gbc);
@@ -88,7 +87,9 @@ public class BoardPanel extends JPanel implements ActionListener{
 	}
 	
 	public void logGUI(String str){
-		logViewer.append(str + "\n");
+		str += "\n";
+		logViewer.append(str);
+		logViewer.setCaretPosition(logViewer.getText().length());
 	}
 	
 	public void setupBoard(gameBoard gb){
