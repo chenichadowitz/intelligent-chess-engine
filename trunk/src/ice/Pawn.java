@@ -43,25 +43,29 @@ public class Pawn extends Piece {
 			}
 		}
 //take/cover right
-		square[0] += 1;
-		square[1]  = position[1] +delta;
-		possibleMove = new Move(currentBoard,this,square);
-		status = currentBoard.statusOfSquare(square);
-		if(!status[0] && status[1]){
-			possibleMoves.add(new Move(currentBoard,this,square,false));
-		}
-		else if(possibleMove.moveType != 1){
-			possibleMoves.add(possibleMove);
+		if(position[0] != 7){
+			square[0] += 1;
+			square[1]  = position[1] +delta;
+			possibleMove = new Move(currentBoard,this,square);
+			status = currentBoard.statusOfSquare(square);
+			if(!status[0] && status[1]){
+				possibleMoves.add(new Move(currentBoard,this,square,false));
+			}
+			else if(possibleMove.moveType != 1){
+				possibleMoves.add(possibleMove);
+			}
 		}
 //take/cover left
-		square[0] -= 2;
-		possibleMove = new Move(currentBoard,this,square);
-		status = currentBoard.statusOfSquare(square);
-		if(!status[0]  && status[1]){
-			possibleMoves.add(new Move(currentBoard,this,square,false));
-		}
-		else if(possibleMove.moveType != 1){
-			possibleMoves.add(possibleMove);
+		if(position[0] != 0){
+			square[0] -= 2;
+			possibleMove = new Move(currentBoard,this,square);
+			status = currentBoard.statusOfSquare(square);
+			if(!status[0]  && status[1]){
+				possibleMoves.add(new Move(currentBoard,this,square,false));
+			}
+			else if(possibleMove.moveType != 1){
+				possibleMoves.add(possibleMove);
+			}
 		}
 	}
 }

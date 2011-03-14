@@ -81,16 +81,24 @@ public class Move {
 		return false;
 	}
 	public String toString(){
-		String action = " ";
-		switch(moveType){
-			case(1):action = " moves to "; break;
-			case(2):action = " takes " + currentBoard.pieceAt(FinalPos) + " "; break;
-			case(3):action = " covers " + currentBoard.pieceAt(FinalPos) + " "; break;
-			case(4):action = " castles to "; break;
+		String numToLet = "abcdefgh";
+		String action = "";
+		if(moveType == 4){
+			action = "O-O";
+			if(FinalPos[0] < OrigPos[0]){action = action.concat("-O");}
+		} else {
+			if(!movingPiece.pieceType.equals("P")){
+				action = action.concat(movingPiece.pieceType);
+			} else {
+				if(moveType == 2){action = action.concat(numToLet.substring(OrigPos[0],OrigPos[0]+1));}
+			}
+			if(moveType == 2){
+				action = action.concat("x");
+			}
+			action = action.concat(numToLet.substring(FinalPos[0],FinalPos[0]+1) + (FinalPos[1]+1));
 		}
-		return movingPiece + " at " 
-			+ OrigPos[0] + " " + OrigPos[1] + action
-			+  FinalPos[0] + " " + FinalPos[1];
+		if(currentBoard.playerMap.get(!owner).checkStatus){action = action.concat("+");}
+		return action;
 	}
 	public Move clone(){
 		return new Move(currentBoard,OrigPos,FinalPos);
@@ -161,7 +169,11 @@ public class Move {
 			currentBoard.update(OrigPos);
 			currentBoard.update(FinalPos);
 			return false;
-		}		
+		}
+		if(validMove){
+			Debug.debug(this.toString(), 1);
+			currentBoard.moveLog.add(this);
+		}
 		return validMove;
 	}
 }
