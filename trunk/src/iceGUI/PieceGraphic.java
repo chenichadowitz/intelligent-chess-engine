@@ -60,23 +60,6 @@ public class PieceGraphic {
 	}
 	
 	/**
-	 * Determines whether the piece should be removed from play
-	 * based on its respective Piece object
-	 * @return true if the respective Piece position and board are null
-	 * @return false otherwise
-	 */
-	public boolean mustRemovePiece(){
-		if(pc == null){
-			// This is a label PieceGraphic
-			return false;
-		}
-		if(pc.getPosition() == null && pc.getBoard() == null){
-			return true;
-		}
-		return false;
-	}
-	
-	/**
 	 * @return x-coordinate of the piece on the board
 	 */
 	public int getX(){

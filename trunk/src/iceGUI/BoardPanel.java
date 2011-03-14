@@ -23,7 +23,7 @@ public class BoardPanel extends JPanel implements ActionListener{
 	JLabel infoTitle = new JLabel("Information Pane");
 	JLabel turn = new JLabel("White");
 	JLabel opponents;
-	JToggleButton flip = new JToggleButton("Toggle Board");
+	JToggleButton flip = new JToggleButton("Flip Board");
 	JTextArea logViewer;
 	BoardArea ba;
 	private gameBoard gb;
@@ -44,27 +44,31 @@ public class BoardPanel extends JPanel implements ActionListener{
 		infoPanel = new JPanel(new BorderLayout());
 		northInfo = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 0;
+		gbc.insets = new Insets(2, 10, 2, 10);
+		gbc.weighty = 0.0;
+		gbc.gridy = 0;		
+		gbc.gridx = 0;		
 		northInfo.add(opponents, gbc);
-		gbc.gridy = 1;
+		gbc.gridy++;
 		northInfo.add(turn, gbc);
-		gbc.gridy = 2;
-		northInfo.add(new JLabel(" "), gbc);
-		gbc.gridy = 3;
-		northInfo.add(flip, gbc);
-		gbc.gridy = 4;
-		northInfo.add(new JLabel(" "), gbc);
+		gbc.gridy++;
+		gbc.weighty = 1.0;
+		gbc.gridy++;
 		JLabel logTitle = new JLabel("Game Log:");
-		gbc.gridy = 5;
+		gbc.gridy++;
 		northInfo.add(logTitle,gbc);
-		gbc.gridy = 6;
+		gbc.gridy++;
 		logViewer = new JTextArea(30, 10);
+		JScrollPane scrollPane = new JScrollPane(logViewer,
+				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		logViewer.setAutoscrolls(true);
 		logViewer.setIgnoreRepaint(true);
 		logViewer.setWrapStyleWord(true);
 		logViewer.setEditable(false);
-		northInfo.add(logViewer, gbc);
+		northInfo.add(scrollPane, gbc);
+		gbc.gridy++;
+		northInfo.add(flip, gbc);
 		infoPanel.add(northInfo, BorderLayout.NORTH);
 		add(infoPanel, BorderLayout.EAST);
 		ba = new BoardArea(this);
@@ -80,7 +84,7 @@ public class BoardPanel extends JPanel implements ActionListener{
 	}
 	
 	public void setOpponents(String a, String b){
-		opponents.setText(a + " vs. " + b + " - ");
+		opponents.setText(a + " vs. " + b);
 	}
 	
 	public void logGUI(String str){

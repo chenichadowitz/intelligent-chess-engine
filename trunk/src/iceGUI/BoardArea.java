@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -36,73 +37,92 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		addMouseMotionListener(this);
 	}
 	
-	private void updateBoard(){
-		int[] pieceXY = new int[2];
+	private PieceGraphic contains(Piece p){
 		for(PieceGraphic pg : pieceGraphics){
-			if(pg.getPiece().getPosition() != null){
-				pieceXY = pg.getPiece().getPosition().clone();
-				pieceXY[0] += 1;
-				pieceXY[1] = 8 - pieceXY[1];
-				if(!Arrays.equals(pieceXY, pg.getBoardPos())){
-					pg.moveTo(pieceXY);
+			if(pg.getPiece().equals(p)){
+				return pg;
+			}
+		}
+		return null;
+	}
+	
+	private void updateBoard(){
+		PieceGraphic pg;
+		int[] pieceXY = new int[2];
+		for(Piece p : gb.getPieces()){
+			pg = contains(p);
+			if(pg == null){
+				addPieceGraphic(p);
+			} else {
+				if(pg.getPiece().getPosition() != null){
+					pieceXY = pg.getPiece().getPosition().clone();
+					pieceXY[0] += 1;
+					pieceXY[1] = 8 - pieceXY[1];
+					if(!Arrays.equals(pieceXY, pg.getBoardPos())){
+						pg.moveTo(pieceXY);
+					}
 				}
 			}
 		}
 		repaint();
 	}
 	
+	private void addPieceGraphic(Piece p){
+		int[] xy = new int[2];
+		xy = p.getPosition().clone();
+		xy[0] += 1;
+		xy[1] = 8 - xy[1];
+		if(p.getColor()){
+			switch(p.type()){
+				case 'K':
+					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whiteKing.png"), xy, p));
+					break;
+				case 'Q':
+					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whiteQueen.png"), xy, p));
+					break;
+				case 'R':
+					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whiteRook.png"), xy, p));
+					break;
+				case 'B':
+					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whiteBishop.png"), xy, p));
+					break;
+				case 'N':
+					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whiteKnight.png"), xy, p));
+					break;
+				case 'P':
+					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whitePawn.png"), xy, p));
+					break;
+			}
+		} else {
+				switch(p.type()){
+				case 'K':
+					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackKing.png"), xy, p));
+					break;
+				case 'Q':
+					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackQueen.png"), xy, p));
+					break;
+				case 'R':
+					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackRook.png"), xy, p));
+					break;
+				case 'B':
+					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackBishop.png"), xy, p));
+					break;
+				case 'N':
+					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackKnight.png"), xy, p));
+					break;
+				case 'P':
+					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackPawn.png"), xy, p));
+					break;
+			}
+		}
+	}
+	
 	public void setupBoard(gameBoard gb){
 		this.gb = gb;
 		flipBoard = false;
-		int[] pieceXY = new int[2];
 		pieceGraphics = new LinkedList<PieceGraphic>();
 		for(Piece p : gb.getPieces()){
-			pieceXY = p.getPosition().clone();
-			pieceXY[0] += 1;
-			pieceXY[1] = 8 - pieceXY[1];
-			if(p.getColor()){
-				switch(p.type()){
-					case 'K':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whiteKing.png"), pieceXY, p));
-						break;
-					case 'Q':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whiteQueen.png"), pieceXY, p));
-						break;
-					case 'R':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whiteRook.png"), pieceXY, p));
-						break;
-					case 'B':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whiteBishop.png"), pieceXY, p));
-						break;
-					case 'N':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whiteKnight.png"), pieceXY, p));
-						break;
-					case 'P':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whitePawn.png"), pieceXY, p));
-						break;
-				}
-			} else {
-					switch(p.type()){
-					case 'K':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackKing.png"), pieceXY, p));
-						break;
-					case 'Q':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackQueen.png"), pieceXY, p));
-						break;
-					case 'R':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackRook.png"), pieceXY, p));
-						break;
-					case 'B':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackBishop.png"), pieceXY, p));
-						break;
-					case 'N':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackKnight.png"), pieceXY, p));
-						break;
-					case 'P':
-						pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackPawn.png"), pieceXY, p));
-						break;
-				}
-			}
+			addPieceGraphic(p);
 		}
 		repaint();
 	}
@@ -130,25 +150,13 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		}
 	}
 	
-	/*private void drawBoardSquares(Graphics g, Dimension size){
-		for(int a=1; a<9; a++){
-			for(int b=0; b<8; b++){
-				//g.setColor(Color.white);
-				//g.fillRect(0, size.height / 9 * b, size.width / 9, size.height / 9);
-				g.setColor((a+b)%2==0 ? Color.white : Color.gray);
-				g.fillRect(size.width / 9 * a, size.height / 9 * b, size.width / 9, size.height / 9);
-			}
-			//g.setColor(Color.white);
-			//g.fillRect(size.width / 9 * a, size.height / 9 * 8, size.width / 9, size.height / 9);
-		}
-	}*/
-	
 	private void cleanPieceGraphics(){
 		Iterator<PieceGraphic> pgIter = pieceGraphics.iterator();
 		PieceGraphic pgTemp;
+		ArrayList<Piece> pieces = gb.getPieces();
 		while(pgIter.hasNext()){
 			pgTemp = pgIter.next();
-			if(pgTemp.mustRemovePiece()){
+			if(!pieces.contains(pgTemp.getPiece())){
 				pgIter.remove();
 			}
 		}

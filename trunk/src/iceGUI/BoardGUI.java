@@ -16,6 +16,11 @@ public class BoardGUI{
 	private static BoardPanel bp;
 
 	public static void main(String[] args){
+		/*
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e){}
+		*/
 		dw = new DisplayWindow("ICE", 800, 600);
 		JMenuBar menuBar = new JMenuBar();
 	    dw.setJMenuBar(menuBar);
