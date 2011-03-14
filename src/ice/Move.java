@@ -103,8 +103,8 @@ public class Move {
 		}
 		if(moveType == 4){
 			int delta = (FinalPos[0] - OrigPos[0])/2;
-			for(Piece effectingPiece: currentBoard.boardState[movingPiece.position[0]+delta][movingPiece.position[1]]){
-				if(effectingPiece.color != movingPiece.color){validMove = false;}
+			for(Piece affectingPiece: currentBoard.boardState[movingPiece.position[0]+delta][movingPiece.position[1]]){
+				if(affectingPiece.color != movingPiece.color){validMove = false;}
 			}
 		}		
 		Piece takenPiece = currentBoard.pieceAt(FinalPos);
@@ -131,6 +131,8 @@ public class Move {
 			movingPiece.castle = false;
 			movingPiece.generateMoves();
 			movingPiece.addToBoardState();
+			currentBoard.update(OrigPos);
+			currentBoard.update(FinalPos);
 		}		
 		currentBoard.setKingCheck();
 		if(currentBoard.playerMap.get(owner).getCheckStatus()){
@@ -156,6 +158,8 @@ public class Move {
 			movingPiece.addToBoardState();
 			currentBoard.setKingCheck();
 			movingPiece.castle = oldCastle;
+			currentBoard.update(OrigPos);
+			currentBoard.update(FinalPos);
 			return false;
 		}		
 		return validMove;

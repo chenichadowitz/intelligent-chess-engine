@@ -44,12 +44,7 @@ public class gameBoard extends Board{
 			Debug.debug("wrong piece color", 1);
 			return false;
 		}
-		boolean moved = action.execute();
-		if(moved){
-			update(action.OrigPos);
-			update(action.FinalPos);
-		}
-		return moved;
+		return action.execute();
 	}
 
 }
