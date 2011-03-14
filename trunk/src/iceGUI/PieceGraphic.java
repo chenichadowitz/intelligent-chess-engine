@@ -63,16 +63,16 @@ public class PieceGraphic {
 	 * @return x-coordinate of the piece on the board
 	 */
 	public int getX(){
-		return boardCoord[0] * lastSize.width / 10 - 1;
+		return boardCoord[0] * lastSize.width / 10;
 	}
 	/**
 	 * @return y-coordinate of the piece on the board
 	 */
 	public int getY(boolean flip){
 		if(flip){
-			return (9 - boardCoord[1]) * lastSize.height / 10 - 1;
+			return (9 - boardCoord[1]) * lastSize.height / 10;
 		}
-		return boardCoord[1] * lastSize.height / 10 - 1;
+		return boardCoord[1] * lastSize.height / 10;
 	}
 	/**
 	 * Returns the current board coordinates of the piece

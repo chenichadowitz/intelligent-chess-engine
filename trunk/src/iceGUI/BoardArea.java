@@ -178,7 +178,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	private void drawPieceBorder(Graphics g, Dimension size){
 		if(lastClick != null){
 			g.setColor(Color.magenta);
-			g.drawRect(lastClick[0] * size.width / 10 - 1, lastClick[1] * size.height / 10 - 1, size.width / 10 - 1, size.height / 10 - 1);
+			g.drawRect(lastClick[0] * size.width / 10, lastClick[1] * size.height / 10, size.width / 10, size.height / 10);
 		}
 	}
 	
