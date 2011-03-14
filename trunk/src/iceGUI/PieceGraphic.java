@@ -15,7 +15,7 @@ public class PieceGraphic {
 	/** current pixel coordinate location */
 	private int[] boardCoord = {0,0};
 	/** Piece object to be linked with */
-	private final Piece pc;
+	private Piece pc = null;
 	/** Last Dimension to be received */
 	private Dimension lastSize;
 	
@@ -66,6 +66,10 @@ public class PieceGraphic {
 	 * @return false otherwise
 	 */
 	public boolean mustRemovePiece(){
+		if(pc == null){
+			// This is a label PieceGraphic
+			return false;
+		}
 		if(pc.getPosition() == null && pc.getBoard() == null){
 			return true;
 		}
@@ -76,13 +80,16 @@ public class PieceGraphic {
 	 * @return x-coordinate of the piece on the board
 	 */
 	public int getX(){
-		return boardCoord[0] * lastSize.width / 8 - 1;
+		return boardCoord[0] * lastSize.width / 10 - 1;
 	}
 	/**
 	 * @return y-coordinate of the piece on the board
 	 */
-	public int getY(){
-		return boardCoord[1] * lastSize.height / 8 - 1;
+	public int getY(boolean flip){
+		if(flip){
+			return (9 - boardCoord[1]) * lastSize.height / 10 - 1;
+		}
+		return boardCoord[1] * lastSize.height / 10 - 1;
 	}
 	/**
 	 * Returns the current board coordinates of the piece

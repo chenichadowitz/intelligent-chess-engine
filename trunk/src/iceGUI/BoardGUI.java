@@ -20,6 +20,7 @@ public class BoardGUI{
 		JMenuBar menuBar = new JMenuBar();
 	    dw.setJMenuBar(menuBar);
 		bp = new BoardPanel(menuBar);
+		Debug.setGui(bp);
 		humanVShuman();
 		bp.setVisible(true);
 		dw.addPanel(bp);

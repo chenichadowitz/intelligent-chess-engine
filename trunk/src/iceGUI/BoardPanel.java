@@ -14,6 +14,7 @@ public class BoardPanel extends JPanel implements ActionListener{
 	JMenu menu = new JMenu("Menu");
 	JMenuItem newgame = new JMenuItem("New Game");
 	JMenuItem quit = new JMenuItem("Quit");
+	JMenuItem clearLog = new JMenuItem("Clear Log");
 	JPanel infoPanel;
 	JPanel northInfo;
 	JPanel boardDisp;
@@ -22,6 +23,8 @@ public class BoardPanel extends JPanel implements ActionListener{
 	JLabel infoTitle = new JLabel("Information Pane");
 	JLabel turn = new JLabel("White");
 	JLabel opponents;
+	JToggleButton flip = new JToggleButton("Toggle Board");
+	JTextArea logViewer;
 	BoardArea ba;
 	private gameBoard gb;
 	
@@ -30,19 +33,13 @@ public class BoardPanel extends JPanel implements ActionListener{
 		menubar = bar;
 		menubar.add(menu);
 		menu.add(newgame);
+		menu.add(clearLog);
 		menu.add(quit);
 		newgame.addActionListener(this);
 		quit.addActionListener(this);
-		
-		boardDisp = new JPanel(new BorderLayout());
-		ba = new BoardArea(this);
-		boardDisp.add(ba, BorderLayout.CENTER);
-		boardRows = new BoardLabel("rows");
-		boardDisp.add(boardRows, BorderLayout.WEST);
-		boardColumns = new BoardLabel("columns");
-		boardDisp.add(boardColumns, BorderLayout.SOUTH);
+		flip.addActionListener(this);
+		clearLog.addActionListener(this);
 		opponents = new JLabel();
-		//JLabel spacer = new JLabel("            ");
 		setLayout(new BorderLayout());
 		infoPanel = new JPanel(new BorderLayout());
 		northInfo = new JPanel(new GridBagLayout());
@@ -50,31 +47,27 @@ public class BoardPanel extends JPanel implements ActionListener{
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		northInfo.add(opponents, gbc);
-		gbc.gridx++;
+		gbc.gridx = 1;
 		northInfo.add(turn, gbc);
-		//gbc.gridx++;
-		//northInfo.add(spacer, gbc);
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		northInfo.add(new JLabel(" "), gbc);
+		gbc.gridy = 2;
+		northInfo.add(flip, gbc);
+		gbc.gridy = 3;
+		northInfo.add(new JLabel(" "), gbc);
+		JLabel logTitle = new JLabel("Game Log:");
+		gbc.gridy = 4;
+		northInfo.add(logTitle,gbc);
+		gbc.gridy = 5;
+		logViewer = new JTextArea(30, 10);
+		logViewer.setAutoscrolls(true);
+		logViewer.setEditable(false);
+		northInfo.add(logViewer, gbc);
 		infoPanel.add(northInfo, BorderLayout.NORTH);
 		add(infoPanel, BorderLayout.EAST);
-		add(boardDisp, BorderLayout.CENTER);
-	}
-	
-	private void makeSquare(){
-		Dimension size = ba.getSize();
-		if(!isSquare(size)){
-			if(size.width < size.height){
-				ba.setSize(size.width, size.width);
-			} else {
-				ba.setSize(size.height, size.height);
-			}
-		}
-	}
-	
-	private boolean isSquare(Dimension size){
-		if(Math.abs(size.height - size.width) > 5){
-			return false;
-		}
-		return true;
+		ba = new BoardArea(this);
+		add(ba, BorderLayout.CENTER);
 	}
 	
 	public void switchTurn(){
@@ -89,15 +82,19 @@ public class BoardPanel extends JPanel implements ActionListener{
 		opponents.setText(a + " vs. " + b + " - ");
 	}
 	
+	public void logGUI(String str){
+		logViewer.append(str + "\n");
+	}
+	
 	public void setupBoard(gameBoard gb){
 		this.gb = gb;
+		flip.setSelected(false);
 		ba.setupBoard(gb);
 	}
 	
 	
 	protected void paintComponent(Graphics g) {
-		makeSquare();
-
+		logViewer.setRows(this.getSize().height / 16 - 10);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -108,6 +105,12 @@ public class BoardPanel extends JPanel implements ActionListener{
 		}
 		else if(src == quit){
 			System.exit(0);
+		}
+		else if(src == flip){
+			ba.flipBoard();
+		}
+		else if(src == clearLog){
+			logViewer.setText("");
 		}
 	}
 
