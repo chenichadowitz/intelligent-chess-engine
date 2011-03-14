@@ -12,11 +12,13 @@ public class BoardPanel extends JPanel implements ActionListener{
 	
 	JMenuBar menubar;
 	JMenu menu = new JMenu("Menu");
-	JMenuItem newgame = new JMenuItem("New Game (x)");
+	JMenuItem newgame = new JMenuItem("New Game");
 	JMenuItem quit = new JMenuItem("Quit");
 	JPanel infoPanel;
 	JPanel northInfo;
 	JPanel boardDisp;
+	JPanel boardRows;
+	JPanel boardColumns;
 	JLabel infoTitle = new JLabel("Information Pane");
 	JLabel turn = new JLabel("White");
 	JLabel opponents;
@@ -35,7 +37,10 @@ public class BoardPanel extends JPanel implements ActionListener{
 		boardDisp = new JPanel(new BorderLayout());
 		ba = new BoardArea(this);
 		boardDisp.add(ba, BorderLayout.CENTER);
-		
+		boardRows = new BoardLabel("rows");
+		boardDisp.add(boardRows, BorderLayout.WEST);
+		boardColumns = new BoardLabel("columns");
+		boardDisp.add(boardColumns, BorderLayout.SOUTH);
 		opponents = new JLabel();
 		//JLabel spacer = new JLabel("            ");
 		setLayout(new BorderLayout());
@@ -54,6 +59,24 @@ public class BoardPanel extends JPanel implements ActionListener{
 		add(boardDisp, BorderLayout.CENTER);
 	}
 	
+	private void makeSquare(){
+		Dimension size = ba.getSize();
+		if(!isSquare(size)){
+			if(size.width < size.height){
+				ba.setSize(size.width, size.width);
+			} else {
+				ba.setSize(size.height, size.height);
+			}
+		}
+	}
+	
+	private boolean isSquare(Dimension size){
+		if(Math.abs(size.height - size.width) > 5){
+			return false;
+		}
+		return true;
+	}
+	
 	public void switchTurn(){
 		if(turn.getText().equals("Black")){
 			turn.setText("White");
@@ -69,15 +92,14 @@ public class BoardPanel extends JPanel implements ActionListener{
 	public void setupBoard(gameBoard gb){
 		this.gb = gb;
 		ba.setupBoard(gb);
-	}	
+	}
 	
 	
 	protected void paintComponent(Graphics g) {
-		
+		makeSquare();
 
 	}
 	
-
 	public void actionPerformed(ActionEvent e) {
 		Object src = e.getSource();
 		if(src == newgame){
@@ -88,4 +110,5 @@ public class BoardPanel extends JPanel implements ActionListener{
 			System.exit(0);
 		}
 	}
+
 }
