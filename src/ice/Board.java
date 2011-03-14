@@ -7,7 +7,8 @@ public abstract class Board {
 	protected  boolean playersTurn = true; // whiteturn if true
 	protected  ArrayList<Piece> pieces = new ArrayList<Piece>();
 	protected LinkedList<Piece>[][] boardState = (LinkedList<Piece>[][]) new LinkedList[8][8];
-
+	protected ArrayList<Move> moveLog = new ArrayList<Move>();
+	
 	public  boolean getTurn(){ return playersTurn;}
 	
 	public  ArrayList<Piece> getPieces(){ return pieces;}
