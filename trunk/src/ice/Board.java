@@ -101,8 +101,6 @@ public abstract class Board {
 	public  void takePiece(Piece taken){
 		Debug.debug("took " + taken, 3);
 		taken.removeFromBoardState();
-		taken.setPosition(null);
-		taken.setBoard(null);
 		pieces.remove(taken);
 	}	
 	abstract boolean movePiece(Move action);
