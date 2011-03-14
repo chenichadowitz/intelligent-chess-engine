@@ -20,16 +20,15 @@ public class BoardGUI{
 		JMenuBar menuBar = new JMenuBar();
 	    dw.setJMenuBar(menuBar);
 		bp = new BoardPanel(menuBar);
-		
+		humanVShuman();
 		bp.setVisible(true);
 		dw.addPanel(bp);
 		dw.showFrame();
-		humanVShuman();
 	}
 	
 	public static void humanVShuman(){
-		Scanner genericScanner = new Scanner(System.in);
-		Debug.setDebugLevel(1);
+		//Scanner genericScanner = new Scanner(System.in);
+		Debug.setDebugLevel(3);
 		HumanPlayer white = new HumanPlayer(true);
 		System.out.print("White player name: c");
 		white.setName("c");

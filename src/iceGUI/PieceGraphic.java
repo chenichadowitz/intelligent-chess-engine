@@ -33,20 +33,39 @@ public class PieceGraphic {
 		boardCoord[1] = y;
 		pc = p;
 	}
-	
+	/**
+	 * Create a PieceGraphic with the provided ImageIcon at the board coordinates
+	 * where (0,0) is equivalent to a8 from white's perspective and (7,7) is h1
+	 * @param orig ImageIcon to use for this piece
+	 * @param xy (x,y) board coordinates
+	 * @param p Piece that this is linked to
+	 */
 	public PieceGraphic(ImageIcon orig, int[] xy, Piece p){
 		this(orig, xy[0], xy[1], p);
 	}
-	
+	/**
+	 * Get the Image of the PieceGraphic for drawing
+	 * @return the respective Image object 
+	 */
 	public Image getImg(){
 		return DEFAULT_IMG.getImage();
 	}
 	
+	/**
+	 * Set the dimensions that the board is currently drawn at
+	 * @param d Dimension object representing the size
+	 */
 	public void setSize(Dimension d){
 		lastSize = d;
 	}
 	
-	public boolean removePiece(){
+	/**
+	 * Determines whether the piece should be removed from play
+	 * based on its respective Piece object
+	 * @return true if the respective Piece position and board are null
+	 * @return false otherwise
+	 */
+	public boolean mustRemovePiece(){
 		if(pc.getPosition() == null && pc.getBoard() == null){
 			return true;
 		}
