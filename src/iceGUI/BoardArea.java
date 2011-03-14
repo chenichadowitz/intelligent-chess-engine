@@ -27,6 +27,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	private PieceGraphic clickedPiece;
 	private gameBoard gb;
 	private BoardPanel bp;
+	private ImageIcon boardImage = new ImageIcon("resources/board.png");
 	
 	public BoardArea(BoardPanel bp){
 		super();
@@ -40,8 +41,8 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		for(PieceGraphic pg : pieceGraphics){
 			if(pg.getPiece().getPosition() != null){
 				pieceXY = pg.getPiece().getPosition().clone();
-			//if(pieceXY != null){ //In case this is ever called without cleaning up pieces that should have been removed.... 
-				pieceXY[1] = 7 - pieceXY[1];
+				pieceXY[0] += 1;
+				pieceXY[1] = 8 - pieceXY[1];
 				if(!Arrays.equals(pieceXY, pg.getBoardPos())){
 					pg.moveTo(pieceXY);
 				}
@@ -52,11 +53,13 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	
 	public void setupBoard(gameBoard gb){
 		this.gb = gb;
+		flipBoard = false;
 		int[] pieceXY = new int[2];
 		pieceGraphics = new LinkedList<PieceGraphic>();
 		for(Piece p : gb.getPieces()){
 			pieceXY = p.getPosition().clone();
-			pieceXY[1] = 7 - pieceXY[1];
+			pieceXY[0] += 1;
+			pieceXY[1] = 8 - pieceXY[1];
 			if(p.getColor()){
 				switch(p.type()){
 					case 'K':
@@ -104,6 +107,11 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		repaint();
 	}
 	
+	public void flipBoard(){
+		flipBoard = !flipBoard;
+		repaint();
+	}
+	
 	private boolean isSquare(Dimension size){
 		if(Math.abs(size.height - size.width) > 5){
 			return false;
@@ -122,14 +130,18 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		}
 	}
 	
-	private void drawBoardSquares(Graphics g, Dimension size){
-		for(int a=0; a<8; a++){
+	/*private void drawBoardSquares(Graphics g, Dimension size){
+		for(int a=1; a<9; a++){
 			for(int b=0; b<8; b++){
+				//g.setColor(Color.white);
+				//g.fillRect(0, size.height / 9 * b, size.width / 9, size.height / 9);
 				g.setColor((a+b)%2==0 ? Color.white : Color.gray);
-				g.fillRect(size.width / 8 * a, size.height / 8 * b, size.width / 8, size.height / 8);
+				g.fillRect(size.width / 9 * a, size.height / 9 * b, size.width / 9, size.height / 9);
 			}
+			//g.setColor(Color.white);
+			//g.fillRect(size.width / 9 * a, size.height / 9 * 8, size.width / 9, size.height / 9);
 		}
-	}
+	}*/
 	
 	private void cleanPieceGraphics(){
 		Iterator<PieceGraphic> pgIter = pieceGraphics.iterator();
@@ -149,9 +161,9 @@ public class BoardArea extends JPanel implements MouseInputListener {
 			 // Current imgs have weird issue with the bottom
 			// replace (size.(width/height) - 8) / 8
 			// with (size.(width/height) / 8)
-			int width = (size.width - 8) / 8;
-			int height = (size.height - 8) / 8;
-			g.drawImage(img, pg.getX(), pg.getY(), width, height, this);
+			int width = (size.width - 8) / 10;
+			int height = (size.height - 8) / 10;
+			g.drawImage(img, pg.getX(), pg.getY(flipBoard), width, height, this);
 		}
 	}
 	
@@ -162,10 +174,16 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		}
 	}
 	
+	private void drawBoardGraphic(Graphics g, Dimension size){
+		Image img = boardImage.getImage();
+		g.drawImage(img, 0, 0, size.width, size.height, this);
+	}
+	
 	protected void paintComponent(Graphics g) {
-		//makeSquare();
+		makeSquare();
 		Dimension size = this.getSize();
-		drawBoardSquares(g, size);
+		//drawBoardSquares(g, size);
+		drawBoardGraphic(g, size);
 		cleanPieceGraphics();
 		drawPieceGraphics(g, size);
 		drawPieceBorder(g, size);		
@@ -194,14 +212,20 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	
 	private int[] convertPixelToBoard(int[] pixels){
 		Dimension size = this.getSize();
-		//Debug.debug("pixels:"+pixels[0]+","+pixels[1],3);
-		int[] transPt = {pixels[0] / (size.width / 8), pixels[1] / (size.height / 8)};
-		//Debug.debug("coords:"+transPt[0]+","+transPt[1],3);
+		int[] transPt = {pixels[0] / (size.width / 10), pixels[1] / (size.height / 10)};
+		if(flipBoard){
+			transPt[1] = 9 - transPt[1];
+		}
 		return transPt;
 	}
 	
 	private void movePiece(PieceGraphic pg, int[] moveFrom, int[] moveTo){
-		int[] move = {moveFrom[0], 7-moveFrom[1], moveTo[0], 7-moveTo[1]};
+		int[] move = new int[4];
+		move[0] = moveFrom[0] - 1;
+		move[1] = 8 - moveFrom[1];
+		move[2] = moveTo[0] - 1;
+		move[3] = 8 - moveTo[1];
+		Debug.debug(Arrays.toString(move), 2);
 		Move moveobj = new Move(gb, move);
 		if(gb.movePiece(moveobj)){
 			pg.moveTo(moveTo);
@@ -287,7 +311,12 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		//Debug.debug("mouse dragged", 3);
 		if(dragging){
 			int[] mXY = {e.getX(), e.getY()};
-			draggingPiece.moveTo(convertPixelToBoard(mXY));
+			int[] move = convertPixelToBoard(mXY);
+			if(move[0] < 1) move[0] = 1;
+			if(move[0] > 8) move[0] = 8;
+			if(move[1] < 1) move[1] = 1;
+			if(move[1] > 8) move[1] = 8;
+			draggingPiece.moveTo(move);
 			repaint();
 		}
 	}
