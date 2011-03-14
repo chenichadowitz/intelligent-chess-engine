@@ -111,7 +111,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		return true;
 	}
 	
-	protected void paintComponent(Graphics g) {
+	private void makeSquare(){
 		Dimension size = this.getSize();
 		if(!isSquare(size)){
 			if(size.width < size.height){
@@ -119,16 +119,19 @@ public class BoardArea extends JPanel implements MouseInputListener {
 			} else {
 				this.setSize(size.height, size.height);
 			}
-			size = this.getSize();
 		}
-		//this.setIconSize(size);	
+	}
+	
+	private void drawBoardSquares(Graphics g, Dimension size){
 		for(int a=0; a<8; a++){
 			for(int b=0; b<8; b++){
 				g.setColor((a+b)%2==0 ? Color.white : Color.gray);
 				g.fillRect(size.width / 8 * a, size.height / 8 * b, size.width / 8, size.height / 8);
 			}
 		}
-		
+	}
+	
+	private void cleanPieceGraphics(){
 		Iterator<PieceGraphic> pgIter = pieceGraphics.iterator();
 		PieceGraphic pgTemp;
 		while(pgIter.hasNext()){
@@ -137,7 +140,9 @@ public class BoardArea extends JPanel implements MouseInputListener {
 				pgIter.remove();
 			}
 		}
-		
+	}
+	
+	private void drawPieceGraphics(Graphics g, Dimension size){
 		for(PieceGraphic pg : pieceGraphics){
 			Image img = pg.getImg();
 			pg.setSize(size);
@@ -148,10 +153,22 @@ public class BoardArea extends JPanel implements MouseInputListener {
 			int height = (size.height - 8) / 8;
 			g.drawImage(img, pg.getX(), pg.getY(), width, height, this);
 		}
+	}
+	
+	private void drawPieceBorder(Graphics g, Dimension size){
 		if(lastClick != null){
 			g.setColor(Color.magenta);
 			g.drawRect(lastClick[0] * size.width / 8, lastClick[1] * size.height / 8, size.width / 8, size.height / 8);
 		}
+	}
+	
+	protected void paintComponent(Graphics g) {
+		//makeSquare();
+		Dimension size = this.getSize();
+		drawBoardSquares(g, size);
+		cleanPieceGraphics();
+		drawPieceGraphics(g, size);
+		drawPieceBorder(g, size);		
 	}
 	
 	private void toggleTurn(){
