@@ -113,14 +113,14 @@ public abstract class Board {
 		return playerMap.get(player).getCheckStatus();
 	}
 	public void setKingCheck(){
-		boolean inCheck = false;
-		for(Piece pieceFinder: pieces){
-			if(pieceFinder.toString().charAt(1) == 'K'){
-				for(Piece effectedPiece: boardState[pieceFinder.position[0]][pieceFinder.position[1]]){
-					inCheck = inCheck || effectedPiece.color != pieceFinder.color;
+		for(Piece kingFinder: pieces){
+			boolean inCheck = false;
+			if(kingFinder.pieceType.equals("K")){
+				for(Piece affectingPiece: boardState[kingFinder.position[0]][kingFinder.position[1]]){
+					inCheck = inCheck || (affectingPiece.color != kingFinder.color);
 				}
-				playerMap.get(pieceFinder.color).setCheckStatus(inCheck);
-				Debug.debug(playerMap.get(pieceFinder.color) + " is in check -> " + inCheck,2);
+				playerMap.get(kingFinder.color).setCheckStatus(inCheck);
+				Debug.debug(playerMap.get(kingFinder.color) + " is in check -> " + inCheck,2);
 			}
 		}
 	}
