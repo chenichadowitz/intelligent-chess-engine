@@ -173,6 +173,24 @@ public class Move {
 		if(validMove){
 			Debug.debug(this.toString(), 1);
 			currentBoard.moveLog.add(this);
+			if(movingPiece.pieceType.equals("P") && FinalPos[1]%7 == 0){
+				char newPieceType = currentBoard.playerMap.get(owner).getPromotion();
+				currentBoard.takePiece(movingPiece);
+				Piece newPiece;
+				switch(newPieceType){
+				case('R'): newPiece = new Rook(owner,FinalPos[0],FinalPos[1],currentBoard);
+				break;
+				case('N'): newPiece = new Knight(owner,FinalPos[0],FinalPos[1],currentBoard);
+				break;
+				case('B'): newPiece = new Bishop(owner,FinalPos[0],FinalPos[1],currentBoard);
+				break;
+				default  : newPiece = new Queen(owner,FinalPos[0],FinalPos[1],currentBoard);
+				break;
+				}
+				currentBoard.pieces.add(newPiece);
+				newPiece.generateMoves();
+				newPiece.addToBoardState();
+			}
 		}
 		return validMove;
 	}

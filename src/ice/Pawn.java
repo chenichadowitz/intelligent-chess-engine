@@ -44,7 +44,7 @@ public class Pawn extends Piece {
 		}
 //take/cover right
 		if(position[0] != 7){
-			square[0] += 1;
+			square[0]  = position[0] +1;
 			square[1]  = position[1] +delta;
 			possibleMove = new Move(currentBoard,this,square);
 			status = currentBoard.statusOfSquare(square);
@@ -57,7 +57,8 @@ public class Pawn extends Piece {
 		}
 //take/cover left
 		if(position[0] != 0){
-			square[0] -= 2;
+			square[0]  = position[0] -1;
+			square[1]  = position[1] +delta;
 			possibleMove = new Move(currentBoard,this,square);
 			status = currentBoard.statusOfSquare(square);
 			if(!status[0]  && status[1]){
