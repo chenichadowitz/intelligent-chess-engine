@@ -5,6 +5,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+
+import ice.Debug;
 import ice.Piece;
 import ice.gameBoard;
 
@@ -15,6 +17,13 @@ public class BoardPanel extends JPanel implements ActionListener{
 	JMenuItem newgame = new JMenuItem("New Game");
 	JMenuItem quit = new JMenuItem("Quit");
 	JMenuItem clearLog = new JMenuItem("Clear Log");
+	JMenu debugMenu = new JMenu("Debug Lvls");
+	JMenuItem lvl0 = new JMenuItem("0");
+	JMenuItem lvl1 = new JMenuItem("1");
+	JMenuItem lvl2 = new JMenuItem("2");
+	JMenuItem lvl3 = new JMenuItem("3");
+	JMenuItem lvl4 = new JMenuItem("4");
+	JMenuItem lvl5 = new JMenuItem("5");
 	JPanel infoPanel;
 	JPanel northInfo;
 	JPanel boardDisp;
@@ -35,6 +44,11 @@ public class BoardPanel extends JPanel implements ActionListener{
 		menu.add(newgame);
 		menu.add(clearLog);
 		menu.add(quit);
+		menubar.add(debugMenu);
+		debugMenu.add(lvl0); debugMenu.add(lvl1); debugMenu.add(lvl2);
+		debugMenu.add(lvl3); debugMenu.add(lvl4); debugMenu.add(lvl5);
+		lvl0.addActionListener(this); lvl1.addActionListener(this); lvl2.addActionListener(this);
+		lvl3.addActionListener(this); lvl4.addActionListener(this); lvl5.addActionListener(this); 
 		newgame.addActionListener(this);
 		quit.addActionListener(this);
 		flip.addActionListener(this);
@@ -45,29 +59,22 @@ public class BoardPanel extends JPanel implements ActionListener{
 		northInfo = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(2, 10, 2, 10);
-		gbc.weighty = 0.0;
-		gbc.gridy = 0;		
-		gbc.gridx = 0;		
+		gbc.weighty = 0.0; gbc.gridy = 0; gbc.gridx = 0;		
 		northInfo.add(opponents, gbc);
-		gbc.gridy++;
-		northInfo.add(turn, gbc);
-		gbc.gridy++;
-		gbc.weighty = 1.0;
-		gbc.gridy++;
+		gbc.gridy++; northInfo.add(turn, gbc);
+		gbc.gridy++; gbc.weighty = 1.0;
 		JLabel logTitle = new JLabel("Game Log:");
-		gbc.gridy++;
-		northInfo.add(logTitle,gbc);
+		gbc.gridy++; northInfo.add(logTitle,gbc);
 		gbc.gridy++;
 		logViewer = new JTextArea(0, 10);
 		JScrollPane scrollPane = new JScrollPane(logViewer,
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		logViewer.setWrapStyleWord(true);
+		logViewer.setWrapStyleWord(true); 
 		logViewer.setEditable(false);
 		logViewer.setCaretPosition(0);
 		northInfo.add(scrollPane, gbc);
-		gbc.gridy++;
-		northInfo.add(flip, gbc);
+		gbc.gridy++; northInfo.add(flip, gbc);
 		infoPanel.add(northInfo, BorderLayout.NORTH);
 		add(infoPanel, BorderLayout.EAST);
 		ba = new BoardArea(this);
@@ -118,6 +125,12 @@ public class BoardPanel extends JPanel implements ActionListener{
 		else if(src == clearLog){
 			logViewer.setText("");
 		}
+		else if(src == lvl0) Debug.setDebugLevel(0);
+		else if(src == lvl1) Debug.setDebugLevel(1);
+		else if(src == lvl2) Debug.setDebugLevel(2);
+		else if(src == lvl3) Debug.setDebugLevel(3);
+		else if(src == lvl4) Debug.setDebugLevel(4);
+		else if(src == lvl5) Debug.setDebugLevel(5);
 	}
 
 }
