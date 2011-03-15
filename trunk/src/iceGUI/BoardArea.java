@@ -7,6 +7,7 @@ import ice.gameBoard;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	private gameBoard gb;
 	private BoardPanel bp;
 	private ImageIcon boardImage = new ImageIcon("resources/board.png");
+	private ImageIcon boardRevImage = new ImageIcon("resources/boardRev.png");
 	
 	public BoardArea(BoardPanel bp){
 		super();
@@ -94,7 +96,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 					break;
 			}
 		} else {
-				switch(p.type()){
+			switch(p.type()){
 				case 'K':
 					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackKing.png"), xy, p));
 					break;
@@ -183,18 +185,23 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	}
 	
 	private void drawBoardGraphic(Graphics g, Dimension size){
-		Image img = boardImage.getImage();
-		g.drawImage(img, 0, 0, size.width, size.height, this);
+		if(flipBoard){
+			Image imgRev = boardRevImage.getImage();
+			g.drawImage(imgRev, 0, 0, size.width, size.height, this);
+		} else {
+			Image img = boardImage.getImage();
+			g.drawImage(img, 0, 0, size.width, size.height, this);
+		}
 	}
 	
 	protected void paintComponent(Graphics g) {
 		makeSquare();
 		Dimension size = this.getSize();
-		//drawBoardSquares(g, size);
 		drawBoardGraphic(g, size);
 		cleanPieceGraphics();
 		drawPieceGraphics(g, size);
-		drawPieceBorder(g, size);		
+		drawPieceBorder(g, size);	
+		
 	}
 	
 	private void toggleTurn(){
@@ -228,18 +235,22 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	}
 	
 	private void movePiece(PieceGraphic pg, int[] moveFrom, int[] moveTo){
-		int[] move = new int[4];
-		move[0] = moveFrom[0] - 1;
-		move[1] = 8 - moveFrom[1];
-		move[2] = moveTo[0] - 1;
-		move[3] = 8 - moveTo[1];
-		Debug.debug(Arrays.toString(move), 2);
-		Move moveobj = new Move(gb, move);
-		if(gb.movePiece(moveobj)){
-			pg.moveTo(moveTo);
-			toggleTurn();
-		} else {
+		if(moveTo == null){
 			pg.moveTo(moveFrom);
+		} else {
+			int[] move = new int[4];
+			move[0] = moveFrom[0] - 1;
+			move[1] = 8 - moveFrom[1];
+			move[2] = moveTo[0] - 1;
+			move[3] = 8 - moveTo[1];
+			Debug.debug(Arrays.toString(move), 2);
+			Move moveobj = new Move(gb, move);
+			if(gb.movePiece(moveobj)){
+				pg.moveTo(moveTo);
+				toggleTurn();
+			} else {
+				pg.moveTo(moveFrom);
+			}
 		}
 		updateBoard();
 	}
@@ -272,13 +283,11 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		
 	}
 
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void mouseExited(MouseEvent e) {
+		//Debug.debug("MouseExit", 2);
+		mouseReleased(e);
 	}
 
-	@Override
 	public void mousePressed(MouseEvent e) {
 		int[] mXY = {e.getX(), e.getY()};
 		PieceGraphic pg = findPiece(convertPixelToBoard(mXY));
@@ -309,6 +318,9 @@ public class BoardArea extends JPanel implements MouseInputListener {
 				//Debug.debug("Piece released", 2);
 				movePiece(pg, draggingOldLocation, pg.getBoardPos());
 			}
+		} else if(pg == null && draggingPiece != null && draggingOldLocation != null){
+			Debug.debug("Offscreen release", 1);
+			movePiece(draggingPiece, draggingOldLocation, null);
 		}
 		draggingOldLocation = null;
 		dragging = false;
