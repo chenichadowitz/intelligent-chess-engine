@@ -1,6 +1,8 @@
 package ice;
 
 import java.util.*;
+
+import main.Debug;
 public abstract class Piece {
 	protected boolean color; // true = white; false = black
 	protected String pieceType;

@@ -3,6 +3,8 @@ package ice;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import main.Debug;
+
 public class gameBoard extends Board{
 	
 	public gameBoard(Player player1, Player player2){

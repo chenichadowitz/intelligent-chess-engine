@@ -2,7 +2,9 @@ package ice;
 
 import java.util.Scanner;
 
-public class Driver {
+import main.Debug;
+
+public class iceDriver {
 
 	private static Scanner genericScanner = new Scanner(System.in);
 	
@@ -53,12 +55,8 @@ public class Driver {
 		}
 	}
 
-	public static void main(String[] args) {
-		if(args.length > 0 && args[0].equals("xboard")){
-			Xboard.run(args);
-		} else {
+	public static void run(String[] args) {
 			humanVShuman();
-		}
 	}
 
 }

@@ -1,6 +1,8 @@
 package ice;
 import java.util.*;
 
+import main.Debug;
+
 @SuppressWarnings("unchecked")
 public abstract class Board {
 	Map<Boolean, Player> playerMap = new HashMap<Boolean, Player>();

@@ -1,17 +1,18 @@
 package iceGUI;
 
-import ice.Debug;
 import ice.HumanPlayer;
 import ice.gameBoard;
 
 import javax.swing.*;
+
+import main.Debug;
 
 public class BoardGUI{
 	
 	private static DisplayWindow dw;
 	private static BoardPanel bp;
 
-	public static void main(String[] args){
+	public static void run(String[] args){
 		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

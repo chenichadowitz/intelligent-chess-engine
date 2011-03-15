@@ -20,6 +20,50 @@ public class PieceGraphic {
 	private Dimension lastSize;
 	
 	/**
+	 * Creates a new PieceGraphic from the provided Piece object and returns it
+	 * @param p Piece object to 'wrap' around
+	 * @return new PieceGraphic object 'wrapped' around the provided piece
+	 */
+	public static PieceGraphic makePieceGraphic(Piece p){
+		int[] xy = new int[2];
+		xy = p.getPosition().clone();
+		xy[0] += 1;
+		xy[1] = 8 - xy[1];
+		if(p.getColor()){
+			switch(p.type()){
+				case 'K':
+					return new PieceGraphic(new ImageIcon("resources/orig/whiteKing.png"), xy, p);
+				case 'Q':
+					return new PieceGraphic(new ImageIcon("resources/orig/whiteQueen.png"), xy, p);
+				case 'R':
+					return new PieceGraphic(new ImageIcon("resources/orig/whiteRook.png"), xy, p);
+				case 'B':
+					return new PieceGraphic(new ImageIcon("resources/orig/whiteBishop.png"), xy, p);
+				case 'N':
+					return new PieceGraphic(new ImageIcon("resources/orig/whiteKnight.png"), xy, p);
+				case 'P':
+					return new PieceGraphic(new ImageIcon("resources/orig/whitePawn.png"), xy, p);
+			}
+		} else {
+			switch(p.type()){
+				case 'K':
+					return new PieceGraphic(new ImageIcon("resources/orig/blackKing.png"), xy, p);
+				case 'Q':
+					return new PieceGraphic(new ImageIcon("resources/orig/blackQueen.png"), xy, p);
+				case 'R':
+					return new PieceGraphic(new ImageIcon("resources/orig/blackRook.png"), xy, p);
+				case 'B':
+					return new PieceGraphic(new ImageIcon("resources/orig/blackBishop.png"), xy, p);
+				case 'N':
+					return new PieceGraphic(new ImageIcon("resources/orig/blackKnight.png"), xy, p);
+				case 'P':
+					return new PieceGraphic(new ImageIcon("resources/orig/blackPawn.png"), xy, p);
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Create a PieceGraphic with the provided ImageIcon at the board coordinates
 	 * where (0,0) is equivalent to a8 from white's perspective and (7,7) is h1
 	 * @param orig ImageIcon to use for this piece
@@ -27,7 +71,7 @@ public class PieceGraphic {
 	 * @param y int for the board's y-coordinate
 	 * @param p Piece that this is linked to
 	 */
-	public PieceGraphic(ImageIcon orig, int x, int y, Piece p){
+	private PieceGraphic(ImageIcon orig, int x, int y, Piece p){
 		DEFAULT_IMG = orig;
 		boardCoord[0] = x;
 		boardCoord[1] = y;
@@ -40,7 +84,7 @@ public class PieceGraphic {
 	 * @param xy (x,y) board coordinates
 	 * @param p Piece that this is linked to
 	 */
-	public PieceGraphic(ImageIcon orig, int[] xy, Piece p){
+	private PieceGraphic(ImageIcon orig, int[] xy, Piece p){
 		this(orig, xy[0], xy[1], p);
 	}
 	/**
@@ -62,7 +106,10 @@ public class PieceGraphic {
 	/**
 	 * @return x-coordinate of the piece on the board
 	 */
-	public int getX(){
+	public int getX(boolean flip){
+		if(flip){
+			return (9 - boardCoord[0]) * lastSize.height / 10;
+		}
 		return boardCoord[0] * lastSize.width / 10;
 	}
 	/**

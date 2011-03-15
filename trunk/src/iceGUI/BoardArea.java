@@ -1,6 +1,5 @@
 package iceGUI;
 
-import ice.Debug;
 import ice.Move;
 import ice.Piece;
 import ice.gameBoard;
@@ -18,10 +17,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
 
+import main.Debug;
+
 public class BoardArea extends JPanel implements MouseInputListener {
 	
 	private LinkedList<PieceGraphic> pieceGraphics;
-	private boolean flipBoard = false; // Flip board after each move?
+	private boolean flipBoard = false;
 	private int[] lastClick = null;
 	private boolean dragging = true;
 	private int[] draggingOldLocation;
@@ -54,7 +55,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		for(Piece p : gb.getPieces()){
 			pg = contains(p);
 			if(pg == null){
-				addPieceGraphic(p);
+				pieceGraphics.add(PieceGraphic.makePieceGraphic(p));
 			} else {
 				if(pg.getPiece().getPosition() != null){
 					pieceXY = pg.getPiece().getPosition().clone();
@@ -68,63 +69,13 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		}
 		repaint();
 	}
-	
-	private void addPieceGraphic(Piece p){
-		int[] xy = new int[2];
-		xy = p.getPosition().clone();
-		xy[0] += 1;
-		xy[1] = 8 - xy[1];
-		if(p.getColor()){
-			switch(p.type()){
-				case 'K':
-					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whiteKing.png"), xy, p));
-					break;
-				case 'Q':
-					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whiteQueen.png"), xy, p));
-					break;
-				case 'R':
-					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whiteRook.png"), xy, p));
-					break;
-				case 'B':
-					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whiteBishop.png"), xy, p));
-					break;
-				case 'N':
-					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whiteKnight.png"), xy, p));
-					break;
-				case 'P':
-					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/whitePawn.png"), xy, p));
-					break;
-			}
-		} else {
-			switch(p.type()){
-				case 'K':
-					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackKing.png"), xy, p));
-					break;
-				case 'Q':
-					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackQueen.png"), xy, p));
-					break;
-				case 'R':
-					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackRook.png"), xy, p));
-					break;
-				case 'B':
-					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackBishop.png"), xy, p));
-					break;
-				case 'N':
-					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackKnight.png"), xy, p));
-					break;
-				case 'P':
-					pieceGraphics.add(new PieceGraphic(new ImageIcon("resources/orig/blackPawn.png"), xy, p));
-					break;
-			}
-		}
-	}
-	
+		
 	public void setupBoard(gameBoard gb){
 		this.gb = gb;
 		flipBoard = false;
 		pieceGraphics = new LinkedList<PieceGraphic>();
 		for(Piece p : gb.getPieces()){
-			addPieceGraphic(p);
+			pieceGraphics.add(PieceGraphic.makePieceGraphic(p));
 		}
 		repaint();
 	}
@@ -173,7 +124,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 			// with (size.(width/height) / 8)
 			int width = (size.width - 8) / 10;
 			int height = (size.height - 8) / 10;
-			g.drawImage(img, pg.getX(), pg.getY(flipBoard), width, height, this);
+			g.drawImage(img, pg.getX(flipBoard), pg.getY(flipBoard), width, height, this);
 		}
 	}
 	
