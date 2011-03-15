@@ -2,11 +2,12 @@ package iceGUI;
 
 import javax.swing.*;
 
+import main.Debug;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-import ice.Debug;
 import ice.Piece;
 import ice.gameBoard;
 

@@ -1,5 +1,7 @@
 package ice;
 
+import main.Debug;
+
 
 public class King extends Piece{
 	public King(boolean player, int xwhere, int ywhere, Board onWhat){

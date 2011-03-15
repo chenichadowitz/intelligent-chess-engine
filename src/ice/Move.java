@@ -2,6 +2,8 @@ package ice;
 
 import java.util.*;
 
+import main.Debug;
+
 public class Move {
 	protected int moveType;//1 = move, 2 = take, 3 = cover
 	protected int[] OrigPos = new int[2];

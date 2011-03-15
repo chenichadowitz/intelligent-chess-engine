@@ -1,6 +1,8 @@
 package ice;
 import java.util.*;
 
+import main.Debug;
+
 public class staticBoard extends Board{
 	ArrayList<staticBoard> boards = new ArrayList<staticBoard>();
 	int[] moveMade;

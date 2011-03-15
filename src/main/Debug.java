@@ -1,4 +1,4 @@
-package ice;
+package main;
 
 import iceGUI.BoardPanel;
 
