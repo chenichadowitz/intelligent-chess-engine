@@ -69,8 +69,7 @@ public class BoardPanel extends JPanel implements ActionListener{
 		logViewer = new JTextArea(0, 10);
 		JScrollPane scrollPane = new JScrollPane(logViewer,
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		logViewer.setWrapStyleWord(true); 
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		logViewer.setEditable(false);
 		logViewer.setCaretPosition(0);
 		northInfo.add(scrollPane, gbc);
@@ -107,7 +106,7 @@ public class BoardPanel extends JPanel implements ActionListener{
 	
 	
 	protected void paintComponent(Graphics g) {
-		logViewer.setRows(this.getSize().height / 16 - 10);
+		logViewer.setRows(this.getSize().height / 16 - 15);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
