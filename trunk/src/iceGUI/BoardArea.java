@@ -319,7 +319,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 				movePiece(pg, draggingOldLocation, pg.getBoardPos());
 			}
 		} else if(pg == null && draggingPiece != null && draggingOldLocation != null){
-			Debug.debug("Offscreen release", 1);
+			Debug.debug("Offscreen release", 2);
 			movePiece(draggingPiece, draggingOldLocation, null);
 		}
 		draggingOldLocation = null;

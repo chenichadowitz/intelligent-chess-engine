@@ -1,6 +1,7 @@
 package ice;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class gameBoard extends Board{
 	
@@ -9,8 +10,14 @@ public class gameBoard extends Board{
 		playerMap.put(false, player2);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void setUpBoard(){
+		//Initialize game variables
 		pieces = new ArrayList<Piece>();
+		playersTurn = true;
+		boardState = (LinkedList<Piece>[][]) new LinkedList[8][8];
+		moveLog = new ArrayList<Move>();
+		//Add pieces
 		pieces.add(new Rook  (true, 0,0 ,this));
 		pieces.add(new Knight(true, 1,0 ,this));
 		pieces.add(new Bishop(true, 2,0 ,this));
