@@ -1,6 +1,4 @@
 package main;
-import ice.iceDriver;
-import iceGUI.BoardGUI;
 
 public class main {
 
@@ -11,11 +9,11 @@ public class main {
 		if(args.length > 0){
 			if(args[0].equals("xboard")){
 				Xboard.run(args);
-			} else if(args[0].equals("gui")){
-				BoardGUI.run(args);
+			} else if(args[0].equals("cli")){
+				ice.iceDriver.run(args);
 			} 
 		} else {
-				iceDriver.run(args);
+				iceGUI.BoardGUI.run(args);
 		}
 	}
 
