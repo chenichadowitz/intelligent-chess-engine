@@ -12,4 +12,9 @@ public class Player {
 	public String toString(){
 		return name;
 	}
+
+	public char getPromotion() {
+		return 'Q';
+	}
+	
 }
