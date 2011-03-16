@@ -15,6 +15,7 @@ public class Take extends Listener {
 		return new Take(OrigPos[0],OrigPos[1],FinalPos[0],FinalPos[1],currentBoard);
 	}
 	public String toString(){
+		if(!description.equals("Take")){return description;}
 		String numToLet = "abcdefgh";
 		String action = "";
 		if(!movingPiece.pieceType.equals("P")){
@@ -24,7 +25,8 @@ public class Take extends Listener {
 		}		
 		action += "x" + numToLet.substring(FinalPos[0],FinalPos[0]+1);
 		action += (FinalPos[1]+1);
-		if(putInCheck){action += "+";}		
+		if(putInCheck){action += "+";}
+		description = action;
 		return action;
 	}
 	public boolean execute(){
@@ -50,6 +52,8 @@ public class Take extends Listener {
 		currentBoard.moveLog.add(this);
 		if(movingPiece.pieceType.equals("P") && FinalPos[1]%7 == 0){
 			char newPieceType = owner.getPromotion();
+			toString();
+			description += "="+newPieceType;
 			currentBoard.takePiece(movingPiece);
 			Piece newPiece;
 			switch(newPieceType){
