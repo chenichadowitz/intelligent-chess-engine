@@ -1,4 +1,4 @@
-package ice;
+package gameLogic;
 
 import java.util.Scanner;
 
@@ -44,7 +44,7 @@ public class iceDriver {
 				System.out.println();
 				if(move.length != 0){
 					for(int i=0;i<4;i++) move[i]--;
-					Move moveObj = new Move(gb,move);
+					Listener moveObj = PieceMaker.MakeMove(gb,move);
 					moveResult = gb.movePiece(moveObj);
 				} else { 
 					System.out.println(gb.buildDisplay());

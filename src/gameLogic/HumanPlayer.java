@@ -1,4 +1,4 @@
-package ice;
+package gameLogic;
 import java.util.*;
 import java.util.regex.*;
 

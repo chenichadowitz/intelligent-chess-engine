@@ -1,4 +1,4 @@
-package ice;
+package gameLogic;
 
 public class Knight extends Piece {
 
@@ -23,8 +23,8 @@ public class Knight extends Piece {
 	}
 	public Piece clone(){
 		Knight newPiece = new Knight(color,position[0],position[1],currentBoard);
-		for(Move moveCloner: possibleMoves){
-			newPiece.possibleMoves.add(moveCloner.clone());
+		for(Listener moveCloner: moves){
+			newPiece.moves.add(moveCloner.clone());
 		}
 		return newPiece;
 	}

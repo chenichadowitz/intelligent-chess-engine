@@ -1,7 +1,7 @@
 package iceGUI;
 
-import ice.HumanPlayer;
-import ice.gameBoard;
+import gameLogic.HumanPlayer;
+import gameLogic.gameBoard;
 
 import javax.swing.*;
 

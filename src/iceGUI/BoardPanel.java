@@ -8,8 +8,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-import ice.Piece;
-import ice.gameBoard;
+import gameLogic.Piece;
+import gameLogic.gameBoard;
 
 public class BoardPanel extends JPanel implements ActionListener{
 	

@@ -1,4 +1,4 @@
-package ice;
+package gameLogic;
 
 public class Player {
 	protected boolean color;

@@ -10,7 +10,7 @@ public class main {
 			if(args[0].equals("xboard")){
 				Xboard.run(args);
 			} else if(args[0].equals("cli")){
-				ice.iceDriver.run(args);
+				gameLogic.iceDriver.run(args);
 			} 
 		} else {
 				iceGUI.BoardGUI.run(args);

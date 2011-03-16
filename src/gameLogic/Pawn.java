@@ -1,4 +1,4 @@
-package ice;
+package gameLogic;
 
 public class Pawn extends Piece {
 	public Pawn(boolean player, int xwhere, int ywhere, Board onWhat){
@@ -11,9 +11,9 @@ public class Pawn extends Piece {
 	}
 	public Piece clone() {
 		Pawn newPiece = new Pawn(color,position[0],position[1],currentBoard);
-		for(Move moveCloner: possibleMoves){
-			newPiece.possibleMoves.add(moveCloner.clone());
-		}		
+		for(Listener moveCloner: moves){
+			newPiece.moves.add(moveCloner.clone());
+		}	
 		return newPiece;
 	}
 	public void generateMoves(){
@@ -22,23 +22,23 @@ public class Pawn extends Piece {
 		if(!color){delta = -1;}
 //move up one
 		int[]     square    = {position[0], position[1] +delta};
-		Move possibleMove = new Move(currentBoard,this,square,true);
 		boolean[] status = currentBoard.statusOfSquare(square);
 		if(status[0]){
-			possibleMoves.add(new Move(currentBoard,this,square,false));
+			moves.add(new Listener(position[0],position[1],square[0],square[1],currentBoard));
 		}
+		Listener possibleMove = PieceMaker.MakeMove(currentBoard,this,square);
 		if (!status[0] && status[1]){
-			if(possibleMove.moveType == 1){possibleMoves.add(possibleMove);}		
+			if(possibleMove.description.equals("Move")){moves.add(possibleMove);}		
 //move up two
 			if(position[1] == 1 || position[1] == 6){
 				square[1] += delta;
-				possibleMove = new Move(currentBoard,this,square,true);
 				status = currentBoard.statusOfSquare(square);
 				if(status[0]){
-					possibleMoves.add(new Move(currentBoard,this,square,false));
+					moves.add(new Listener(position[0],position[1],square[0],square[1],currentBoard));
 				}
+				possibleMove = PieceMaker.MakeMove(currentBoard,this,square);
 				if (!status[0] && status[1]){
-					if(possibleMove.moveType == 1){possibleMoves.add(possibleMove);}
+					if(possibleMove.description.equals("Move")){moves.add(possibleMove);}		
 				}
 			}
 		}
@@ -46,26 +46,26 @@ public class Pawn extends Piece {
 		if(position[0] != 7){
 			square[0]  = position[0] +1;
 			square[1]  = position[1] +delta;
-			possibleMove = new Move(currentBoard,this,square);
 			status = currentBoard.statusOfSquare(square);
+			possibleMove = PieceMaker.MakeMove(currentBoard,this,square);
 			if(!status[0] && status[1]){
-				possibleMoves.add(new Move(currentBoard,this,square,false));
+				moves.add(possibleMove);
 			}
-			else if(possibleMove.moveType != 1){
-				possibleMoves.add(possibleMove);
+			else if(!possibleMove.description.equals("Move")){
+				moves.add(possibleMove);
 			}
 		}
 //take/cover left
 		if(position[0] != 0){
 			square[0]  = position[0] -1;
 			square[1]  = position[1] +delta;
-			possibleMove = new Move(currentBoard,this,square);
 			status = currentBoard.statusOfSquare(square);
-			if(!status[0]  && status[1]){
-				possibleMoves.add(new Move(currentBoard,this,square,false));
+			possibleMove = PieceMaker.MakeMove(currentBoard,this,square);
+			if(!status[0] && status[1]){
+				moves.add(possibleMove);
 			}
-			else if(possibleMove.moveType != 1){
-				possibleMoves.add(possibleMove);
+			else if(!possibleMove.description.equals("Move")){
+				moves.add(possibleMove);
 			}
 		}
 	}
