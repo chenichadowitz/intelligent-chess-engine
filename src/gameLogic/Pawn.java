@@ -50,15 +50,15 @@ public class Pawn extends Piece {
 			status = currentBoard.statusOfSquare(square);
 			possibleMove = PieceMaker.MakeMove(currentBoard,this,square);
 			if(!status[0] && status[1]){
-				moves.add(new Listener(position[0],position[1],square[0],square[1],currentBoard));
 				if(position[1] == row[(delta+1)/2]){
-					square[1] = position[0];
 					Listener lastMove = currentBoard.curMove;
-					if(lastMove.movingPiece.type() == 'P' && Math.abs(lastMove.FinalPos[1]-lastMove.OrigPos[1]) == 2){
+					if(lastMove.movingPiece.type() == 'P' && Math.abs(lastMove.FinalPos[1]-lastMove.OrigPos[1]) == 2 && lastMove.FinalPos[0] == square[0]){
 						moves.add(new EnPassant(position[0],position[1],square[0],square[1],currentBoard));
 					} else {
-						moves.add(new Listener(position[0],position[1],square[0],square[1],currentBoard));
+						moves.add(new Listener(position[0],position[1],square[0],position[1],currentBoard));
 					}
+				} else {
+					moves.add(new Listener(position[0],position[1],square[0],square[1],currentBoard));
 				}
 			}
 			else if(!possibleMove.description.equals("Move")){
@@ -72,15 +72,15 @@ public class Pawn extends Piece {
 			status = currentBoard.statusOfSquare(square);
 			possibleMove = PieceMaker.MakeMove(currentBoard,this,square);
 			if(!status[0] && status[1]){
-				moves.add(new Listener(position[0],position[1],square[0],square[1],currentBoard));
 				if(position[1] == row[(delta+1)/2]){
-					square[1] = position[0];
-					Listener lastMove = currentBoard.moveLog.get(currentBoard.moveLog.size()-1);
-					if(lastMove.movingPiece.type() == 'P' && Math.abs(lastMove.FinalPos[1]-lastMove.OrigPos[1]) == 2){
+					Listener lastMove = currentBoard.curMove;
+					if(lastMove.movingPiece.type() == 'P' && Math.abs(lastMove.FinalPos[1]-lastMove.OrigPos[1]) == 2 && lastMove.FinalPos[0] == square[0]){
 						moves.add(new EnPassant(position[0],position[1],square[0],square[1],currentBoard));
 					} else {
-						moves.add(new Listener(position[0],position[1],square[0],square[1],currentBoard));
+						moves.add(new Listener(position[0],position[1],square[0],position[1],currentBoard));
 					}
+				} else {
+					moves.add(new Listener(position[0],position[1],square[0],square[1],currentBoard));
 				}
 			}
 			else if(!possibleMove.description.equals("Move")){

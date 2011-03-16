@@ -1,5 +1,7 @@
 package gameLogic;
 import java.util.*;
+
+import main.Debug;
 public class Listener{
 	protected int[] OrigPos = new int[2];
 	protected int[] FinalPos =  new int[2];
@@ -52,6 +54,15 @@ public class Listener{
 			}
 		}
 		return false;
+	}
+	public void addMoveToBS(){
+		if(currentBoard.boardState[FinalPos[0]][FinalPos[1]].contains(movingPiece)){
+			Debug.debug("WARNING: " +movingPiece+ " already exists on boardState", 1);
+		}
+		currentBoard.boardState[FinalPos[0]][FinalPos[1]].add(movingPiece);
+	}
+	public void remMoveFrBS(){
+		currentBoard.boardState[FinalPos[0]][FinalPos[1]].remove(movingPiece);
 	}
 
 }
