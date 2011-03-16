@@ -1,6 +1,6 @@
 package iceGUI;
 
-import ice.Piece;
+import gameLogic.Piece;
 
 import java.awt.Dimension;
 import java.awt.Image;

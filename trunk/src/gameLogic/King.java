@@ -1,4 +1,4 @@
-package ice;
+package gameLogic;
 
 import main.Debug;
 
@@ -30,14 +30,14 @@ public class King extends Piece{
 			int[] edge = {position[0],(int)(3.5+3.5*delta)};
 			if(currentBoard.pieceAt(edge) != null && currentBoard.pieceAt(edge).canCastle()){
 				int[] possibleMove = {position[0]+delta,position[1]};
-				Move moveChecker = this.getMoveTo(possibleMove);
-				if(moveChecker.moveType == 1){
+				Listener moveChecker = this.getMoveTo(possibleMove);
+				if(moveChecker.description.equals("Move")){
 					int[]     square = {position[0] +2*delta, position[1]};
 					boolean[] status = currentBoard.statusOfSquare(square);
 					if (!status[0] && status[1]){
-						possibleMoves.add(new Move(currentBoard,this,square,true));
+						moves.add(PieceMaker.MakeMove(currentBoard,this,square));
 					} else {
-						possibleMoves.add(new Move(currentBoard,this,square,false));
+						moves.add(new Listener(position[0],position[1],square[0],square[1],currentBoard));
 					}
 				}
 			}
@@ -46,14 +46,14 @@ public class King extends Piece{
 			edge[1] = (int)(3.5+3.5*delta);
 			if(currentBoard.pieceAt(edge) != null && currentBoard.pieceAt(edge).canCastle()){
 				int[] possibleMove = {position[0]+delta,position[1]};
-				Move moveChecker = this.getMoveTo(possibleMove);
-				if(moveChecker.moveType == 1){
+				Listener moveChecker = this.getMoveTo(possibleMove);
+				if(moveChecker.description.equals("Move")){
 					int[]     square = {position[0] +2*delta, position[1]};
 					boolean[] status = currentBoard.statusOfSquare(square);
 					if (!status[0] && status[1]){
-						possibleMoves.add(new Move(currentBoard,this,square,true));
+						moves.add(PieceMaker.MakeMove(currentBoard,this,square));
 					} else {
-						possibleMoves.add(new Move(currentBoard,this,square,false));
+						moves.add(new Listener(position[0],position[1],square[0],square[1],currentBoard));
 					}
 				}
 			}
@@ -61,8 +61,8 @@ public class King extends Piece{
 	}
 	public Piece clone(){
 		King newPiece = new King(color,position[0],position[1],currentBoard);
-		for(Move moveCloner: possibleMoves){
-			newPiece.possibleMoves.add(moveCloner.clone());
+		for(Listener moveCloner: moves){
+			newPiece.moves.add(moveCloner.clone());
 		}
 		newPiece.castle = castle;
 		return newPiece;

@@ -1,4 +1,4 @@
-package ice;
+package gameLogic;
 import java.util.*;
 
 import main.Debug;
@@ -9,7 +9,7 @@ public abstract class Board {
 	protected  boolean playersTurn = true; // whiteturn if true
 	protected  ArrayList<Piece> pieces = new ArrayList<Piece>();
 	protected LinkedList<Piece>[][] boardState = (LinkedList<Piece>[][]) new LinkedList[8][8];
-	protected ArrayList<Move> moveLog = new ArrayList<Move>();
+	protected ArrayList<Listener> moveLog = new ArrayList<Listener>();
 	
 	public  boolean getTurn(){ return playersTurn;}
 	
@@ -44,13 +44,14 @@ public abstract class Board {
 		playersTurn = !playersTurn;
 		Debug.debug("switched turn", 3);
 	}
-	public  void update(int[] square){
-		Debug.debug("updating " + square[0] + " " + square[1],4);
-		LinkedList<Piece> temp = new LinkedList<Piece>();
-		for(Piece p : boardState[square[0]][square[1]]){
-			temp.add(p);
+	public  void update(int[]... squares){
+		ArrayList<Piece> piecesToUpdate = new ArrayList<Piece>();
+		for(int[] square : squares){
+			for(Piece p : boardState[square[0]][square[1]]){
+				if(!piecesToUpdate.contains(p)){piecesToUpdate.add(p);}
+			}
 		}
-		for(Piece currentPiece: temp){
+		for(Piece currentPiece: piecesToUpdate){
 			currentPiece.removeFromBoardState();
 			currentPiece.generateMoves();
 			currentPiece.addToBoardState();
@@ -105,7 +106,7 @@ public abstract class Board {
 		taken.removeFromBoardState();
 		pieces.remove(taken);
 	}	
-	abstract boolean movePiece(Move action);
+	abstract boolean movePiece(Listener action);
 	
 	public String toString(){
 		return "board"; 

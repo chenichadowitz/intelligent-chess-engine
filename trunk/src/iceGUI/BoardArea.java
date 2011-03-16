@@ -1,8 +1,7 @@
 package iceGUI;
 
-import ice.Move;
-import ice.Piece;
-import ice.gameBoard;
+import gameLogic.*;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -195,7 +194,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 			move[2] = moveTo[0] - 1;
 			move[3] = 8 - moveTo[1];
 			Debug.debug(Arrays.toString(move), 2);
-			Move moveobj = new Move(gb, move);
+			Listener moveobj = PieceMaker.MakeMove(gb, move);
 			if(gb.movePiece(moveobj)){
 				pg.moveTo(moveTo);
 				toggleTurn();

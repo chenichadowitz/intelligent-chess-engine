@@ -1,4 +1,4 @@
-package ice;
+package gameLogic;
 
 public class Rook extends Piece {
 	public Rook(boolean player, int xwhere, int ywhere, Board onWhat){
@@ -12,8 +12,8 @@ public class Rook extends Piece {
 	}
 	public Piece clone() {
 		Rook newPiece = new Rook(color,position[0],position[1],currentBoard);
-		for(Move moveCloner: possibleMoves){
-			newPiece.possibleMoves.add(moveCloner.clone());
+		for(Listener moveCloner: moves){
+			newPiece.moves.add(moveCloner.clone());
 		}
 		return newPiece;
 	}

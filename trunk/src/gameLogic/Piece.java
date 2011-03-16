@@ -1,4 +1,4 @@
-package ice;
+package gameLogic;
 
 import java.util.*;
 
@@ -9,7 +9,7 @@ public abstract class Piece {
 	protected int value;
 	protected boolean castle = false;
 	protected int[] position = new int[2]; // [x-coord,y-coord]
-	protected ArrayList<Move> possibleMoves = new ArrayList<Move>();
+	protected ArrayList<Listener> moves = new ArrayList<Listener>();
 	protected Board currentBoard;
 	
 	public  boolean canCastle() {return castle;}
@@ -21,7 +21,7 @@ public abstract class Piece {
 	public Board getBoard(){ return currentBoard;}
 	public  void setPosition(int[] square){ position = square;}
 	public void addToBoardState(){
-		for(Move action: possibleMoves){
+		for(Listener action: moves){
 			if(currentBoard.boardState[action.FinalPos[0]][action.FinalPos[1]].contains(this)){
 				Debug.debug("WARNING: " +this+ " already exists on boardState", 1);
 			}			
@@ -30,7 +30,7 @@ public abstract class Piece {
 		Debug.debug(this + " added to boardState",3);
 	}
 	public void removeFromBoardState(){
-		for(Move action: possibleMoves){
+		for(Listener action: moves){
 			currentBoard.boardState[action.FinalPos[0]][action.FinalPos[1]].remove(this);
 		}
 		Debug.debug(this +" removed from boardState",3);
@@ -39,22 +39,22 @@ public abstract class Piece {
 		int[] square = {x,y};
 		boolean[] status = currentBoard.statusOfSquare(square);
 		if(status[0] || status[1]){
-			Move newMove = new Move(currentBoard,this,square,true);
-			if(possibleMoves.contains(newMove)){
+			Listener newMove = PieceMaker.MakeMove(currentBoard,this,square);
+			if(moves.contains(newMove)){
 				Debug.debug("WARNING: " +this+ " already has that Move", 1);
 			}			
-			possibleMoves.add(new Move(currentBoard,this,square,true));
+			moves.add(PieceMaker.MakeMove(currentBoard,this,square));
 			if(!status[0] && status[1]){return true;}
 		}		
 		return false;
 	}
 	public  void generateMoves(){
 		Debug.debug(this + " generating moves", 3);
-		possibleMoves = new ArrayList<Move>();
+		moves = new ArrayList<Listener>();
 	}
 
-	public Move getMoveTo(int[] square){
-		for(Move finder: possibleMoves){
+	public Listener getMoveTo(int[] square){
+		for(Listener finder: moves){
 			if(Arrays.equals(finder.FinalPos,square)){return finder;}
 		}
 		return null; // no move to 'square'

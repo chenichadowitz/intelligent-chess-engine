@@ -1,4 +1,4 @@
-package ice;
+package gameLogic;
 
 public class Bishop extends Piece {
 	public Bishop(boolean player, int xwhere, int ywhere, Board onWhat){
@@ -11,8 +11,8 @@ public class Bishop extends Piece {
 	}
 	public Piece clone() {
 		Bishop newPiece = new Bishop(color,position[0],position[1],currentBoard);
-		for(Move moveCloner: possibleMoves){
-			newPiece.possibleMoves.add(moveCloner.clone());
+		for(Listener moveCloner: moves){
+			newPiece.moves.add(moveCloner.clone());
 		}
 		return newPiece;
 	}
