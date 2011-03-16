@@ -25,7 +25,7 @@ public class Listener{
 	public Listener clone(){
 		return new Listener(OrigPos[0],OrigPos[1],FinalPos[0],FinalPos[1],currentBoard);
 	}
-	public String toString(){return "";}
+	public String toString(){return description;}
 	
 	public boolean execute() {
 		return false;

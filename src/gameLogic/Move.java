@@ -22,6 +22,7 @@ public class Move extends Listener{
 		return action;
 	}
 	public boolean execute(){
+		currentBoard.curMove = this;
 		if(!contains(movingPiece.moves,this)){
 			Debug.debug(movingPiece + " does not have that move", 1);
 			return false;
