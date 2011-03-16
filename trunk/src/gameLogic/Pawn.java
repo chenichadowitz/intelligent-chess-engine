@@ -52,6 +52,7 @@ public class Pawn extends Piece {
 			if(!status[0] && status[1]){
 				if(position[1] == row[(delta+1)/2]){
 					Listener lastMove = currentBoard.curMove;
+					moves.add(new Listener(position[0],position[1],square[0],square[1],currentBoard));
 					if(lastMove.movingPiece.type() == 'P' && Math.abs(lastMove.FinalPos[1]-lastMove.OrigPos[1]) == 2 && lastMove.FinalPos[0] == square[0]){
 						moves.add(new EnPassant(position[0],position[1],square[0],square[1],currentBoard));
 					} else {
@@ -74,6 +75,7 @@ public class Pawn extends Piece {
 			if(!status[0] && status[1]){
 				if(position[1] == row[(delta+1)/2]){
 					Listener lastMove = currentBoard.curMove;
+					moves.add(new Listener(position[0],position[1],square[0],square[1],currentBoard));
 					if(lastMove.movingPiece.type() == 'P' && Math.abs(lastMove.FinalPos[1]-lastMove.OrigPos[1]) == 2 && lastMove.FinalPos[0] == square[0]){
 						moves.add(new EnPassant(position[0],position[1],square[0],square[1],currentBoard));
 					} else {
