@@ -27,6 +27,7 @@ public class Take extends Listener {
 		return action;
 	}
 	public boolean execute(){
+		currentBoard.curMove = this;
 		if(!contains(movingPiece.moves,this)){
 			Debug.debug(movingPiece + " does not have that move", 1);
 			return false;
@@ -71,6 +72,7 @@ public class Take extends Listener {
 		movingPiece.removeFromBoardState();
 		movingPiece.setPosition(OrigPos);
 		currentBoard.pieces.add(takenPiece);
+		takenPiece.addToBoardState();
 		movingPiece.castle = oldCastle;
 		movingPiece.generateMoves();
 		movingPiece.addToBoardState();

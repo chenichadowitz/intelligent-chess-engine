@@ -48,12 +48,16 @@ public class gameBoard extends Board{
 	}
 	
 	public boolean movePiece(Listener action){
-		Debug.debug(action.toString(), 2);
 		if(action.color != getTurn()){
 			Debug.debug("wrong piece color", 1);
 			return false;
 		}
-		return action.execute();
+		for(Listener move: action.movingPiece.moves){
+			if(move.equals(action)){
+				return move.execute();
+			}
+		}
+		return false;
 	}
 
 }

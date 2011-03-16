@@ -1,6 +1,5 @@
 package gameLogic;
 
-import main.Debug;
 
 public class PieceMaker {
 	public static Listener MakeMove(Board place, int x1, int y1, int x2, int y2){

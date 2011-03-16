@@ -1,7 +1,4 @@
 package gameLogic;
-import gameLogic.Board;
-import gameLogic.Piece;
-import gameLogic.Player;
 
 import java.util.*;
 

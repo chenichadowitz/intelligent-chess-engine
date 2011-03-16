@@ -25,6 +25,7 @@ public class Castle extends Listener {
 		return action;
 	}
 	public boolean execute(){
+		currentBoard.curMove = this;
 		movingPiece.removeFromBoardState();
 		rook.removeFromBoardState();
 		movingPiece.setPosition(FinalPos);

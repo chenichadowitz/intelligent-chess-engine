@@ -10,7 +10,7 @@ public abstract class Board {
 	protected  ArrayList<Piece> pieces = new ArrayList<Piece>();
 	protected LinkedList<Piece>[][] boardState = (LinkedList<Piece>[][]) new LinkedList[8][8];
 	protected ArrayList<Listener> moveLog = new ArrayList<Listener>();
-	
+	protected Listener curMove;
 	public  boolean getTurn(){ return playersTurn;}
 	
 	public  ArrayList<Piece> getPieces(){ return pieces;}
