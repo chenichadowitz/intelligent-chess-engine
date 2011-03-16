@@ -21,17 +21,14 @@ public abstract class Piece {
 	public Board getBoard(){ return currentBoard;}
 	public  void setPosition(int[] square){ position = square;}
 	public void addToBoardState(){
-		for(Listener action: moves){
-			if(currentBoard.boardState[action.FinalPos[0]][action.FinalPos[1]].contains(this)){
-				Debug.debug("WARNING: " +this+ " already exists on boardState", 1);
-			}			
-			currentBoard.boardState[action.FinalPos[0]][action.FinalPos[1]].add(this);
+		for(Listener action: moves){			
+			action.addMoveToBS();
 		}
 		Debug.debug(this + " added to boardState",3);
 	}
 	public void removeFromBoardState(){
 		for(Listener action: moves){
-			currentBoard.boardState[action.FinalPos[0]][action.FinalPos[1]].remove(this);
+			action.remMoveFrBS();
 		}
 		Debug.debug(this +" removed from boardState",3);
 	}
