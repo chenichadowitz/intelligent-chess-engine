@@ -4,7 +4,7 @@ import main.Debug;
 
 public class EnPassant extends Listener {
 
-	int[] movedTo;
+	int[] movedTo = new int[2];
 	Piece takenPiece;
 	public EnPassant(int x1, int y1, int x2, int y2, Board place) {
 		super(x1, y1, x2, y2, place);
