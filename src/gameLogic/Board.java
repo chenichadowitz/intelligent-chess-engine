@@ -111,8 +111,20 @@ public abstract class Board {
 	public String toString(){
 		return "board"; 
 	}
-	public boolean isPlayerInCheck(boolean player){
-		return playerMap.get(player).getCheckStatus();
+	public String moveLogtoString(){
+		String log = "";
+		boolean logTurn = true;
+		for(Listener move: moveLog){
+			if(logTurn){log +=("\n" + (moveLog.indexOf(move)/2 +1) + ". " + move.toString());}
+			else	   {log +=( "  " + move.toString());}
+			logTurn = !logTurn;
+		}
+		if(playerMap.get(true).isMated() || playerMap.get(false).isMated()){
+			log += "+ \n";
+			if(playerMap.get(true).isMated()){log += "  0-1";}
+			else{log += "  1-0";}
+		}
+		return log;
 	}
 	public void setKingCheck(){
 		for(Piece kingFinder: pieces){
@@ -121,10 +133,34 @@ public abstract class Board {
 				for(Piece affectingPiece: boardState[kingFinder.position[0]][kingFinder.position[1]]){
 					inCheck = inCheck || (affectingPiece.color != kingFinder.color);
 				}
-				playerMap.get(kingFinder.color).setCheckStatus(inCheck);
-				Debug.debug(playerMap.get(kingFinder.color) + " is in check -> " + inCheck,2);
+				Player curPlayer = playerMap.get(kingFinder.color);
+				curPlayer.setCheckStatus(inCheck);
+				if(curPlayer.getCheckStatus()){
+					Debug.debug(curPlayer + " is in check", 2);
+				}
 			}
 		}
+	}
+	public boolean isCheckMate(Player whosInCheck){
+		if(whosInCheck.checkStatus != true){return false;} //add check for stalemate
+		ArrayList<Listener> allMoves = new ArrayList<Listener>();
+		for(Piece curPiece: pieces){
+			if(curPiece.color == whosInCheck.color){
+				for(Listener moveAdder: curPiece.moves){
+					allMoves.add(moveAdder);
+				}
+			}
+		}
+		ArrayList<Listener> allValidMoves = new ArrayList<Listener>();
+		for(Listener moveChecker: allMoves){
+			if(!moveChecker.resultsInCheck()){allValidMoves.add(moveChecker);}
+		}
+		for(Listener moves : allValidMoves){
+			System.out.println(moves);			
+		}
+		if(allValidMoves.size() > 0){return false;}
+		Debug.debug(whosInCheck + " is mated. good game", 1);
+		return true;
 	}
 
 }

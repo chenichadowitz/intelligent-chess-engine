@@ -23,6 +23,7 @@ public class EnPassant extends Listener {
 		String action = numToLet.substring(OrigPos[0],OrigPos[0]+1);
 		action += "x" + numToLet.substring(FinalPos[0],FinalPos[0]+1);
 		action += FinalPos[1]+1;
+		if(putInCheck){action += "+";}		
 		return action;
 	}
 	public boolean execute(){
@@ -50,6 +51,7 @@ public class EnPassant extends Listener {
 			undo();
 			return false;
 		}
+		putInCheck = currentBoard.playerMap.get(!color).getCheckStatus();
 		currentBoard.moveLog.add(this);
 		Debug.debug(this.toString(),1);
 		return true;
@@ -63,6 +65,7 @@ public class EnPassant extends Listener {
 		movingPiece.generateMoves();
 		movingPiece.addToBoardState();
 		currentBoard.update(OrigPos,FinalPos,taken);
+		currentBoard.setKingCheck();
 	}
 
 }
