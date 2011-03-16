@@ -20,9 +20,11 @@ public class Castle extends Listener {
 		return new Castle(OrigPos[0],OrigPos[1],FinalPos[0],FinalPos[1],currentBoard);
 	}
 	public String toString(){
+		if(!description.equals("Castle")){return description;}
 		String action = "O-O";
 		if(FinalPos[0] < OrigPos[0]){action = action.concat("-O");}
-		if(putInCheck){action += "+";}		
+		if(putInCheck){action += "+";}	
+		description = action;
 		return action;
 	}
 	public boolean execute(){
