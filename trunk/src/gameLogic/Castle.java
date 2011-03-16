@@ -22,6 +22,7 @@ public class Castle extends Listener {
 	public String toString(){
 		String action = "O-O";
 		if(FinalPos[0] < OrigPos[0]){action = action.concat("-O");}
+		if(putInCheck){action += "+";}		
 		return action;
 	}
 	public boolean execute(){
@@ -42,6 +43,7 @@ public class Castle extends Listener {
 			undo();
 			return false;
 		}
+		putInCheck = currentBoard.playerMap.get(!color).getCheckStatus();
 		currentBoard.moveLog.add(this);
 		Debug.debug(this.toString(),1);
 		return true;
@@ -57,6 +59,7 @@ public class Castle extends Listener {
 		movingPiece.addToBoardState();
 		rook.addToBoardState();
 		movingPiece.castle = oldCastle;
+		currentBoard.setKingCheck();
 	}
 
 }

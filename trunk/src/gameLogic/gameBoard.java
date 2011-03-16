@@ -54,7 +54,11 @@ public class gameBoard extends Board{
 		}
 		for(Listener move: action.movingPiece.moves){
 			if(move.equals(action)){
-				return move.execute();
+				if(move.execute()){
+					playerMap.get(true).setMatedStatus(isCheckMate(playerMap.get(true)));
+					playerMap.get(false).setMatedStatus(isCheckMate(playerMap.get(false)));
+					return true;
+				}
 			}
 		}
 		return false;

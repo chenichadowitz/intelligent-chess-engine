@@ -24,6 +24,7 @@ public class Take extends Listener {
 		}		
 		action += "x" + numToLet.substring(FinalPos[0],FinalPos[0]+1);
 		action += (FinalPos[1]+1);
+		if(putInCheck){action += "+";}		
 		return action;
 	}
 	public boolean execute(){
@@ -65,6 +66,7 @@ public class Take extends Listener {
 			newPiece.generateMoves();
 			newPiece.addToBoardState();
 		}
+		putInCheck = currentBoard.playerMap.get(!color).getCheckStatus();
 		Debug.debug(this.toString(),1);
 		return true;
 	}
@@ -77,6 +79,7 @@ public class Take extends Listener {
 		movingPiece.generateMoves();
 		movingPiece.addToBoardState();
 		currentBoard.update(OrigPos,FinalPos);
+		currentBoard.setKingCheck();
 	}
 	
 	

@@ -11,6 +11,7 @@ public class Listener{
 	protected Piece movingPiece;
 	protected boolean oldCastle;
 	protected String description;
+	protected boolean putInCheck;
 	
 	public Listener(int x1, int y1, int x2, int y2, Board place){
 		currentBoard = place;
@@ -55,6 +56,13 @@ public class Listener{
 		}
 		return false;
 	}
+	public boolean resultsInCheck(){
+		if(execute()){undo(); return false;}
+		return true;
+	}
+	
+	
+	
 	public void addMoveToBS(){
 		if(currentBoard.boardState[FinalPos[0]][FinalPos[1]].contains(movingPiece)){
 			Debug.debug("WARNING: " +movingPiece+ " already exists on boardState", 1);
