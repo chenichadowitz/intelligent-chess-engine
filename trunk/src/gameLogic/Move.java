@@ -66,6 +66,7 @@ public class Move extends Listener{
 			currentBoard.pieces.add(newPiece);
 			newPiece.generateMoves();
 			newPiece.addToBoardState();
+			currentBoard.update(FinalPos);
 		}
 		putInCheck = currentBoard.playerMap.get(!color).getCheckStatus();
 		Output.debug(this.toString(),1);
