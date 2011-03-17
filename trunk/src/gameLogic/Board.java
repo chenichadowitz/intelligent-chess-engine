@@ -165,7 +165,7 @@ public abstract class Board {
 			boolean inCheck = false;
 			if(kingFinder.pieceType.equals("K")){
 				for(Piece affectingPiece: boardState[kingFinder.position[0]][kingFinder.position[1]]){
-					inCheck = inCheck || (affectingPiece.color != kingFinder.color);
+					inCheck = inCheck || (affectingPiece.color != kingFinder.color && affectingPiece.getMoveTo(kingFinder.position).description.equals("Take"));
 				}
 				Player curPlayer = playerMap.get(kingFinder.color);
 				curPlayer.setCheckStatus(inCheck);
