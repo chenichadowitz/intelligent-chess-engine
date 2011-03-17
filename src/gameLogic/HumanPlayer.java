@@ -2,6 +2,8 @@ package gameLogic;
 import java.util.*;
 import java.util.regex.*;
 
+import main.Input;
+
 public class HumanPlayer extends Player {
 
 	private Scanner moveReader = new Scanner(System.in);
@@ -11,6 +13,10 @@ public class HumanPlayer extends Player {
 	
 	public HumanPlayer(boolean color){
 		this.color = color;
+	}
+	
+	public char getPromotion(){
+		return Input.getPromotion();
 	}
 	
 	public int[] getMove() {

@@ -89,6 +89,20 @@ public class BoardPanel extends JPanel implements ActionListener{
 		}
 	}
 	
+	public String promotionPrompt(){
+		Object[] choices = {"Queen", "Rook", "Bishop", "Knight"};
+		String s = (String) JOptionPane.showInputDialog(this, "Choose promotion type:", 
+				"Promote to...",
+				JOptionPane.PLAIN_MESSAGE,
+				null,
+				choices,
+				"Queen");
+		if(s != null && s.length() > 0){
+			return s;
+		}
+		return "Queen";
+	}
+	
 	public void setOpponents(String a, String b){
 		opponents.setText(a + " vs. " + b);
 	}
@@ -115,6 +129,7 @@ public class BoardPanel extends JPanel implements ActionListener{
 		if(src == newgame){
 			gb.setUpBoard();
 			this.setupBoard(gb);
+			logViewer.setText("");
 		}
 		else if(src == quit){
 			System.exit(0);

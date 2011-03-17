@@ -127,7 +127,7 @@ public abstract class Board {
 		return null; //no piece at square !!!BOOM!!!
 	}
 	
-	public  void takePiece(Piece taken){
+	public void takePiece(Piece taken){
 		Output.debug("took " + taken, 3);
 		taken.removeFromBoardState();
 		pieces.remove(taken);
@@ -141,7 +141,8 @@ public abstract class Board {
 	
 	public void addMovetoLog(Listener l){
 		moveLog.add(l);
-		Output.printNotation(l);
+		boolean mated = (playerMap.get(true).isMated() || playerMap.get(false).isMated());
+		Output.printNotation(l, mated);
 	}
 	
 	public String moveLogtoString(){
@@ -189,9 +190,6 @@ public abstract class Board {
 		ArrayList<Listener> allValidMoves = new ArrayList<Listener>();
 		for(Listener moveChecker: allMoves){
 			if(!moveChecker.resultsInCheck()){allValidMoves.add(moveChecker);}
-		}
-		for(Listener moves : allValidMoves){
-			System.out.println(moves);			
 		}
 		if(allValidMoves.size() > 0){return false;}
 		Output.debug(whosInCheck + " is mated. good game", 1);

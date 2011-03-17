@@ -49,7 +49,6 @@ public class Take extends Listener {
 			undo();
 			return false;
 		}
-		currentBoard.addMovetoLog(this);
 		if(movingPiece.pieceType.equals("P") && FinalPos[1]%7 == 0){
 			char newPieceType = owner.getPromotion();
 			toString();
@@ -57,14 +56,18 @@ public class Take extends Listener {
 			currentBoard.takePiece(movingPiece);
 			Piece newPiece;
 			switch(newPieceType){
-			case('R'): newPiece = new Rook(color,FinalPos[0],FinalPos[1],currentBoard);
-			break;
-			case('N'): newPiece = new Knight(color,FinalPos[0],FinalPos[1],currentBoard);
-			break;
-			case('B'): newPiece = new Bishop(color,FinalPos[0],FinalPos[1],currentBoard);
-			break;
-			default  : newPiece = new Queen(color,FinalPos[0],FinalPos[1],currentBoard);
-			break;
+				case('R'): 
+					newPiece = new Rook(color,FinalPos[0],FinalPos[1],currentBoard);
+					break;
+				case('N'): 
+					newPiece = new Knight(color,FinalPos[0],FinalPos[1],currentBoard);
+					break;
+				case('B'): 
+					newPiece = new Bishop(color,FinalPos[0],FinalPos[1],currentBoard);
+					break;
+				default  : 
+					newPiece = new Queen(color,FinalPos[0],FinalPos[1],currentBoard);
+					break;
 			}
 			currentBoard.pieces.add(newPiece);
 			newPiece.generateMoves();
