@@ -20,6 +20,7 @@ import javax.swing.event.MouseInputListener;
 
 import main.Output;
 
+@SuppressWarnings("serial")
 public class BoardArea extends JPanel implements MouseInputListener {
 	
 	private LinkedList<PieceGraphic> pieceGraphics;
