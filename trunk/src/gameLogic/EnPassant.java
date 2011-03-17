@@ -19,13 +19,11 @@ public class EnPassant extends Listener {
 		}
 	}
 	public String toString(){
-		if(!description.equals("En Passant")){return description;}
 		String numToLet = "abcdefgh";
 		String action = numToLet.substring(OrigPos[0],OrigPos[0]+1);
 		action += "x" + numToLet.substring(FinalPos[0],FinalPos[0]+1);
 		action += FinalPos[1]+1;
 		if(putInCheck){action += "+";}
-		description = action;
 		return action;
 	}
 	public boolean execute(){
