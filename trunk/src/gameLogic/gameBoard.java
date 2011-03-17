@@ -55,7 +55,6 @@ public class gameBoard extends Board{
 		}
 		for(Listener move: action.movingPiece.moves){
 			if(move.equals(action)){
-				
 				if(move.execute()){
 					playerMap.get(true).setMatedStatus(isCheckMate(playerMap.get(true)));
 					playerMap.get(false).setMatedStatus(isCheckMate(playerMap.get(false)));
@@ -64,6 +63,7 @@ public class gameBoard extends Board{
 				}
 			}
 		}
+		Output.debug(action.toString() + " is not in the available moves...", 4);
 		return false;
 	}
 }

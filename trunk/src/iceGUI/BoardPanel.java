@@ -130,6 +130,7 @@ public class BoardPanel extends JPanel implements ActionListener{
 			gb.setUpBoard();
 			this.setupBoard(gb);
 			logViewer.setText("");
+			turn.setText("White");
 		}
 		else if(src == quit){
 			System.exit(0);
