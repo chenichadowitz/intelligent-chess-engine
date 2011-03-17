@@ -10,22 +10,38 @@ public class Output {
 	private static int moveCounter = 1;
 	private static int halfMoveCounter = 0;
 	
+	public static void resetOutput(){
+		whiteTurn = true;
+		moveCounter = 1;
+		halfMoveCounter = 0;
+	}
+	
 	public static void setDebugLevel(int lvl){
 		maxLevel = lvl;
 	}
 	
-	public static void setGui(BoardPanel bp){
+	public static void setGUI(BoardPanel bp){
 		gui = bp;
+		Input.setGUI(bp);
 	}
 	
-	public static void printNotation(Listener l){
+	public static void printNotation(Listener l, boolean mated){
 		halfMoveCounter++;
 		if(whiteTurn){
 			print(moveCounter + ". " + l.toString());
+			if(mated){
+				print("+\n  1 - 0\n");
+			}
 		} else {
-			print("  " + l.toString() + "\n");
+			print("  " + l.toString());
+			if(mated){
+				print("+\n  0 - 1\n");
+			} else {
+				 print("\n");
+			}
 			moveCounter++;
 		}
+		
 		whiteTurn = !whiteTurn;
 	}
 	
@@ -33,7 +49,7 @@ public class Output {
 		if(gui != null){
 			gui.logGUI(s);
 		} else {
-			System.out.print(s);
+			System.out.println(s);
 		}
 	}
 	

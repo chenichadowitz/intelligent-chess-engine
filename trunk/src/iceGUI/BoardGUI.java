@@ -22,7 +22,7 @@ public class BoardGUI{
 		JMenuBar menuBar = new JMenuBar();
 	    dw.setJMenuBar(menuBar);
 		bp = new BoardPanel(menuBar);
-		Output.setGui(bp);
+		Output.setGUI(bp);
 		humanVShuman();
 		bp.setVisible(true);
 		dw.addPanel(bp);
@@ -33,9 +33,9 @@ public class BoardGUI{
 	public static void humanVShuman(){
 		Output.setDebugLevel(0);
 		HumanPlayer white = new HumanPlayer(true);
-		white.setName("c");		
+		white.setName("Player1");		
 		HumanPlayer black = new HumanPlayer(false);
-		black.setName("j");
+		black.setName("Player2");
 		bp.setOpponents(white.toString(), black.toString());
 		gameBoard gb = new gameBoard(white, black);
 		gb.setUpBoard();

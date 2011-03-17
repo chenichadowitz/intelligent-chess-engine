@@ -54,7 +54,6 @@ public class EnPassant extends Listener {
 			return false;
 		}
 		putInCheck = currentBoard.playerMap.get(!color).getCheckStatus();
-		currentBoard.addMovetoLog(this);
 		Output.debug(this.toString(),1);
 		return true;
 	}

@@ -19,6 +19,7 @@ public class gameBoard extends Board{
 		playersTurn = true;
 		boardState = (LinkedList<Piece>[][]) new LinkedList[8][8];
 		resetMoveLog();
+		Output.resetOutput();
 		//Add pieces
 		pieces.add(new Rook  (true, 0,0 ,this));
 		pieces.add(new Knight(true, 1,0 ,this));
@@ -46,7 +47,7 @@ public class gameBoard extends Board{
 		buildBoardState();
 		Output.debug("board set up",1);
 	}
-	
+		
 	public boolean movePiece(Listener action){
 		if(action.color != getTurn()){
 			Output.debug("wrong piece color", 1);
@@ -54,14 +55,15 @@ public class gameBoard extends Board{
 		}
 		for(Listener move: action.movingPiece.moves){
 			if(move.equals(action)){
+				
 				if(move.execute()){
 					playerMap.get(true).setMatedStatus(isCheckMate(playerMap.get(true)));
 					playerMap.get(false).setMatedStatus(isCheckMate(playerMap.get(false)));
+					addMovetoLog(move);
 					return true;
 				}
 			}
 		}
 		return false;
 	}
-
 }

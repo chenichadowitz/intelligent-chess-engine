@@ -43,7 +43,6 @@ public class Move extends Listener{
 			undo();
 			return false;
 		}
-		currentBoard.addMovetoLog(this);
 		if(movingPiece.pieceType.equals("P") && FinalPos[1]%7 == 0){
 			char newPieceType = owner.getPromotion();
 			toString();
