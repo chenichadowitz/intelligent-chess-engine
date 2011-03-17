@@ -1,7 +1,7 @@
 package gameLogic;
 import java.util.*;
 
-import main.Debug;
+import main.Output;
 
 @SuppressWarnings("unchecked")
 public abstract class Board {
@@ -9,14 +9,29 @@ public abstract class Board {
 	protected  boolean playersTurn = true; // whiteturn if true
 	protected  ArrayList<Piece> pieces = new ArrayList<Piece>();
 	protected LinkedList<Piece>[][] boardState = (LinkedList<Piece>[][]) new LinkedList[8][8];
-	protected ArrayList<Listener> moveLog = new ArrayList<Listener>();
+	private ArrayList<Listener> moveLog = new ArrayList<Listener>();
 	protected Listener curMove;
+	protected void resetMoveLog(){ moveLog = new ArrayList<Listener>(); }
 	public  boolean getTurn(){ return playersTurn;}
 	
+	/**
+	 * @return ArrayList<Piece> pieces
+	 */
 	public  ArrayList<Piece> getPieces(){ return pieces;}
 	
+	/**
+	 * @return LinkedList<Piece>[8][8] boardState 
+	 */
 	public LinkedList<Piece>[][] getBoardState(){ return boardState;}
 
+	/**
+	 * @param square int[2] square to check
+	 * @return boolean[2] in the following manner:
+	 		   true,true = occupied by white piece; 
+	 		   true,false  = occupied by black piece;  
+		 	   false,true  = unoccupied on board; 
+			   false,false = unoccupied off board
+	 */
 	public  boolean[] statusOfSquare(int[] square){
 		boolean[] squareStatus = {false,true};
 		//possible returns are:
@@ -40,11 +55,16 @@ public abstract class Board {
         }
 		return squareStatus;
 	}
+
+	/**
+	 * toggles the player turn
+	 */
 	public  void switchTurn(){
 		playersTurn = !playersTurn;
-		Debug.debug("switched turn", 3);
+		Output.debug("switched turn", 3);
 	}
-	public  void update(int[]... squares){
+
+	public void update(int[]... squares){
 		ArrayList<Piece> piecesToUpdate = new ArrayList<Piece>();
 		for(int[] square : squares){
 			for(Piece p : boardState[square[0]][square[1]]){
@@ -57,8 +77,12 @@ public abstract class Board {
 			currentPiece.addToBoardState();
 		}
 	}
+	
+	/**
+	 * @return String representation of the current gameboard state
+	 */
 	public String buildDisplay(){
-		Debug.debug("building board display...", 3);
+		Output.debug("building board display...", 3);
 		StringBuilder sb = new StringBuilder();
 		Piece current;
 		int[] place = new int[2];
@@ -79,8 +103,9 @@ public abstract class Board {
 		sb.append("    a  b  c  d  e  f  g  h\n");
 		return sb.toString();
 	}
+
 	public  void buildBoardState(){
-		Debug.debug("building boardState",3);
+		Output.debug("building boardState",3);
 		LinkedList<Piece> dummy = new LinkedList<Piece>();
 		for(int i=0; i<8; i++){
 			for(int j=0; j<8; j++){
@@ -101,16 +126,24 @@ public abstract class Board {
 		}
 		return null; //no piece at square !!!BOOM!!!
 	}
+	
 	public  void takePiece(Piece taken){
-		Debug.debug("took " + taken, 3);
+		Output.debug("took " + taken, 3);
 		taken.removeFromBoardState();
 		pieces.remove(taken);
 	}	
+	
 	abstract boolean movePiece(Listener action);
 	
 	public String toString(){
 		return "board"; 
 	}
+	
+	public void addMovetoLog(Listener l){
+		moveLog.add(l);
+		Output.printNotation(l);
+	}
+	
 	public String moveLogtoString(){
 		String log = "";
 		boolean logTurn = true;
@@ -126,6 +159,7 @@ public abstract class Board {
 		}
 		return log;
 	}
+	
 	public void setKingCheck(){
 		for(Piece kingFinder: pieces){
 			boolean inCheck = false;
@@ -136,11 +170,12 @@ public abstract class Board {
 				Player curPlayer = playerMap.get(kingFinder.color);
 				curPlayer.setCheckStatus(inCheck);
 				if(curPlayer.getCheckStatus()){
-					Debug.debug(curPlayer + " is in check", 2);
+					Output.debug(curPlayer + " is in check", 2);
 				}
 			}
 		}
 	}
+	
 	public boolean isCheckMate(Player whosInCheck){
 		if(whosInCheck.checkStatus != true){return false;} //add check for stalemate
 		ArrayList<Listener> allMoves = new ArrayList<Listener>();
@@ -159,7 +194,7 @@ public abstract class Board {
 			System.out.println(moves);			
 		}
 		if(allValidMoves.size() > 0){return false;}
-		Debug.debug(whosInCheck + " is mated. good game", 1);
+		Output.debug(whosInCheck + " is mated. good game", 1);
 		return true;
 	}
 

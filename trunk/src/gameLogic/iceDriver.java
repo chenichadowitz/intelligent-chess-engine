@@ -2,7 +2,7 @@ package gameLogic;
 
 import java.util.Scanner;
 
-import main.Debug;
+import main.Output;
 
 public class iceDriver {
 
@@ -11,7 +11,7 @@ public class iceDriver {
 	public static void humanVShuman(){
 		System.out.print("Max debug level: ");
 		if(genericScanner.hasNextInt()){
-			Debug.setDebugLevel(genericScanner.nextInt());
+			Output.setDebugLevel(genericScanner.nextInt());
 		}
 		HumanPlayer white = new HumanPlayer(true);
 		System.out.print("White player name: ");

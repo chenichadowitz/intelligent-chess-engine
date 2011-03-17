@@ -2,7 +2,7 @@ package iceGUI;
 
 import javax.swing.*;
 
-import main.Debug;
+import main.Output;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -94,7 +94,7 @@ public class BoardPanel extends JPanel implements ActionListener{
 	}
 	
 	public void logGUI(String str){
-		str += "\n";
+		//str += "\n";
 		logViewer.append(str);
 		logViewer.setCaretPosition(logViewer.getText().length());
 	}
@@ -125,12 +125,12 @@ public class BoardPanel extends JPanel implements ActionListener{
 		else if(src == clearLog){
 			logViewer.setText("");
 		}
-		else if(src == lvl0) Debug.setDebugLevel(0);
-		else if(src == lvl1) Debug.setDebugLevel(1);
-		else if(src == lvl2) Debug.setDebugLevel(2);
-		else if(src == lvl3) Debug.setDebugLevel(3);
-		else if(src == lvl4) Debug.setDebugLevel(4);
-		else if(src == lvl5) Debug.setDebugLevel(5);
+		else if(src == lvl0) Output.setDebugLevel(0);
+		else if(src == lvl1) Output.setDebugLevel(1);
+		else if(src == lvl2) Output.setDebugLevel(2);
+		else if(src == lvl3) Output.setDebugLevel(3);
+		else if(src == lvl4) Output.setDebugLevel(4);
+		else if(src == lvl5) Output.setDebugLevel(5);
 	}
 
 }

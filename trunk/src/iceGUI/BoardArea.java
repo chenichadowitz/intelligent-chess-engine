@@ -16,7 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
 
-import main.Debug;
+import main.Output;
 
 public class BoardArea extends JPanel implements MouseInputListener {
 	
@@ -193,7 +193,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 			move[1] = 8 - moveFrom[1];
 			move[2] = moveTo[0] - 1;
 			move[3] = 8 - moveTo[1];
-			Debug.debug(Arrays.toString(move), 2);
+			Output.debug(Arrays.toString(move), 2);
 			Listener moveobj = PieceMaker.MakeMove(gb, move);
 			if(gb.movePiece(moveobj)){
 				pg.moveTo(moveTo);
@@ -269,7 +269,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 				movePiece(pg, draggingOldLocation, pg.getBoardPos());
 			}
 		} else if(pg == null && draggingPiece != null && draggingOldLocation != null){
-			Debug.debug("Offscreen release", 2);
+			Output.debug("Offscreen release", 2);
 			movePiece(draggingPiece, draggingOldLocation, null);
 		}
 		draggingOldLocation = null;

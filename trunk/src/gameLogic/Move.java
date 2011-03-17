@@ -27,7 +27,7 @@ public class Move extends Listener{
 	public boolean execute(){
 		currentBoard.curMove = this;
 		if(!contains(movingPiece.moves,this)){
-			Debug.debug(movingPiece + " does not have that move", 1);
+			Output.debug(movingPiece + " does not have that move", 1);
 			return false;
 		}
 		movingPiece.removeFromBoardState();
@@ -39,11 +39,11 @@ public class Move extends Listener{
 		movingPiece.addToBoardState();
 		currentBoard.setKingCheck();
 		if(owner.getCheckStatus()){
-			Debug.debug("that move results in check", 1);
+			Output.debug("that move results in check", 1);
 			undo();
 			return false;
 		}
-		currentBoard.moveLog.add(this);
+		currentBoard.addMovetoLog(this);
 		if(movingPiece.pieceType.equals("P") && FinalPos[1]%7 == 0){
 			char newPieceType = owner.getPromotion();
 			toString();
@@ -51,21 +51,25 @@ public class Move extends Listener{
 			currentBoard.takePiece(movingPiece);
 			Piece newPiece;
 			switch(newPieceType){
-			case('R'): newPiece = new Rook(color,FinalPos[0],FinalPos[1],currentBoard);
-			break;
-			case('N'): newPiece = new Knight(color,FinalPos[0],FinalPos[1],currentBoard);
-			break;
-			case('B'): newPiece = new Bishop(color,FinalPos[0],FinalPos[1],currentBoard);
-			break;
-			default  : newPiece = new Queen(color,FinalPos[0],FinalPos[1],currentBoard);
-			break;
+				case('R'): 
+					newPiece = new Rook(color,FinalPos[0],FinalPos[1],currentBoard);
+					break;
+				case('N'): 
+					newPiece = new Knight(color,FinalPos[0],FinalPos[1],currentBoard);
+					break;
+				case('B'): 
+					newPiece = new Bishop(color,FinalPos[0],FinalPos[1],currentBoard);
+					break;
+				default :
+					newPiece = new Queen(color,FinalPos[0],FinalPos[1],currentBoard);
+					break;
 			}
 			currentBoard.pieces.add(newPiece);
 			newPiece.generateMoves();
 			newPiece.addToBoardState();
 		}
 		putInCheck = currentBoard.playerMap.get(!color).getCheckStatus();
-		Debug.debug(this.toString(),1);
+		Output.debug(this.toString(),1);
 		return true;
 	}
 	public void undo(){

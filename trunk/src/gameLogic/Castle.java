@@ -41,13 +41,13 @@ public class Castle extends Listener {
 		rook.addToBoardState();
 		currentBoard.setKingCheck();
 		if(owner.getCheckStatus()){
-			Debug.debug("that move results in check", 1);
+			Output.debug("that move results in check", 1);
 			undo();
 			return false;
 		}
 		putInCheck = currentBoard.playerMap.get(!color).getCheckStatus();
-		currentBoard.moveLog.add(this);
-		Debug.debug(this.toString(),1);
+		currentBoard.addMovetoLog(this);
+		Output.debug(this.toString(),1);
 		return true;
 	}
 	public void undo(){

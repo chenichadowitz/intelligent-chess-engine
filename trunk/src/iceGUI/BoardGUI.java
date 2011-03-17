@@ -5,7 +5,7 @@ import gameLogic.gameBoard;
 
 import javax.swing.*;
 
-import main.Debug;
+import main.Output;
 
 public class BoardGUI{
 	
@@ -22,7 +22,7 @@ public class BoardGUI{
 		JMenuBar menuBar = new JMenuBar();
 	    dw.setJMenuBar(menuBar);
 		bp = new BoardPanel(menuBar);
-		Debug.setGui(bp);
+		Output.setGui(bp);
 		humanVShuman();
 		bp.setVisible(true);
 		dw.addPanel(bp);
@@ -31,7 +31,7 @@ public class BoardGUI{
 	}
 	
 	public static void humanVShuman(){
-		Debug.setDebugLevel(1);
+		Output.setDebugLevel(0);
 		HumanPlayer white = new HumanPlayer(true);
 		white.setName("c");		
 		HumanPlayer black = new HumanPlayer(false);

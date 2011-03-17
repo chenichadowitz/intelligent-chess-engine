@@ -32,7 +32,7 @@ public class Take extends Listener {
 	public boolean execute(){
 		currentBoard.curMove = this;
 		if(!contains(movingPiece.moves,this)){
-			Debug.debug(movingPiece + " does not have that move", 1);
+			Output.debug(movingPiece + " does not have that move", 1);
 			return false;
 		}
 		movingPiece.removeFromBoardState();
@@ -45,11 +45,11 @@ public class Take extends Listener {
 		movingPiece.addToBoardState();
 		currentBoard.setKingCheck();
 		if(owner.getCheckStatus()){
-			Debug.debug("that move results in check", 1);
+			Output.debug("that move results in check", 1);
 			undo();
 			return false;
 		}
-		currentBoard.moveLog.add(this);
+		currentBoard.addMovetoLog(this);
 		if(movingPiece.pieceType.equals("P") && FinalPos[1]%7 == 0){
 			char newPieceType = owner.getPromotion();
 			toString();
@@ -71,7 +71,7 @@ public class Take extends Listener {
 			newPiece.addToBoardState();
 		}
 		putInCheck = currentBoard.playerMap.get(!color).getCheckStatus();
-		Debug.debug(this.toString(),1);
+		Output.debug(this.toString(),1);
 		return true;
 	}
 	public void undo(){
