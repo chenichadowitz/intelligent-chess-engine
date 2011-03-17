@@ -1,6 +1,6 @@
 package gameLogic;
 
-import main.Debug;
+import main.Output;
 
 public class EnPassant extends Listener {
 
@@ -15,7 +15,7 @@ public class EnPassant extends Listener {
 		taken[1] = FinalPos[1] - delta;
 		takenPiece = currentBoard.pieceAt(taken);
 		if(takenPiece == null){
-			Debug.debug("WARNING: no piece there", 1);
+			Output.debug("WARNING: no piece there", 1);
 		}
 	}
 	public String toString(){
@@ -31,12 +31,12 @@ public class EnPassant extends Listener {
 	public boolean execute(){
 		int[] posOfLastMove = currentBoard.curMove.movingPiece.position;
 		if(!(posOfLastMove[1] == movingPiece.position[1] && posOfLastMove[0] == FinalPos[0])){
-			Debug.debug("you lost your chance", 1);
+			Output.debug("you lost your chance", 1);
 			return false;
 		}
 		currentBoard.curMove = this;
 		if(!contains(movingPiece.moves,this)){
-			Debug.debug(movingPiece + " does not have that move", 1);
+			Output.debug(movingPiece + " does not have that move", 1);
 			return false;
 		}
 		movingPiece.removeFromBoardState();
@@ -49,13 +49,13 @@ public class EnPassant extends Listener {
 		movingPiece.addToBoardState();
 		currentBoard.setKingCheck();
 		if(owner.getCheckStatus()){
-			Debug.debug("that move results in check", 1);
+			Output.debug("that move results in check", 1);
 			undo();
 			return false;
 		}
 		putInCheck = currentBoard.playerMap.get(!color).getCheckStatus();
-		currentBoard.moveLog.add(this);
-		Debug.debug(this.toString(),1);
+		currentBoard.addMovetoLog(this);
+		Output.debug(this.toString(),1);
 		return true;
 	}
 	public void undo(){

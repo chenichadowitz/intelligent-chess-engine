@@ -2,14 +2,14 @@ package gameLogic;
 
 import java.util.*;
 
-import main.Debug;
+import main.Output;
 
 public class staticBoard extends Board{
 	ArrayList<staticBoard> boards = new ArrayList<staticBoard>();
 	int[] moveMade;
 	
 	public staticBoard(Board oldBoard,Listener action){
-		Debug.debug("//////staticBoard created",3);
+		Output.debug("//////staticBoard created",3);
 		playerMap.put(true, new Player());
 		playerMap.put(false, new Player());
 		for(Piece newPiece : oldBoard.getPieces()){

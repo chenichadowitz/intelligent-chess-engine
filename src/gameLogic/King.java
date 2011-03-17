@@ -1,6 +1,6 @@
 package gameLogic;
 
-import main.Debug;
+import main.Output;
 
 
 public class King extends Piece{
@@ -24,7 +24,7 @@ public class King extends Piece{
 		processSquare(position[0] +1,position[1]   );
 		processSquare(position[0] +1,position[1] +1);
 		if(castle){
-			Debug.debug("checking castling", 3);
+			Output.debug("checking castling", 3);
 			//castle king side
 			int delta = 1;
 			int[] edge = {position[0],(int)(3.5+3.5*delta)};

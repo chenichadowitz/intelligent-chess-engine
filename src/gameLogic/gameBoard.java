@@ -3,7 +3,7 @@ package gameLogic;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import main.Debug;
+import main.Output;
 
 public class gameBoard extends Board{
 	
@@ -18,7 +18,7 @@ public class gameBoard extends Board{
 		pieces = new ArrayList<Piece>();
 		playersTurn = true;
 		boardState = (LinkedList<Piece>[][]) new LinkedList[8][8];
-		moveLog = new ArrayList<Listener>();
+		resetMoveLog();
 		//Add pieces
 		pieces.add(new Rook  (true, 0,0 ,this));
 		pieces.add(new Knight(true, 1,0 ,this));
@@ -44,12 +44,12 @@ public class gameBoard extends Board{
 		}
 		
 		buildBoardState();
-		Debug.debug("board set up",1);
+		Output.debug("board set up",1);
 	}
 	
 	public boolean movePiece(Listener action){
 		if(action.color != getTurn()){
-			Debug.debug("wrong piece color", 1);
+			Output.debug("wrong piece color", 1);
 			return false;
 		}
 		for(Listener move: action.movingPiece.moves){

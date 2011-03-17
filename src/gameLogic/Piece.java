@@ -2,7 +2,7 @@ package gameLogic;
 
 import java.util.*;
 
-import main.Debug;
+import main.Output;
 public abstract class Piece {
 	protected boolean color; // true = white; false = black
 	protected String pieceType;
@@ -24,13 +24,13 @@ public abstract class Piece {
 		for(Listener action: moves){			
 			action.addMoveToBS();
 		}
-		Debug.debug(this + " added to boardState",3);
+		Output.debug(this + " added to boardState",3);
 	}
 	public void removeFromBoardState(){
 		for(Listener action: moves){
 			action.remMoveFrBS();
 		}
-		Debug.debug(this +" removed from boardState",3);
+		Output.debug(this +" removed from boardState",3);
 	}
 	public  boolean processSquare(int x, int y){ //returns true if square is empty
 		int[] square = {x,y};
@@ -38,7 +38,7 @@ public abstract class Piece {
 		if(status[0] || status[1]){
 			Listener newMove = PieceMaker.MakeMove(currentBoard,this,square);
 			if(moves.contains(newMove)){
-				Debug.debug("WARNING: " +this+ " already has that Move", 1);
+				Output.debug("WARNING: " +this+ " already has that Move", 1);
 			}			
 			moves.add(PieceMaker.MakeMove(currentBoard,this,square));
 			if(!status[0] && status[1]){return true;}
@@ -46,7 +46,7 @@ public abstract class Piece {
 		return false;
 	}
 	public  void generateMoves(){
-		Debug.debug(this + " generating moves", 3);
+		Output.debug(this + " generating moves", 3);
 		moves = new ArrayList<Listener>();
 	}
 
