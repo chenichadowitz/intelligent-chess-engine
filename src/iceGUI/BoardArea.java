@@ -2,11 +2,13 @@ package iceGUI;
 
 import gameLogic.*;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -129,9 +131,22 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	
 	private void drawPieceBorder(Graphics g, Dimension size){
 		if(lastClick != null){
-			g.setColor(Color.magenta);
-			g.drawRect(lastClick[0] * size.width / 10, lastClick[1] * size.height / 10, size.width / 10, size.height / 10);
+			Graphics2D g2 = (Graphics2D) g;
+			Stroke oldstroke = g2.getStroke();
+			g2.setStroke(new BasicStroke(2));
+			g2.setColor(Color.magenta);
+			g2.drawRect(lastClick[0] * size.width / 10, lastClick[1] * size.height / 10, size.width / 10, size.height / 10);
+			g2.setColor(Color.red);
+			for(Listener l : clickedPiece.getPiece().getMoves()){
+				//TODO: WILL NEED TO WEED OUT LISTENERS AND COVERS EVENTUALLY//
+				int[] temp = l.getFinalPos().clone();
+				temp[0] += 1;
+				temp[1] = 8 - temp[1];
+				g2.drawRect(temp[0] * size.width / 10, temp[1] * size.height / 10, size.width / 10, size.height / 10); 
+			}
+			g2.setStroke(oldstroke);
 		}
+		
 	}
 	
 	private void drawBoardGraphic(Graphics g, Dimension size){

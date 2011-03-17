@@ -10,6 +10,7 @@ public abstract class Piece {
 	protected boolean castle = false;
 	protected int[] position = new int[2]; // [x-coord,y-coord]
 	protected ArrayList<Listener> moves = new ArrayList<Listener>();
+	public ArrayList<Listener> getMoves(){ return moves;}
 	protected Board currentBoard;
 	
 	public  boolean canCastle() {return castle;}

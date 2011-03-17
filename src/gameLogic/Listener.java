@@ -5,6 +5,7 @@ import main.Output;
 public class Listener{
 	protected int[] OrigPos = new int[2];
 	protected int[] FinalPos =  new int[2];
+	public int[] getFinalPos(){ return FinalPos;}
 	protected Player owner;
 	protected boolean color;
 	protected Board currentBoard;
