@@ -27,7 +27,7 @@ public class King extends Piece{
 			Output.debug("checking castling", 3);
 			//castle king side
 			int delta = 1;
-			int[] edge = {position[0],(int)(3.5+3.5*delta)};
+			int[] edge = {(int)(3.5+3.5*delta),position[1]};
 			if(currentBoard.pieceAt(edge) != null && currentBoard.pieceAt(edge).canCastle()){
 				int[] possibleMove = {position[0]+delta,position[1]};
 				Listener moveChecker = this.getMoveTo(possibleMove);
@@ -43,7 +43,7 @@ public class King extends Piece{
 			}
 			//castle queen side
 			delta = -1;
-			edge[1] = (int)(3.5+3.5*delta);
+			edge[0] = (int)(3.5+3.5*delta);
 			if(currentBoard.pieceAt(edge) != null && currentBoard.pieceAt(edge).canCastle()){
 				int[] possibleMove = {position[0]+delta,position[1]};
 				Listener moveChecker = this.getMoveTo(possibleMove);

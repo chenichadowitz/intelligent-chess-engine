@@ -12,7 +12,6 @@ public class Move extends Listener{
 	}
 
 	public String toString(){
-		if(!description.equals("Move")){return description;}
 		String numToLet = "abcdefgh";
 		String action = "";
 		if(!movingPiece.pieceType.equals("P")){
@@ -21,7 +20,6 @@ public class Move extends Listener{
 		action += numToLet.substring(FinalPos[0],FinalPos[0]+1);
 		action += (FinalPos[1]+1);
 		if(putInCheck){action += "+";}	
-		description = action;
 		return action;
 	}
 	public boolean execute(){
