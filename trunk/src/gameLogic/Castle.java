@@ -1,4 +1,6 @@
 package gameLogic;
+import java.util.Arrays;
+
 import main.*;
 
 public class Castle extends Listener {
@@ -26,6 +28,7 @@ public class Castle extends Listener {
 		return action;
 	}
 	public boolean execute(){
+		if(!Arrays.equals(rook.position,rookLocation)){return false;}
 		currentBoard.curMove = this;
 		movingPiece.removeFromBoardState();
 		rook.removeFromBoardState();
