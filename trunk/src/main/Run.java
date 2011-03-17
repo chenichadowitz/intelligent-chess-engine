@@ -1,6 +1,6 @@
 package main;
 
-public class main {
+public class Run {
 
 	/**
 	 * @param args

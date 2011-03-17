@@ -1,6 +1,7 @@
 package iceGUI;
 import java.awt.*;
 import javax.swing.*;
+@SuppressWarnings("serial")
 public  class DisplayWindow extends JFrame{
 
   private Container c;

@@ -6,11 +6,10 @@ import main.Output;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 
-import gameLogic.Piece;
 import gameLogic.gameBoard;
 
+@SuppressWarnings("serial")
 public class BoardPanel extends JPanel implements ActionListener{
 	
 	JMenuBar menubar;
