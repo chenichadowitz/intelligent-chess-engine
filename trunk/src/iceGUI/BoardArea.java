@@ -200,6 +200,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		Dimension size = this.getSize();
 		int[] transPt = {pixels[0] / (size.width / 10), pixels[1] / (size.height / 10)};
 		if(flipBoard){
+			transPt[0] = 9 - transPt[0];
 			transPt[1] = 9 - transPt[1];
 		}
 		return transPt;
