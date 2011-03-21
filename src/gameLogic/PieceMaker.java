@@ -5,7 +5,8 @@ public class PieceMaker {
 	public static Listener MakeMove(Board place, int x1, int y1, int x2, int y2){
 		int[] FinalPos = {x2,y2};
 		int[] OrigPos  = {x1,y1};
-
+		if(place.pieceAt(OrigPos) == null){return null;}
+		
 		if(place.pieceAt(FinalPos) != null){
 			if(place.pieceAt(FinalPos).color == place.pieceAt(OrigPos).color){
 				return new Cover(x1,y1,x2,y2,place);

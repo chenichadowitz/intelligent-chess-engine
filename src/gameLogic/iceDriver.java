@@ -7,47 +7,58 @@ import main.Output;
 public class iceDriver {
 
 	private static Scanner genericScanner = new Scanner(System.in);
+	private static gameBoard gb;
 	
-	public static void humanVShuman(){
-		System.out.print("Max debug level: ");
+	public static void getPlayersSetUpBoard(){
+		Player white = null;
+		Player black = null;
+		System.out.println("0 = human; 1 = computer");
+		System.out.print("white player's type: ");
 		if(genericScanner.hasNextInt()){
-			Output.setDebugLevel(genericScanner.nextInt());
+			int playerType = genericScanner.nextInt();
+			if(playerType == 0){
+				white = new HumanPlayer(true);
+			}
+			else{
+				white = new ComputerPlayer(true, 1);
+			}
+			System.out.print("White player name: ");
+			if(genericScanner.hasNext()){
+				white.setName(genericScanner.next());
+			}
+			System.out.println();
 		}
-		HumanPlayer white = new HumanPlayer(true);
-		System.out.print("White player name: ");
-		if(genericScanner.hasNext()){
-			white.setName(genericScanner.next());
+		System.out.print("black player's type: ");
+		if(genericScanner.hasNextInt()){
+			int playerType = genericScanner.nextInt();
+			if(playerType == 0){
+				black = new HumanPlayer(false);
+			}
+			else{
+				black = new ComputerPlayer(false, 1);
+			}
+			System.out.print("White player name: ");
+			if(genericScanner.hasNext()){
+				black.setName(genericScanner.next());
+			}
+			System.out.println();
 		}
-		System.out.println();
-		HumanPlayer black = new HumanPlayer(false);
-		System.out.print("Black player name: ");
-		if(genericScanner.hasNext()){
-			black.setName(genericScanner.next());
-		}
-		System.out.println();
-		HumanPlayer current;
-		gameBoard gb = new gameBoard(white, black);
+		gb = new gameBoard(white, black);
 		gb.setUpBoard();
+	}
+	public static void play(){
+		Player current;
 		boolean moveResult;
 		System.out.println(gb.buildDisplay());
-		while(true){
-			if(gb.getTurn()){
-				current = white;
-			} else {
-				current = black;
-			}
+		while(!gb.playerMap.get(true).isMated() && !gb.playerMap.get(false).isMated()){
+			current = gb.playerMap.get(gb.getTurn());
 			moveResult = false;
 			while(!moveResult){
 				System.out.println("Current player: " + current);
-				System.out.print("Move (e.g. 1122): ");
-				int[] move = current.getMove();
-				System.out.println();
-				if(move.length != 0){
-					for(int i=0;i<4;i++) move[i]--;
-					Listener moveObj = PieceMaker.MakeMove(gb,move);
-					moveResult = gb.movePiece(moveObj);
-				} else { 
-					System.out.println(gb.buildDisplay());
+				Listener move = current.getMove();
+				if(move == null){System.out.println(gb.buildDisplay());}
+				else{
+					moveResult = gb.movePiece(move);
 				}
 			}
 			System.out.println(gb.buildDisplay());
@@ -56,7 +67,12 @@ public class iceDriver {
 	}
 
 	public static void run(String[] args) {
-			humanVShuman();
+		System.out.print("Max debug level: ");
+		if(genericScanner.hasNextInt()){
+			Output.setDebugLevel(genericScanner.nextInt());
+		}
+		getPlayersSetUpBoard();
+		play();
 	}
 
 }

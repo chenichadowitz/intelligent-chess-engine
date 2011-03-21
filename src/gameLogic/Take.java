@@ -77,6 +77,10 @@ public class Take extends Listener {
 		return true;
 	}
 	public void undo(){
+		if(movingPiece.getClass() == Pawn.class && FinalPos[1]%7 == 0){
+			currentBoard.takePiece(currentBoard.pieceAt(FinalPos));
+			currentBoard.pieces.add(movingPiece);
+		}		
 		movingPiece.removeFromBoardState();
 		movingPiece.setPosition(OrigPos);
 		currentBoard.pieces.add(takenPiece);

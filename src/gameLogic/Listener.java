@@ -44,9 +44,6 @@ public class Listener{
 		boolean equals = true;
 		equals = equals && Arrays.equals(OrigPos, test.OrigPos);
 		equals = equals && Arrays.equals(FinalPos, test.FinalPos);
-		equals = equals && (movingPiece.equals(test.movingPiece));
-		equals = equals && (owner == test.owner);
-		equals = equals && (currentBoard.equals(test.currentBoard));
 		return equals;
 	}
 	public static boolean contains(ArrayList<Listener> haystack, Listener needle){
