@@ -19,7 +19,8 @@ public class HumanPlayer extends Player {
 		return Input.getPromotion();
 	}
 	
-	public int[] getMove() {
+	public Listener getMove() {
+		System.out.print("Move (e.g. 1122): ");
 		int moveNums;
 		while(!moveReader.hasNextInt()){
 			if(moveReader.hasNext()){
@@ -31,7 +32,7 @@ public class HumanPlayer extends Player {
 					if(matchPat.matches()){
 						return ahMoveToInt(s);
 					}
-						return new int[0];
+						return null;
 				}
 			}
 		}
@@ -51,14 +52,15 @@ public class HumanPlayer extends Player {
 				c--;
 			}
 		}
-		return lastMove;
+		for(int dec = 0; dec < 4; dec++){lastMove[dec]--;}
+		return PieceMaker.MakeMove(myBoard,lastMove);
 	}
 	
 	public int[] getLastMove() {
 		return lastMove;
 	}
 	
-	private int[] ahMoveToInt(String s){
+	private Listener ahMoveToInt(String s){
 		s = s.toLowerCase();
 		int let1 = s.charAt(0) - 'a' + 1;
 		int num1 = s.charAt(1) - '0';
@@ -71,14 +73,14 @@ public class HumanPlayer extends Player {
 			&& (0 < num2 && num2 < 9) ){
 			//First and third chars are a letter a-h indeed
 			//Second and fourth chars are a int 1-8 indeed (now translated to 0-7)
-			toReturn[0] = let1;
-			toReturn[1] = num1;
-			toReturn[2] = let2;
-			toReturn[3] = num2;
-			return toReturn;
+			toReturn[0] = let1-1;
+			toReturn[1] = num1-1;
+			toReturn[2] = let2-1;
+			toReturn[3] = num2-1;
+			return PieceMaker.MakeMove(myBoard,toReturn);
 		} else {
 			// If not, then just return an empty int[] array length 0
-			return new int[0];
+			return null;
 		}
 	}
 }

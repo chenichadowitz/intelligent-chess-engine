@@ -10,6 +10,8 @@ public class gameBoard extends Board{
 	public gameBoard(Player player1, Player player2){
 		playerMap.put(true, player1);
 		playerMap.put(false, player2);
+		playerMap.get(true).setBoard(this);
+		playerMap.get(false).setBoard(this);
 	}
 	
 	@SuppressWarnings("unchecked")

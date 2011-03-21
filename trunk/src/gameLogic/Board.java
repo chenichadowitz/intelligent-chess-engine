@@ -136,7 +136,7 @@ public abstract class Board {
 	abstract boolean movePiece(Listener action);
 	
 	public String toString(){
-		return "board"; 
+		return buildDisplay(); 
 	}
 	
 	public void addMovetoLog(Listener l){
@@ -176,12 +176,10 @@ public abstract class Board {
 			}
 		}
 	}
-	
-	public boolean isCheckMate(Player whosInCheck){
-		if(whosInCheck.checkStatus != true){return false;} //add check for stalemate
+	public ArrayList<Listener> allValidMovesOf(Player currentPlayer){
 		ArrayList<Listener> allMoves = new ArrayList<Listener>();
 		for(Piece curPiece: pieces){
-			if(curPiece.color == whosInCheck.color){
+			if(curPiece.color == currentPlayer.color){
 				for(Listener moveAdder: curPiece.moves){
 					allMoves.add(moveAdder);
 				}
@@ -191,6 +189,14 @@ public abstract class Board {
 		for(Listener moveChecker: allMoves){
 			if(!moveChecker.resultsInCheck()){allValidMoves.add(moveChecker);}
 		}
+		return allValidMoves;
+	}
+	
+	
+	
+	public boolean isCheckMate(Player whosInCheck){
+		if(whosInCheck.checkStatus != true){return false;} //add check for stalemate
+		ArrayList<Listener> allValidMoves = allValidMovesOf(whosInCheck);		
 		if(allValidMoves.size() > 0){return false;}
 		Output.debug(whosInCheck + " is mated. good game", 1);
 		return true;
