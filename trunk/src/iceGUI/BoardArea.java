@@ -42,7 +42,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		java.net.URL imageURL = cldr.getResource("resources/images/board.png");
 		boardImage = new ImageIcon(imageURL);
 		imageURL = cldr.getResource("resources/images/boardRev.png");
-		boardRevImage = new ImageIcon("resources/boardRev.png");
+		boardRevImage = new ImageIcon(imageURL);
 		addMouseListener(this);
 		addMouseMotionListener(this);
 	}
