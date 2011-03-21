@@ -32,12 +32,17 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	private PieceGraphic clickedPiece;
 	private gameBoard gb;
 	private BoardPanel bp;
-	private ImageIcon boardImage = new ImageIcon("resources/board.png");
-	private ImageIcon boardRevImage = new ImageIcon("resources/boardRev.png");
+	private ImageIcon boardImage;
+	private ImageIcon boardRevImage;
 	
 	public BoardArea(BoardPanel bp){
 		super();
 		this.bp = bp;
+		ClassLoader cldr = this.getClass().getClassLoader();
+		java.net.URL imageURL = cldr.getResource("resources/images/board.png");
+		boardImage = new ImageIcon(imageURL);
+		imageURL = cldr.getResource("resources/images/boardRev.png");
+		boardRevImage = new ImageIcon("resources/boardRev.png");
 		addMouseListener(this);
 		addMouseMotionListener(this);
 	}
@@ -57,7 +62,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		for(Piece p : gb.getPieces()){
 			pg = contains(p);
 			if(pg == null){
-				pieceGraphics.add(PieceGraphic.makePieceGraphic(p));
+				pieceGraphics.add(PieceGraphic.makePieceGraphic(this, p));
 			} else {
 				if(pg.getPiece().getPosition() != null){
 					pieceXY = pg.getPiece().getPosition().clone();
@@ -77,7 +82,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		flipBoard = false;
 		pieceGraphics = new LinkedList<PieceGraphic>();
 		for(Piece p : gb.getPieces()){
-			pieceGraphics.add(PieceGraphic.makePieceGraphic(p));
+			pieceGraphics.add(PieceGraphic.makePieceGraphic(this, p));
 		}
 		repaint();
 	}

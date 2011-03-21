@@ -23,40 +23,41 @@ public class PieceGraphic {
 	 * @param p Piece object to 'wrap' around
 	 * @return new PieceGraphic object 'wrapped' around the provided piece
 	 */
-	public static PieceGraphic makePieceGraphic(Piece p){
+	public static PieceGraphic makePieceGraphic(BoardArea ba, Piece p){
 		int[] xy = new int[2];
 		xy = p.getPosition().clone();
 		xy[0] += 1;
 		xy[1] = 8 - xy[1];
+		ClassLoader cldr = ba.getClass().getClassLoader();
 		if(p.getColor()){
 			switch(p.type()){
 				case 'K':
-					return new PieceGraphic(new ImageIcon("resources/orig/whiteKing.png"), xy, p);
+					return new PieceGraphic(new ImageIcon(cldr.getResource("resources/images/whiteKing.png")), xy, p);
 				case 'Q':
-					return new PieceGraphic(new ImageIcon("resources/orig/whiteQueen.png"), xy, p);
+					return new PieceGraphic(new ImageIcon(cldr.getResource("resources/images/whiteQueen.png")), xy, p);
 				case 'R':
-					return new PieceGraphic(new ImageIcon("resources/orig/whiteRook.png"), xy, p);
+					return new PieceGraphic(new ImageIcon(cldr.getResource("resources/images/whiteRook.png")), xy, p);
 				case 'B':
-					return new PieceGraphic(new ImageIcon("resources/orig/whiteBishop.png"), xy, p);
+					return new PieceGraphic(new ImageIcon(cldr.getResource("resources/images/whiteBishop.png")), xy, p);
 				case 'N':
-					return new PieceGraphic(new ImageIcon("resources/orig/whiteKnight.png"), xy, p);
+					return new PieceGraphic(new ImageIcon(cldr.getResource("resources/images/whiteKnight.png")), xy, p);
 				case 'P':
-					return new PieceGraphic(new ImageIcon("resources/orig/whitePawn.png"), xy, p);
+					return new PieceGraphic(new ImageIcon(cldr.getResource("resources/images/whitePawn.png")), xy, p);
 			}
 		} else {
 			switch(p.type()){
 				case 'K':
-					return new PieceGraphic(new ImageIcon("resources/orig/blackKing.png"), xy, p);
+					return new PieceGraphic(new ImageIcon(cldr.getResource("resources/images/blackKing.png")), xy, p);
 				case 'Q':
-					return new PieceGraphic(new ImageIcon("resources/orig/blackQueen.png"), xy, p);
+					return new PieceGraphic(new ImageIcon(cldr.getResource("resources/images/blackQueen.png")), xy, p);
 				case 'R':
-					return new PieceGraphic(new ImageIcon("resources/orig/blackRook.png"), xy, p);
+					return new PieceGraphic(new ImageIcon(cldr.getResource("resources/images/blackRook.png")), xy, p);
 				case 'B':
-					return new PieceGraphic(new ImageIcon("resources/orig/blackBishop.png"), xy, p);
+					return new PieceGraphic(new ImageIcon(cldr.getResource("resources/images/blackBishop.png")), xy, p);
 				case 'N':
-					return new PieceGraphic(new ImageIcon("resources/orig/blackKnight.png"), xy, p);
+					return new PieceGraphic(new ImageIcon(cldr.getResource("resources/images/blackKnight.png")), xy, p);
 				case 'P':
-					return new PieceGraphic(new ImageIcon("resources/orig/blackPawn.png"), xy, p);
+					return new PieceGraphic(new ImageIcon(cldr.getResource("resources/images/blackPawn.png")), xy, p);
 			}
 		}
 		return null;
