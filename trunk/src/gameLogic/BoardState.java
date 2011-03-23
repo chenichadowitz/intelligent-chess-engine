@@ -82,6 +82,26 @@ public class BoardState {
 	}
 	
 	/**
+	 * Remove the given move's Piece from the given square
+	 * @param square square to remove the move's Piece from
+	 * @param action the move whose Piece to remove
+	 */
+	public void removeMove(int[] square, Listener action){
+		map.get(square).remove(action.movingPiece);
+	}
+	
+	/**
+	 * Remove the given move's Piece from the given square
+	 * @param x x-coordinate of the square to remove the move's Piece from
+	 * @param y y-coordinate of the square to remove the move's Piece from
+	 * @param action the move whose Piece to remove
+	 */
+	public void removeMove(int x, int y, Listener action){
+		int[] square = {x,y};
+		this.removeMove(square, action);
+	}
+	
+	/**
 	 * Clear the BoardState and re-initialize it to empty
 	 */
 	public void clearBoardState(){
