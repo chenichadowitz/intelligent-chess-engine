@@ -144,23 +144,6 @@ public abstract class Board {
 		boolean mated = (playerMap.get(true).isMated() || playerMap.get(false).isMated());
 		Output.printNotation(l, mated);
 	}
-	
-	public String moveLogtoString(){
-		String log = "";
-		boolean logTurn = true;
-		for(Listener move: moveLog){
-			if(logTurn){log +=("\n" + (moveLog.indexOf(move)/2 +1) + ". " + move.toString());}
-			else	   {log +=( "  " + move.toString());}
-			logTurn = !logTurn;
-		}
-		if(playerMap.get(true).isMated() || playerMap.get(false).isMated()){
-			log += "+ \n";
-			if(playerMap.get(true).isMated()){log += "  0-1";}
-			else{log += "  1-0";}
-		}
-		return log;
-	}
-	
 	public void setKingCheck(){
 		for(Piece kingFinder: pieces){
 			boolean inCheck = false;
