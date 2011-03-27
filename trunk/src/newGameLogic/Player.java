@@ -11,7 +11,7 @@ public abstract class Player {
 	 * @return returns the char of the piece to promote the pawn to
 	 */
 	
-	public abstract char getPromotion();
+	public abstract PieceEnum getPromotion();
 	public abstract void ponder(); 
 	
 	public Move getMove(){return nextMove;}
