@@ -9,36 +9,42 @@ public abstract class Player {
 
 	/**
 	 * @return returns the char of the piece to promote the pawn to
-	 */
-	
+	 */	
 	public abstract PieceEnum getPromotion();
+	
+	/**
+	 * sets the player thinking sets nextMove to a non-null move
+	 */	
 	public abstract void ponder(); 
 	
+	/**
+	 * @return the player's next move
+	 */
 	public Move getMove(){return nextMove;}
 
 	/**
-	 * @return the inCheck
+	 * @return the player's check status
 	 */
 	public boolean isInCheck() {
 		return inCheck;
 	}
 
 	/**
-	 * @param inCheck the inCheck to set
+	 * @param inCheck the new check status of the player
 	 */
 	public void setInCheck(boolean inCheck) {
 		this.inCheck = inCheck;
 	}
 
 	/**
-	 * @return the isInCheckMate
+	 * @return the mate status of the player
 	 */
 	public boolean isInCheckMate() {
 		return isInCheckMate;
 	}
 
 	/**
-	 * @param isInCheckMate the isInCheckMate to set
+	 * @param isInCheckMate the checkmate status of the player
 	 */
 	public void setInCheckMate(boolean isInCheckMate) {
 		this.isInCheckMate = isInCheckMate;

@@ -38,7 +38,7 @@ public abstract class Board {
 	 * @param square square to get the state of
 	 * @return the state of the square
 	 */
-	public  SquareState statusOfSquare(int[] square){
+	private  SquareState statusOfSquare(int[] square){
 		if(square[0] < 0 || square[1] < 0 || square[0] > 7  || square[1] > 7){
 			return SquareState.OffBoard;
 		}else{
@@ -56,15 +56,15 @@ public abstract class Board {
 	/**
 	 * switches the player's turn
 	 */
-	public  void switchTurn(){
+	public void switchTurn(){
 		turn = turn.next();
 		Output.debug("switched turn", 3);
 	}
 	/**
-	 * updates the given square's boardStatus pieces
+	 * updates the given squares' boardStatus pieces
 	 * @param squares the square to update
 	 */
-	public void update(int[]... squares){
+	private void update(int[]... squares){
 		ArrayList<Piece> piecesToUpdate = new ArrayList<Piece>();
 		for(int[] square : squares){
 			for(Piece p : boardStatus.getPieceList(square)){
@@ -78,10 +78,10 @@ public abstract class Board {
 		}
 	}
 	/**
-	 * add's the given piece to the boardstate
+	 * add's the given piece to the boardstatus
 	 * @param currentPiece piece to add
 	 */
-	public void addPieceToBoardState(Piece currentPiece) {
+	private void addPieceToBoardState(Piece currentPiece) {
 		for(Move currentMove: currentPiece.getMoves()){
 			boardStatus.addPiece(currentMove.getFinalPos(), currentPiece);
 		}		
@@ -90,7 +90,7 @@ public abstract class Board {
 	 * generates moves for the given piece
 	 * @param currentPiece piece to generate moves for
 	 */
-	public void generateMovesfor(Piece currentPiece) {
+	private void generateMovesfor(Piece currentPiece) {
 		ArrayList<Move> newMoves = new ArrayList<Move>();
 		switch(currentPiece.getType()){
 			case Bishop:
@@ -345,7 +345,7 @@ public abstract class Board {
 	 * removes the given piece from the boardstate
 	 * @param currentPiece the piece to remove
 	 */
-	public void removePieceFromBoardState(Piece currentPiece) {
+	private void removePieceFromBoardState(Piece currentPiece) {
 		for(Move currentMove: currentPiece.getMoves()){
 			boardStatus.removePiece(currentMove.getFinalPos(), currentPiece);
 		}		
@@ -354,7 +354,7 @@ public abstract class Board {
 	/**
 	 * @return String representation of the current gameboard state
 	 */
-	public String buildDisplay(){
+	private String buildDisplay(){
 		Output.debug("building board display...", 3);
 		StringBuilder sb = new StringBuilder();
 		Piece current;
@@ -391,7 +391,7 @@ public abstract class Board {
 	 * removes the given piece from the boardState and piece array the piece is now dead
 	 * @param taken piece to take
 	 */
-	public void takePiece(Piece taken){
+	private void takePiece(Piece taken){
 		Output.debug("took " + taken, 3);
 		removePieceFromBoardState(taken);
 		pieces.remove(taken);
@@ -418,7 +418,7 @@ public abstract class Board {
 	/**
 	 * determines whether each player is in check by finding all kings and setting the player in check if any of those kings are being threatened
 	 */
-	public void setKingCheck(){
+	private void setKingCheck(){
 		for(Piece kingFinder: pieces){
 			boolean inCheck = false;
 			if(kingFinder.getType() == PieceEnum.King){
@@ -438,7 +438,7 @@ public abstract class Board {
 	 * @param m move to test
 	 * @return returns true if move can be made
 	 */
-	public boolean MoveResultsInCheck(Move m){
+	private boolean MoveResultsInCheck(Move m){
 		if(execute(m)){undo(m); return false;}
 		return true;
 	}
@@ -447,7 +447,7 @@ public abstract class Board {
 	 * @param m move to execute
 	 * @return returns if the moves succeeded or not
 	 */
-	public boolean execute(Move m) {
+	protected boolean execute(Move m) {
 		String notation = "";
 		Piece p = pieceAt(m.getOrigPos());
 		int[] rookLocation = new int[2];
@@ -456,7 +456,7 @@ public abstract class Board {
 			Output.debug("wrong turn",1);
 			return false;
 		}
-		switch(m.type){
+		switch(m.getType()){
 		case Take:
 			if(pieceAt(m.getFinalPos()) == null){
 				Output.debug("no piece to take", 1);
@@ -487,7 +487,7 @@ public abstract class Board {
 		}
 //string builder
 		String numToLet = "abcdefgh";
-		if(p.getType() == PieceEnum.Pawn && (m.type == MoveEnum.Take || m.type == MoveEnum.EnPassant)){
+		if(p.getType() == PieceEnum.Pawn && (m.getType() == MoveEnum.Take || m.getType() == MoveEnum.EnPassant)){
 			notation += numToLet.charAt(p.getPosition()[0]) + "x";
 			
 		} else {
@@ -504,7 +504,7 @@ public abstract class Board {
 		}
 		notation += numToLet.charAt(m.getFinalPos()[0]) + m.getFinalPos()[1];
 //end of string builder
-		switch(m.type){
+		switch(m.getType()){
 		case Take: 
 			m.setAffectedPiece(pieceAt(m.getFinalPos()));
 			break;
@@ -527,15 +527,15 @@ public abstract class Board {
 		p.setPosition(m.getFinalPos());
 		generateMovesfor(p);
 		if(p.canCastle()){m.setOldCastle(true);}
-		if(m.type == MoveEnum.Take || m.type == MoveEnum.EnPassant){
+		if(m.getType() == MoveEnum.Take || m.getType() == MoveEnum.EnPassant){
 			takePiece(m.getAffectedPiece());
 		}
-		if(m.type == MoveEnum.Castle){
+		if(m.getType() == MoveEnum.Castle){
 			removePieceFromBoardState(m.getAffectedPiece());
 			m.getAffectedPiece().setPosition(rookMove);
 			generateMovesfor(m.getAffectedPiece());
 		}
-		switch(m.type){
+		switch(m.getType()){
 		case Move:
 			update(m.getOrigPos(),m.getFinalPos());
 			break;
@@ -573,11 +573,11 @@ public abstract class Board {
 		removePieceFromBoardState(p);
 		p.setPosition(m.getOrigPos());
 		p.setCastle(m.isOldCastle());
-		if(m.type == MoveEnum.Take || m.type == MoveEnum.EnPassant){
+		if(m.getType() == MoveEnum.Take || m.getType() == MoveEnum.EnPassant){
 			pieces.add(m.getAffectedPiece());
 			addPieceToBoardState(m.getAffectedPiece());
 		}
-		if(m.type == MoveEnum.Castle){
+		if(m.getType() == MoveEnum.Castle){
 			removePieceFromBoardState(m.getAffectedPiece());
 			int[] rookunMove = new int[2];
 			rookunMove[0] = (m.getAffectedPiece().getPosition()[0]-3)*7;
@@ -589,7 +589,7 @@ public abstract class Board {
 		generateMovesfor(p);
 		addPieceToBoardState(p);
 		setKingCheck();
-		switch(m.type){
+		switch(m.getType()){
 		case Move:
 			update(m.getOrigPos(),m.getFinalPos());
 			break;
@@ -641,6 +641,13 @@ public abstract class Board {
 		ArrayList<Move> allValidMoves = allValidMovesOf(whosTurn);		
 		if(!whosTurn.isInCheck()){
 			//more tests for staleMate
+			if(moveLog.get(moveLog.size()-1).equals(moveLog.get(moveLog.size()-3)) &&
+				moveLog.get(moveLog.size()-1).equals(moveLog.get(moveLog.size()-5)) &&
+				moveLog.get(moveLog.size()-2).equals(moveLog.get(moveLog.size()-4)) &&
+				moveLog.get(moveLog.size()-2).equals(moveLog.get(moveLog.size()-6))){
+				return true;
+			}
+			if(pieces.size() == 2){return true;}
 			if(allValidMoves.size() == 0){
 				return true;
 			}
@@ -655,18 +662,6 @@ public abstract class Board {
 	 */
 	public Color getTurn() {
 		return turn;
-	}
-	/**
-	 * @param turn the turn to set
-	 */
-	public void setTurn(Color turn) {
-		this.turn = turn;
-	}
-	/**
-	 * @return the prevMove
-	 */
-	public Move getPrevMove() {
-		return prevMove;
 	}
 	/**
 	 * @param prevMove the prevMove to set

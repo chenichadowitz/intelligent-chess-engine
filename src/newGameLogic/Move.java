@@ -4,7 +4,7 @@ import java.util.Arrays;
 import main.Output;
 
 public class Move {
-	MoveEnum type;
+	private MoveEnum type;
 	private int[] OrigPos = new int[2];
 	private int[] FinalPos =  new int[2];
 	private boolean oldCastle;
