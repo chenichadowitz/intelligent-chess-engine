@@ -52,6 +52,8 @@ public class GameBoard extends Board {
 				getPlayerMap().get(Color.White).setInCheckMate((isGameOver((getPlayerMap().get(Color.White)))));
 				getPlayerMap().get(Color.Black).setInCheckMate((isGameOver((getPlayerMap().get(Color.Black)))));
 				addMovetoLog(move);
+				setPrevMove(move);
+				switchTurn();
 				return true;
 			}
 		}
