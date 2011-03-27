@@ -447,10 +447,63 @@ public abstract class Board {
 	 * @param m move to execute
 	 * @return returns if the moves succeeded or not
 	 */
-	private boolean execute(Move m) {
+	public boolean execute(Move m) {
+		String notation = "";
 		Piece p = pieceAt(m.getOrigPos());
 		int[] rookLocation = new int[2];
 		int[] rookMove = new int[2];
+		if(p.getPieceColor() != turn){
+			Output.debug("wrong turn",1);
+			return false;
+		}
+		switch(m.type){
+		case Take:
+			if(pieceAt(m.getFinalPos()) == null){
+				Output.debug("no piece to take", 1);
+			}
+			break;
+		case Castle:
+			if(pieceAt(m.getOrigPos()) == null || pieceAt(m.getFinalPos()).getType() != PieceEnum.King){
+				Output.debug("no king there", 1);
+				return false;
+			}
+			if(m.getAffectedPiece().getType() != PieceEnum.Rook){
+				Output.debug("can't castle...", 1);
+				return false;
+			}
+			if(m.getAffectedPiece().getPosition()[1] == p.getPosition()[1]){
+				Output.debug("rook in the wrong place...", 1);
+			}
+			break;
+		case EnPassant:
+			if(Arrays.equals(prevMove.getFinalPos(),m.getAffectedPiece().getPosition())){
+				Output.debug("you lost your chance, sorry", 1);
+				return false;
+			}
+			break;
+		case Cover: return false;
+		case Listen: return false;
+		case Rubbish: return false;
+		}
+//string builder
+		String numToLet = "abcdefgh";
+		if(p.getType() == PieceEnum.Pawn && (m.type == MoveEnum.Take || m.type == MoveEnum.EnPassant)){
+			notation += numToLet.charAt(p.getPosition()[0]) + "x";
+			
+		} else {
+			notation += p.getType().toString();
+			for(Piece pieceFinder : boardStatus.getPieceList(m.getFinalPos())){
+				if(pieceFinder.getPieceColor() == p.getPieceColor() && pieceFinder != p){
+					if(p.getPosition()[0] != pieceFinder.getPosition()[0]){
+						notation += numToLet.charAt(p.getPosition()[0]);
+					} else if(p.getPosition()[1] != pieceFinder.getPosition()[1]){
+						notation += p.getPosition()[1];
+					} else { notation += numToLet.charAt(p.getPosition()[0]) + p.getPosition()[1];}
+				}
+			}
+		}
+		notation += numToLet.charAt(m.getFinalPos()[0]) + m.getFinalPos()[1];
+//end of string builder
 		switch(m.type){
 		case Take: 
 			m.setAffectedPiece(pieceAt(m.getFinalPos()));
@@ -467,6 +520,8 @@ public abstract class Board {
 			rookLocation[0] = 7*(m.getFinalPos()[0]-2)/4;
 			rookLocation[1] = m.getOrigPos()[1];
 			m.setAffectedPiece(pieceAt(rookLocation));
+			if(m.getFinalPos()[0] > m.getOrigPos()[0]){notation = "O-O";}
+			else {notation = "O-O-O";}
 		}
 		removePieceFromBoardState(p);
 		p.setPosition(m.getFinalPos());
@@ -502,9 +557,11 @@ public abstract class Board {
 		}
 		if(p.getType() == PieceEnum.Pawn && m.getFinalPos()[1]%7 == 0){
 			p.setType(playerMap.get(p.getPieceColor()).getPromotion());
+			notation += "=" + p.getType().toString();
 			generateMovesfor(p);
 			addPieceToBoardState(p);
 		}
+		if(playerMap.get(p.getPieceColor().next()).isInCheck()){notation += "+";}
 		return true;		
 	}
 	/**
@@ -640,5 +697,22 @@ public abstract class Board {
 	 */
 	public ArrayList<Move> getMoveLog() {
 		return moveLog;
+	}
+	/**
+	 * resets the board's variables
+	 */
+	public void resetBoard(){
+		pieces = new ArrayList<Piece>();
+		turn = Color.White;
+		boardStatus.clearBoardState();
+		resetMoveLog();
+		Output.resetOutput();
+	}
+	/**
+	 * adds a piece to the pieces array
+	 * @param p piece to add
+	 */
+	public void addPiece(Piece p){
+		pieces.add(p);
 	}
 }
