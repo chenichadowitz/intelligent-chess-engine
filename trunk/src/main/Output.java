@@ -1,6 +1,6 @@
 package main;
 
-import gameLogic.Listener;
+import newGameLogic.Move;
 import iceGUI.BoardPanel;
 
 public class Output {
@@ -25,7 +25,7 @@ public class Output {
 		Input.setGUI(bp);
 	}
 	
-	public static void printNotation(Listener l, boolean mated){
+	public static void printNotation(Move l, boolean mated){
 		halfMoveCounter++;
 		if(whiteTurn){
 			print(moveCounter + ". " + l.toString());
