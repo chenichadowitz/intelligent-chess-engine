@@ -136,23 +136,20 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	}
 	
 	private void drawPieceBorder(Graphics g, Dimension size){
-		if(lastClick != null){
-			Graphics2D g2 = (Graphics2D) g;
-			Stroke oldstroke = g2.getStroke();
-			g2.setStroke(new BasicStroke(2));
-			g2.setColor(Color.magenta);
-			g2.drawRect(lastClick[0] * size.width / 10, lastClick[1] * size.height / 10, size.width / 10, size.height / 10);
-			g2.setColor(Color.red);
-			for(Listener l : clickedPiece.getPiece().getMoves()){
-				//TODO: WILL NEED TO WEED OUT LISTENERS AND COVERS EVENTUALLY//
-				int[] temp = l.getFinalPos().clone();
-				temp[0] += 1;
-				temp[1] = 8 - temp[1];
-				g2.drawRect(temp[0] * size.width / 10, temp[1] * size.height / 10, size.width / 10, size.height / 10); 
-			}
-			g2.setStroke(oldstroke);
+		Graphics2D g2 = (Graphics2D) g;
+		Stroke oldstroke = g2.getStroke();
+		g2.setStroke(new BasicStroke(2));
+		g2.setColor(Color.magenta);
+		g2.drawRect(lastClick[0] * size.width / 10, lastClick[1] * size.height / 10, size.width / 10, size.height / 10);
+		g2.setColor(Color.red);
+		for(Listener l : clickedPiece.getPiece().getMoves()){
+			//TODO: WILL NEED TO WEED OUT LISTENERS AND COVERS EVENTUALLY//
+			int[] temp = l.getFinalPos().clone();
+			temp[0] += 1;
+			temp[1] = 8 - temp[1];
+			g2.drawRect(temp[0] * size.width / 10, temp[1] * size.height / 10, size.width / 10, size.height / 10); 
 		}
-		
+		g2.setStroke(oldstroke);
 	}
 	
 	private void drawBoardGraphic(Graphics g, Dimension size){
@@ -171,8 +168,9 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		drawBoardGraphic(g, size);
 		cleanPieceGraphics();
 		drawPieceGraphics(g, size);
-		drawPieceBorder(g, size);	
-		
+		if(lastClick != null){
+			drawPieceBorder(g, size);	
+		}
 	}
 	
 	private void toggleTurn(){
@@ -207,9 +205,10 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	}
 	
 	private void movePiece(PieceGraphic pg, int[] moveFrom, int[] moveTo){
+		// If it's not moving to anywhere, move it back to moveFrom
 		if(moveTo == null){
 			pg.moveTo(moveFrom);
-		} else {
+		} else { // Otherwise, go through the motion to make the move
 			int[] move = new int[4];
 			move[0] = moveFrom[0] - 1;
 			move[1] = 8 - moveFrom[1];
@@ -217,10 +216,11 @@ public class BoardArea extends JPanel implements MouseInputListener {
 			move[3] = 8 - moveTo[1];
 			Output.debug(Arrays.toString(move), 2);
 			Listener moveobj = PieceMaker.MakeMove(gb, move);
+			// If the gameBoard can make the specified move, make it and toggle turn
 			if(gb.movePiece(moveobj)){
 				pg.moveTo(moveTo);
 				toggleTurn();
-			} else {
+			} else { // Otherwise, move it back to moveFrom (on the gui)
 				pg.moveTo(moveFrom);
 			}
 		}

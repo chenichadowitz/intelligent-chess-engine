@@ -6,51 +6,53 @@ import main.Output;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 import gameLogic.gameBoard;
 
 @SuppressWarnings("serial")
 public class BoardPanel extends JPanel implements ActionListener{
 	
-	JMenuBar menubar;
-	JMenu menu = new JMenu("Menu");
-	JMenuItem newgame = new JMenuItem("New Game");
-	JMenuItem quit = new JMenuItem("Quit");
-	JMenuItem clearLog = new JMenuItem("Clear Log");
-	JMenu debugMenu = new JMenu("Debug Lvls");
-	JMenuItem lvl0 = new JMenuItem("0");
-	JMenuItem lvl1 = new JMenuItem("1");
-	JMenuItem lvl2 = new JMenuItem("2");
-	JMenuItem lvl3 = new JMenuItem("3");
-	JMenuItem lvl4 = new JMenuItem("4");
-	JMenuItem lvl5 = new JMenuItem("5");
-	JPanel infoPanel;
-	JPanel northInfo;
-	JPanel boardDisp;
-	JPanel boardRows;
-	JPanel boardColumns;
-	JLabel infoTitle = new JLabel("Information Pane");
-	JLabel turn = new JLabel("White");
-	JLabel opponents;
-	JToggleButton flip = new JToggleButton("Flip Board");
-	JTextArea logViewer;
-	BoardArea ba;
+	private JMenuBar menubar;
+	private JMenu menu = new JMenu("Menu");
+	private ArrayList<JMenuItem> mainMenu = new ArrayList<JMenuItem>();
+	private ArrayList<String> mainMenuItems = new ArrayList<String>();
+	private JMenuItem newgame = new JMenuItem("New Game");
+	private JMenuItem quit = new JMenuItem("Quit");
+	private JMenuItem clearLog = new JMenuItem("Clear Log");
+	private JMenu debugMenu = new JMenu("Debug Lvls");
+	private ArrayList<JMenuItem> debugLevels = new ArrayList<JMenuItem>();
+	private JPanel infoPanel;
+	private JPanel northInfo;
+	private JLabel turn = new JLabel("White");
+	private JLabel opponents;
+	private JToggleButton flip = new JToggleButton("Flip Board");
+	private JTextArea logViewer;
+	private BoardArea ba;
 	private gameBoard gb;
 	
-	public BoardPanel(JMenuBar bar) {
-		super();
+	private void setupMenus(JMenuBar bar){
+		
+		for(int i=0; i<6; i++){
+			debugLevels.add(new JMenuItem(""+i));
+		}
 		menubar = bar;
 		menubar.add(menu);
 		menu.add(newgame);
 		menu.add(clearLog);
 		menu.add(quit);
 		menubar.add(debugMenu);
-		debugMenu.add(lvl0); debugMenu.add(lvl1); debugMenu.add(lvl2);
-		debugMenu.add(lvl3); debugMenu.add(lvl4); debugMenu.add(lvl5);
-		lvl0.addActionListener(this); lvl1.addActionListener(this); lvl2.addActionListener(this);
-		lvl3.addActionListener(this); lvl4.addActionListener(this); lvl5.addActionListener(this); 
+		for(JMenuItem menuitem : debugLevels){
+			debugMenu.add(menuitem);
+			menuitem.addActionListener(this);
+		}
 		newgame.addActionListener(this);
 		quit.addActionListener(this);
+	}
+	
+	public BoardPanel(JMenuBar bar) {
+		super();
+		setupMenus(bar);
 		flip.addActionListener(this);
 		clearLog.addActionListener(this);
 		opponents = new JLabel();
@@ -140,12 +142,12 @@ public class BoardPanel extends JPanel implements ActionListener{
 		else if(src == clearLog){
 			logViewer.setText("");
 		}
-		else if(src == lvl0) Output.setDebugLevel(0);
-		else if(src == lvl1) Output.setDebugLevel(1);
-		else if(src == lvl2) Output.setDebugLevel(2);
-		else if(src == lvl3) Output.setDebugLevel(3);
-		else if(src == lvl4) Output.setDebugLevel(4);
-		else if(src == lvl5) Output.setDebugLevel(5);
+		else if(debugLevels.contains(src)){
+			JMenuItem selected = (JMenuItem) src;
+			int level = Integer.parseInt(selected.getText());
+			Output.debug("Setting debug level to: " + level, 3);
+			Output.setDebugLevel(level);
+		}
 	}
 
 }
