@@ -7,6 +7,7 @@ public class GameBoard extends Board {
 	public GameBoard(Player player1, Player player2){
 		getPlayerMap().put(Color.White, player1);
 		getPlayerMap().put(Color.Black, player2);
+		setUpBoard();
 	}
 	
 	/**
