@@ -1,10 +1,8 @@
 package newGameLogic;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import main.Output;
 
 public class BoardState {
 
