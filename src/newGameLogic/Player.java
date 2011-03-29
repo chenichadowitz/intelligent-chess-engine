@@ -51,16 +51,16 @@ public abstract class Player {
 	}
 
 	/**
-	 * for use with CLI
-	 * @return the nextMove
+	 * asks the player for their move
 	 */
-	public abstract Move getNextMove();
+	public abstract void getNextMove();
 
 	/**
-	 * for use with GUI
+	 * for use with GUI inside ponder()
+	 * for use with CLI inside getNextMove()
 	 * @param nextMove the nextMove to set
 	 */
-	public void setNextMove(Move nextMove){
+	private void setNextMove(Move nextMove){
 		this.nextMove = nextMove;
 	}
 
@@ -76,6 +76,13 @@ public abstract class Player {
 	 */
 	public String getName() {
 		return name;
-	};
+	}
+	/**
+	 * sets the players name
+	 * @param name name to set
+	 */
+	public void setName(String name){
+		this.name = name;
+	}
 
 }

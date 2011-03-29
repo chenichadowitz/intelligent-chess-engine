@@ -42,7 +42,7 @@ public class GameBoard extends Board {
 		buildBoardStatus();
 		Output.debug("board set up",2);
 	}
-	public boolean movePiece(Move action){
+	public boolean makeMove(Move action){
 		if(pieceAt(action.getOrigPos()) == null){
 			Output.debug("no piece there", 1);
 			return false;
