@@ -88,7 +88,14 @@ public class Move {
 	public String getNotation() {
 		return notation;
 	}
-
+	
+	/**
+	 * set the notation for the move
+	 * @param notation notation for the move
+	 */
+	public void setNotation(String notation){
+		this.notation = notation;
+	}
 
 	/**
 	 * @param oldCastle the oldCastle to set

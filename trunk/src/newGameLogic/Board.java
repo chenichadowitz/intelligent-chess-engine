@@ -399,8 +399,11 @@ public abstract class Board {
 	 * @param action the move to make
 	 * @return returns true if the move succeeded
 	 */
-	abstract boolean movePiece(Move action);
+	abstract boolean makeMove(Move action);
 	
+	/**
+	 * displays the board using buildDisplay()
+	 */
 	public String toString(){
 		return buildDisplay(); 
 	}
@@ -432,7 +435,7 @@ public abstract class Board {
 		}
 	}
 	/**
-	 * tests whether a move results in check
+	 * tests whether a move results in check by executing the move then undoing it
 	 * @param m move to test
 	 * @return returns true if move can be made
 	 */
@@ -482,6 +485,7 @@ public abstract class Board {
 		case Cover: return false;
 		case Listen: return false;
 		case Rubbish: return false;
+		case Unknown: Output.debug("something has gone horribly wrong", 1); return false;
 		}
 //string builder
 		String numToLet = "abcdefgh";
@@ -558,8 +562,10 @@ public abstract class Board {
 			notation += "=" + p.getType().toString();
 			generateMovesfor(p);
 			addPieceToBoardState(p);
+			setKingCheck();
 		}
 		if(playerMap.get(p.getPieceColor().next()).isInCheck()){notation += "+";}
+		m.setNotation(notation);
 		return true;		
 	}
 	/**
