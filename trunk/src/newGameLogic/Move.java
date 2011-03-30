@@ -3,7 +3,7 @@ package newGameLogic;
 import java.util.Arrays;
 import main.Output;
 
-public class Move {
+public class Move implements Cloneable{
 	private MoveEnum type;
 	private int[] OrigPos = new int[2];
 	private int[] FinalPos =  new int[2];
@@ -143,8 +143,11 @@ public class Move {
 	public Piece getAffectedPiece() {
 		return affectedPiece;
 	}
-	
-	
-	
-	
+	/**
+	 * clones a move
+	 * @return returns a clone of this piece
+	 */
+	public Move clone(){
+		return new Move(OrigPos,FinalPos,type);
+	}
 }

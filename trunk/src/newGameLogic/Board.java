@@ -7,7 +7,7 @@ import java.util.Map;
 
 import main.Output;
 
-public abstract class Board {
+public abstract class Board implements Cloneable{
 	private Color turn = Color.White;
 	private ArrayList<Piece> pieces = new ArrayList<Piece>();
 	private BoardState boardStatus = new BoardState();

@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 import main.Output;
 
-public class Piece {
+public class Piece implements Cloneable{
 	private Color pieceColor;
 	private PieceEnum type;
 	private int value;
@@ -110,5 +110,12 @@ public class Piece {
 	 */
 	public int getValue() {
 		return value;
+	}
+	/**
+	 * clones a piece
+	 * @return returns a clone of this piece
+	 */
+	public Piece clone(){
+		return new Piece(pieceColor,type,position[0],position[1]);
 	}
 }
