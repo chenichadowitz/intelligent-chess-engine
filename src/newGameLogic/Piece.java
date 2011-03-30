@@ -45,9 +45,6 @@ public class Piece implements Cloneable{
 	 * @return returns w or b, then Piece type
 	 */
 	public String toString(){
-		if(type == PieceEnum.Pawn){
-			return pieceColor.toString() + "P";
-		}
 		return pieceColor.toString() + type.toString();
 	}
 	/**
@@ -123,6 +120,12 @@ public class Piece implements Cloneable{
 		for(Move m: moves){p.moves.add(m.clone());}
 		return p;
 	}
+	
+	/**
+	 * checks equality of two pieces through color, type, and position 
+	 * @param p piece to compare
+	 * @return returns if the two pieces are equal
+	 */
 	public Boolean Equals(Piece p){
 		return (p.getPieceColor() == pieceColor && p.getType() == type && Arrays.equals(p.getPosition(), position));
 	}
