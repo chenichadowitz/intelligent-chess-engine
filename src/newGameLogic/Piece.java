@@ -123,4 +123,7 @@ public class Piece implements Cloneable{
 		for(Move m: moves){p.moves.add(m.clone());}
 		return p;
 	}
+	public Boolean Equals(Piece p){
+		return (p.getPieceColor() == pieceColor && p.getType() == type && Arrays.equals(p.getPosition(), position));
+	}
 }
