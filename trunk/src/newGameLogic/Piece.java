@@ -45,6 +45,9 @@ public class Piece implements Cloneable{
 	 * @return returns w or b, then Piece type
 	 */
 	public String toString(){
+		if(type == PieceEnum.Pawn){
+			return pieceColor.toString() + "P";
+		}
 		return pieceColor.toString() + type.toString();
 	}
 	/**
