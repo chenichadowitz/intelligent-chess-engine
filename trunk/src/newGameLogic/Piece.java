@@ -119,6 +119,8 @@ public class Piece implements Cloneable{
 	 * @return returns a clone of this piece
 	 */
 	public Piece clone(){
-		return new Piece(pieceColor,type,position[0],position[1]);
+		Piece p = new Piece(pieceColor,type,position[0],position[1]);
+		for(Move m: moves){p.moves.add(m.clone());}
+		return p;
 	}
 }

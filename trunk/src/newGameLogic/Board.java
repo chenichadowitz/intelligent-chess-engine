@@ -79,7 +79,7 @@ public abstract class Board implements Cloneable{
 	 * add's the given piece to the boardstatus
 	 * @param currentPiece piece to add
 	 */
-	private void addPieceToBoardState(Piece currentPiece) {
+	public void addPieceToBoardState(Piece currentPiece) {
 		for(Move currentMove: currentPiece.getMoves()){
 			boardStatus.addPiece(currentMove.getFinalPos(), currentPiece);
 		}		
