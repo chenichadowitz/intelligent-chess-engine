@@ -6,5 +6,5 @@ public enum PieceEnum {
 	Bishop{public String toString(){return "B";}},
 	Knight{public String toString(){return "N";}},
 	Rook{public String toString(){return "R";}},
-	Pawn{public String toString(){return "";}}
+	Pawn{public String toString(){return "P";}}
 }

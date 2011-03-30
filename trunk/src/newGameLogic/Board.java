@@ -31,6 +31,19 @@ public abstract class Board implements Cloneable{
 		}
 		return null; //no piece at square !!!BOOM!!!
 	}
+	
+	/**
+	 * returns the piece at a given square on the board
+	 * @param column the column of the theoretical piece
+	 * @param rank rank of the theoretical piece
+	 * @return the piece at that position
+	 */
+	public Piece pieceAt(int column, int rank){
+		int[] square = {column,rank};
+		return pieceAt(square);
+	}
+	
+	
 	/**
 	 * returns the state of the square in question
 	 * @param square square to get the state of
@@ -76,7 +89,7 @@ public abstract class Board implements Cloneable{
 		}
 	}
 	/**
-	 * add's the given piece to the boardstatus
+	 * adds the given piece to the boardstatus
 	 * @param currentPiece piece to add
 	 */
 	public void addPieceToBoardState(Piece currentPiece) {
@@ -491,7 +504,6 @@ public abstract class Board implements Cloneable{
 		String numToLet = "abcdefgh";
 		if(p.getType() == PieceEnum.Pawn && (m.getType() == MoveEnum.Take || m.getType() == MoveEnum.EnPassant)){
 			notation += numToLet.charAt(p.getPosition()[0]) + "x";
-			
 		} else {
 			notation += p.getType().toString();
 			for(Piece pieceFinder : boardStatus.getPieceList(m.getFinalPos())){
@@ -714,4 +726,41 @@ public abstract class Board implements Cloneable{
 	public void addPiece(Piece p){
 		pieces.add(p);
 	}
+	/**
+	 * returns the FEN of the board
+	 * @return returns the FEN
+	 */
+	public String getFEN(){
+		String FEN = "";
+		for(int rank = 7; rank >=0; rank--){
+			int blankSquares = 0;
+			for(int column = 0; column < 8; column++){
+				if(pieceAt(column,rank) == null){blankSquares++;}
+				else{
+					if(blankSquares > 0){FEN += blankSquares;}
+					blankSquares = 0;
+					if(pieceAt(column,rank).getPieceColor() == Color.White){
+						FEN += pieceAt(column,rank).getType().toString();
+					} else {
+						FEN += pieceAt(column,rank).getType().toString().toLowerCase();
+					}
+				}
+			}
+			FEN += "/";
+		}
+		FEN += " " + turn + " ";
+		if(pieceAt(4,0).canCastle() && pieceAt(7,0).canCastle()){FEN += "K";}
+		if(pieceAt(4,0).canCastle() && pieceAt(0,0).canCastle()){FEN += "Q";}
+		if(pieceAt(4,7).canCastle() && pieceAt(7,7).canCastle()){FEN += "k";}
+		if(pieceAt(4,7).canCastle() && pieceAt(0,7).canCastle()){FEN += "q";}
+		if(FEN.endsWith("")){FEN += "-";}
+		FEN += " ";
+		if(pieceAt(prevMove.getFinalPos()).getType() == PieceEnum.Pawn && Math.abs(prevMove.getFinalPos()[1]-prevMove.getOrigPos()[1]) == 2){
+				String numToLet = "abcdefgh";
+				FEN += numToLet.charAt(prevMove.getFinalPos()[0]) + (prevMove.getFinalPos()[1]-prevMove.getOrigPos()[1])/2 + prevMove.getOrigPos()[1];
+		} else {FEN += "-";}
+		return FEN;
+	}
+	
+	
 }
