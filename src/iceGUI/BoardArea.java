@@ -23,13 +23,13 @@ import main.Output;
 @SuppressWarnings("serial")
 public class BoardArea extends JPanel implements MouseInputListener {
 	
-	private LinkedList<PieceGraphic> pieceGraphics;
+	private LinkedList<PieceGraphicOld> pieceGraphics;
 	private boolean flipBoard = false;
 	private int[] lastClick = null;
 	private boolean dragging = true;
 	private int[] draggingOldLocation;
-	private PieceGraphic draggingPiece;
-	private PieceGraphic clickedPiece;
+	private PieceGraphicOld draggingPiece;
+	private PieceGraphicOld clickedPiece;
 	private gameBoard gb;
 	private BoardPanel bp;
 	private ImageIcon boardImage;
@@ -47,8 +47,8 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		addMouseMotionListener(this);
 	}
 	
-	private PieceGraphic contains(Piece p){
-		for(PieceGraphic pg : pieceGraphics){
+	private PieceGraphicOld contains(Piece p){
+		for(PieceGraphicOld pg : pieceGraphics){
 			if(pg.getPiece().equals(p)){
 				return pg;
 			}
@@ -57,12 +57,12 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	}
 	
 	private void updateBoard(){
-		PieceGraphic pg;
+		PieceGraphicOld pg;
 		int[] pieceXY = new int[2];
 		for(Piece p : gb.getPieces()){
 			pg = contains(p);
 			if(pg == null){
-				pieceGraphics.add(PieceGraphic.makePieceGraphic(this, p));
+				pieceGraphics.add(PieceGraphicOld.makePieceGraphic(this, p));
 			} else {
 				if(pg.getPiece().getPosition() != null){
 					pieceXY = pg.getPiece().getPosition().clone();
@@ -80,9 +80,9 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	public void setupBoard(gameBoard gb){
 		this.gb = gb;
 		flipBoard = false;
-		pieceGraphics = new LinkedList<PieceGraphic>();
+		pieceGraphics = new LinkedList<PieceGraphicOld>();
 		for(Piece p : gb.getPieces()){
-			pieceGraphics.add(PieceGraphic.makePieceGraphic(this, p));
+			pieceGraphics.add(PieceGraphicOld.makePieceGraphic(this, p));
 		}
 		repaint();
 	}
@@ -111,8 +111,8 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	}
 	
 	private void cleanPieceGraphics(){
-		Iterator<PieceGraphic> pgIter = pieceGraphics.iterator();
-		PieceGraphic pgTemp;
+		Iterator<PieceGraphicOld> pgIter = pieceGraphics.iterator();
+		PieceGraphicOld pgTemp;
 		ArrayList<Piece> pieces = gb.getPieces();
 		while(pgIter.hasNext()){
 			pgTemp = pgIter.next();
@@ -123,7 +123,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	}
 	
 	private void drawPieceGraphics(Graphics g, Dimension size){
-		for(PieceGraphic pg : pieceGraphics){
+		for(PieceGraphicOld pg : pieceGraphics){
 			Image img = pg.getImg();
 			pg.setSize(size);
 			 // Current imgs have weird issue with the bottom
@@ -182,10 +182,10 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	 * @param pt int[] representing board coord to search for a piece at
 	 * @return PieceGraphic obj if found, null if not
 	 */
-	private PieceGraphic findPiece(int[] pt){
+	private PieceGraphicOld findPiece(int[] pt){
 		int[] pgPt;
 		boolean turn = gb.getTurn();
-		for(PieceGraphic pg : pieceGraphics){
+		for(PieceGraphicOld pg : pieceGraphics){
 			pgPt = pg.getBoardPos();
 			if(pgPt[0] == pt[0] && pgPt[1] == pt[1] && (pg.getPiece().getColor() == turn)){
 				return pg;
@@ -204,7 +204,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		return transPt;
 	}
 	
-	private void movePiece(PieceGraphic pg, int[] moveFrom, int[] moveTo){
+	private void movePiece(PieceGraphicOld pg, int[] moveFrom, int[] moveTo){
 		// If it's not moving to anywhere, move it back to moveFrom
 		if(moveTo == null){
 			pg.moveTo(moveFrom);
@@ -231,7 +231,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		int[] mXY = {e.getX(), e.getY()};
 		int[] pt = convertPixelToBoard(mXY);
 		if(lastClick == null){
-			PieceGraphic pg = findPiece(pt);
+			PieceGraphicOld pg = findPiece(pt);
 			if(pg != null){
 				//Debug.debug("Piece has been selected", 2);
 				//Debug.debug(""+pt[0]+","+pt[1], 2);
@@ -262,7 +262,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 
 	public void mousePressed(MouseEvent e) {
 		int[] mXY = {e.getX(), e.getY()};
-		PieceGraphic pg = findPiece(convertPixelToBoard(mXY));
+		PieceGraphicOld pg = findPiece(convertPixelToBoard(mXY));
 		if(lastClick == null && pg != null && (pg.getPiece().getColor() == gb.getTurn())){
 			//Debug.debug("Piece is being dragged....", 2);
 			dragging = true;
@@ -281,7 +281,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 
 	public void mouseReleased(MouseEvent e) {
 		int[] mXY = {e.getX(), e.getY()};
-		PieceGraphic pg = findPiece(convertPixelToBoard(mXY));
+		PieceGraphicOld pg = findPiece(convertPixelToBoard(mXY));
 		//Debug.debug("Mouse released",2);
 		if(lastClick == null && pg != null){
 			int[] newPos = pg.getBoardPos();
