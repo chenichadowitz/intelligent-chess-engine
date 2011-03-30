@@ -13,6 +13,7 @@ public class BoardState {
 	 */
 	public BoardState(){
 		 map = new HashMap<int[], LinkedList<Piece>>(64);
+		 clearBoardState();
 	}
 	
 	/**
@@ -41,6 +42,7 @@ public class BoardState {
 	 * @param p Piece to add to the given square
 	 */
 	public void addPiece(int[] square, Piece p){
+		if(map.get(square) == null){map.put(square,new LinkedList<Piece>());}
 		map.get(square).add(p);
 	}
 	

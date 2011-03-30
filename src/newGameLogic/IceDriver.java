@@ -26,7 +26,6 @@ public class IceDriver {
 			if(genericScanner.hasNext()){
 				white.setName(genericScanner.next());
 			}
-			System.out.println();
 		}
 		System.out.print("black player's type: ");
 		if(genericScanner.hasNextInt()){
@@ -41,14 +40,13 @@ public class IceDriver {
 			if(genericScanner.hasNext()){
 				black.setName(genericScanner.next());
 			}
-			System.out.println();
 		}
 		gb = new GameBoard(white, black);
 	}
 	public static void play(){
 		Player currentPlayer;
 		System.out.println(gb.toString());
-		while(!gb.getPlayerMap().get(true).isInCheckMate() && !gb.getPlayerMap().get(false).isInCheckMate()){
+		while(!gb.getPlayerMap().get(Color.White).isInCheckMate() && !gb.getPlayerMap().get(Color.Black).isInCheckMate()){
 			currentPlayer = gb.getPlayerMap().get(gb.getTurn());
 			while(currentPlayer.getMove() == null){
 				System.out.println("Current player: " + currentPlayer);
