@@ -13,7 +13,6 @@ public class BoardState {
 	 */
 	public BoardState(){
 		 map = new HashMap<int[], LinkedList<Piece>>(64);
-		 clearBoardState();
 	}
 	
 	/**
