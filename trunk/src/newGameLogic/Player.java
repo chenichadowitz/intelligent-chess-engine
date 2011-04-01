@@ -60,7 +60,7 @@ public abstract class Player {
 	 * for use with CLI inside getNextMove()
 	 * @param nextMove the nextMove to set
 	 */
-	private void setNextMove(Move nextMove){
+	protected void setNextMove(Move nextMove){
 		this.nextMove = nextMove;
 	}
 
@@ -83,6 +83,13 @@ public abstract class Player {
 	 */
 	public void setName(String name){
 		this.name = name;
+	}
+	
+	/**
+	 * sets the player's color
+	 */
+	public void setColor(Color c){
+		playerColor = c;
 	}
 
 }

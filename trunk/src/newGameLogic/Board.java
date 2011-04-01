@@ -78,6 +78,7 @@ public abstract class Board implements Cloneable{
 	private void update(int[]... squares){
 		ArrayList<Piece> piecesToUpdate = new ArrayList<Piece>();
 		for(int[] square : squares){
+			System.out.println(square[0] + " " + square[1]);
 			for(Piece p : boardStatus.getPieceList(square)){
 				if(!piecesToUpdate.contains(p)){piecesToUpdate.add(p);}
 			}

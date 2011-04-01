@@ -1,7 +1,6 @@
 package newGameLogic;
 
 import java.util.Scanner;
-
 import main.Output;
 
 public class IceDriver {
@@ -17,7 +16,7 @@ public class IceDriver {
 		if(genericScanner.hasNextInt()){
 			int playerType = genericScanner.nextInt();
 			if(playerType == 0){
-				white = new HumanPlayer();
+				white = new HumanPlayer(Color.White);
 			}
 			else{
 				white = new ComputerPlayer();
@@ -31,7 +30,7 @@ public class IceDriver {
 		if(genericScanner.hasNextInt()){
 			int playerType = genericScanner.nextInt();
 			if(playerType == 0){
-				black = new HumanPlayer();
+				black = new HumanPlayer(Color.White);
 			}
 			else{
 				black = new ComputerPlayer();
