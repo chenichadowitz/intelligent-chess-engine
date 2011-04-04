@@ -6,7 +6,7 @@ import java.util.Arrays;
 import main.Output;
 
 public class Piece implements Cloneable{
-	private Color pieceColor;
+	private WBColor pieceColor;
 	private PieceEnum type;
 	private int value;
 	private boolean castle = false;
@@ -20,7 +20,7 @@ public class Piece implements Cloneable{
 	 * @param xwhere the x-coordinate of the piece
 	 * @param ywhere the y-coordinate of the piece
 	 */
-	public Piece(Color ownerColor, PieceEnum pieceType, int xwhere, int ywhere){
+	public Piece(WBColor ownerColor, PieceEnum pieceType, int xwhere, int ywhere){
 		pieceColor = ownerColor;
 		type = pieceType;
 		position[0] = xwhere;
@@ -102,7 +102,7 @@ public class Piece implements Cloneable{
 	/**
 	 * @return the pieceColor
 	 */
-	public Color getPieceColor() {
+	public WBColor getPieceColor() {
 		return pieceColor;
 	}
 	/**

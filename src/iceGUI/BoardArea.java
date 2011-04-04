@@ -1,6 +1,6 @@
 package iceGUI;
 
-import gameLogic.*;
+import newGameLogic.*;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -23,14 +23,14 @@ import main.Output;
 @SuppressWarnings("serial")
 public class BoardArea extends JPanel implements MouseInputListener {
 	
-	private LinkedList<PieceGraphicOld> pieceGraphics;
+	//private LinkedList<PieceGraphicOld> pieceGraphics;
 	private boolean flipBoard = false;
 	private int[] lastClick = null;
 	private boolean dragging = true;
 	private int[] draggingOldLocation;
-	private PieceGraphicOld draggingPiece;
-	private PieceGraphicOld clickedPiece;
-	private gameBoard gb;
+	private Piece draggingPiece;
+	private Piece clickedPiece;
+	private GameBoard gb;
 	private BoardPanel bp;
 	private ImageIcon boardImage;
 	private ImageIcon boardRevImage;
@@ -46,44 +46,10 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		addMouseListener(this);
 		addMouseMotionListener(this);
 	}
-	
-	private PieceGraphicOld contains(Piece p){
-		for(PieceGraphicOld pg : pieceGraphics){
-			if(pg.getPiece().equals(p)){
-				return pg;
-			}
-		}
-		return null;
-	}
-	
-	private void updateBoard(){
-		PieceGraphicOld pg;
-		int[] pieceXY = new int[2];
-		for(Piece p : gb.getPieces()){
-			pg = contains(p);
-			if(pg == null){
-				pieceGraphics.add(PieceGraphicOld.makePieceGraphic(this, p));
-			} else {
-				if(pg.getPiece().getPosition() != null){
-					pieceXY = pg.getPiece().getPosition().clone();
-					pieceXY[0] += 1;
-					pieceXY[1] = 8 - pieceXY[1];
-					if(!Arrays.equals(pieceXY, pg.getBoardPos())){
-						pg.moveTo(pieceXY);
-					}
-				}
-			}
-		}
-		repaint();
-	}
 		
-	public void setupBoard(gameBoard gb){
+	public void setupBoard(GameBoard gb){
 		this.gb = gb;
 		flipBoard = false;
-		pieceGraphics = new LinkedList<PieceGraphicOld>();
-		for(Piece p : gb.getPieces()){
-			pieceGraphics.add(PieceGraphicOld.makePieceGraphic(this, p));
-		}
 		repaint();
 	}
 	
@@ -110,28 +76,17 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		}
 	}
 	
-	private void cleanPieceGraphics(){
-		Iterator<PieceGraphicOld> pgIter = pieceGraphics.iterator();
-		PieceGraphicOld pgTemp;
-		ArrayList<Piece> pieces = gb.getPieces();
-		while(pgIter.hasNext()){
-			pgTemp = pgIter.next();
-			if(!pieces.contains(pgTemp.getPiece())){
-				pgIter.remove();
-			}
-		}
-	}
-	
-	private void drawPieceGraphics(Graphics g, Dimension size){
-		for(PieceGraphicOld pg : pieceGraphics){
-			Image img = pg.getImg();
-			pg.setSize(size);
-			 // Current imgs have weird issue with the bottom
-			// replace (size.(width/height) - 8) / 8
-			// with (size.(width/height) / 8)
-			int width = (size.width - 8) / 10;
-			int height = (size.height - 8) / 10;
-			g.drawImage(img, pg.getX(flipBoard), pg.getY(flipBoard), width, height, this);
+	private void drawPieces(Graphics g, Dimension size){
+		PieceGraphic.setSize(size);
+		 // Current imgs have weird issue with the bottom
+		// replace (size.(width/height) - 8) / 8
+		// with (size.(width/height) / 8)
+		int width = (size.width - 8) / 10;
+		int height = (size.height - 8) / 10;
+		PieceGraphic.setFlip(flipBoard);
+		for(Piece p : gb.getPieces()){
+			Image img = PieceGraphic.getImg(p);
+			g.drawImage(img, PieceGraphic.getX(p), PieceGraphic.getY(p), width, height, this);
 		}
 	}
 	
@@ -140,19 +95,20 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		Stroke oldstroke = g2.getStroke();
 		g2.setStroke(new BasicStroke(2));
 		g2.setColor(Color.magenta);
-		g2.drawRect(lastClick[0] * size.width / 10, lastClick[1] * size.height / 10, size.width / 10, size.height / 10);
+		int widthAdj = size.width / 10;
+		int heightAdj = size.height / 10;
+		g2.drawRect(lastClick[0] * widthAdj, lastClick[1] * heightAdj, widthAdj, heightAdj);
 		g2.setColor(Color.red);
-		for(Listener l : clickedPiece.getPiece().getMoves()){
+		for(Move m : clickedPiece.getMoves()){
 			//TODO: WILL NEED TO WEED OUT LISTENERS AND COVERS EVENTUALLY//
-			int[] temp = l.getFinalPos().clone();
-			temp[0] += 1;
-			temp[1] = 8 - temp[1];
-			g2.drawRect(temp[0] * size.width / 10, temp[1] * size.height / 10, size.width / 10, size.height / 10); 
+			int[] temp = m.getFinalPos().clone();
+			temp = PieceGraphic.convertCoord(temp);
+			g2.drawRect(temp[0] * widthAdj, temp[1] * heightAdj, widthAdj, heightAdj); 
 		}
 		g2.setStroke(oldstroke);
 	}
 	
-	private void drawBoardGraphic(Graphics g, Dimension size){
+	private void drawBoard(Graphics g, Dimension size){
 		if(flipBoard){
 			Image imgRev = boardRevImage.getImage();
 			g.drawImage(imgRev, 0, 0, size.width, size.height, this);
@@ -165,9 +121,8 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	protected void paintComponent(Graphics g) {
 		makeSquare();
 		Dimension size = this.getSize();
-		drawBoardGraphic(g, size);
-		cleanPieceGraphics();
-		drawPieceGraphics(g, size);
+		drawBoard(g, size);
+		drawPieces(g, size);
 		if(lastClick != null){
 			drawPieceBorder(g, size);	
 		}
@@ -184,10 +139,10 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	 */
 	private PieceGraphicOld findPiece(int[] pt){
 		int[] pgPt;
-		boolean turn = gb.getTurn();
+		Color turn = gb.getTurn();
 		for(PieceGraphicOld pg : pieceGraphics){
 			pgPt = pg.getBoardPos();
-			if(pgPt[0] == pt[0] && pgPt[1] == pt[1] && (pg.getPiece().getColor() == turn)){
+			if(Arrays.equals(pgPt, pt) && (pg.getPiece().getColor() == turn)){
 				return pg;
 			}
 		}
