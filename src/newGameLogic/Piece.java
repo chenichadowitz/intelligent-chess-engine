@@ -121,12 +121,17 @@ public class Piece implements Cloneable{
 		return p;
 	}
 	
-	/**
-	 * checks equality of two pieces through color, type, and position 
-	 * @param p piece to compare
-	 * @return returns if the two pieces are equal
-	 */
-	public Boolean Equals(Piece p){
-		return (p.getPieceColor() == pieceColor && p.getType() == type && Arrays.equals(p.getPosition(), position));
+	public boolean equals(Object obj){
+		if(obj == null) return false;
+		Piece p = (Piece) obj;
+		return (p.pieceColor == this.pieceColor && 
+				p.type == this.type);
+	}
+	
+	public boolean equalsPiece(Piece p){
+		if(p == null) return false;
+		return (p.pieceColor == this.pieceColor && 
+				p.type == this.type && 
+				Arrays.equals(p.position, this.position));
 	}
 }
