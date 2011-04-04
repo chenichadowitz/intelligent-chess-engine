@@ -10,7 +10,7 @@ public class HumanPlayer extends Player {
 	private Pattern pat = Pattern.compile("[a-h|A-H][1-8][a-h|A-H][1-8]");
 	private Pattern q = Pattern.compile("[q|Q][u|U][i|I][t|T]|[e|E][x|X][i|I][t|T]");
 
-	public HumanPlayer(Color color){
+	public HumanPlayer(WBColor color){
 		setColor(color);
 	}
 	

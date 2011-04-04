@@ -16,7 +16,7 @@ public class IceDriver {
 		if(genericScanner.hasNextInt()){
 			int playerType = genericScanner.nextInt();
 			if(playerType == 0){
-				white = new HumanPlayer(Color.White);
+				white = new HumanPlayer(WBColor.White);
 			}
 			else{
 				white = new ComputerPlayer();
@@ -30,7 +30,7 @@ public class IceDriver {
 		if(genericScanner.hasNextInt()){
 			int playerType = genericScanner.nextInt();
 			if(playerType == 0){
-				black = new HumanPlayer(Color.White);
+				black = new HumanPlayer(WBColor.White);
 			}
 			else{
 				black = new ComputerPlayer();
@@ -45,7 +45,7 @@ public class IceDriver {
 	public static void play(){
 		Player currentPlayer;
 		System.out.println(gb.toString());
-		while(!gb.getPlayerMap().get(Color.White).isInCheckMate() && !gb.getPlayerMap().get(Color.Black).isInCheckMate()){
+		while(!gb.getPlayerMap().get(WBColor.White).isInCheckMate() && !gb.getPlayerMap().get(WBColor.Black).isInCheckMate()){
 			currentPlayer = gb.getPlayerMap().get(gb.getTurn());
 			while(currentPlayer.getMove() == null){
 				System.out.println("Current player: " + currentPlayer);

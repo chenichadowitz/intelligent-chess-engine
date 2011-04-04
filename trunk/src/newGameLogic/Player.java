@@ -1,7 +1,7 @@
 package newGameLogic;
 
 public abstract class Player {
-	private Color playerColor;
+	private WBColor playerColor;
 	private boolean inCheck = false;
 	private boolean isInCheckMate = false;
 	private String name;
@@ -67,7 +67,7 @@ public abstract class Player {
 	/**
 	 * @return the player's color
 	 */
-	public Color getPlayerColor() {
+	public WBColor getPlayerColor() {
 		return playerColor;
 	}
 
@@ -88,7 +88,7 @@ public abstract class Player {
 	/**
 	 * sets the player's color
 	 */
-	public void setColor(Color c){
+	public void setColor(WBColor c){
 		playerColor = c;
 	}
 

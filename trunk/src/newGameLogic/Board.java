@@ -8,12 +8,12 @@ import java.util.Map;
 import main.Output;
 
 public abstract class Board implements Cloneable{
-	private Color turn = Color.White;
+	private WBColor turn = WBColor.White;
 	private ArrayList<Piece> pieces = new ArrayList<Piece>();
 	private BoardState boardStatus = new BoardState();
 	private ArrayList<Move> moveLog = new ArrayList<Move>();
 	private Move prevMove;
-	private Map<Color, Player> playerMap = new HashMap<Color, Player>();
+	private Map<WBColor, Player> playerMap = new HashMap<WBColor, Player>();
 	/**
 	 * resets the move log	
 	 */
@@ -56,7 +56,7 @@ public abstract class Board implements Cloneable{
 			if(pieceAt(square) == null){
 				return SquareState.Empty;
 			}else{
-				if(pieceAt(square).getPieceColor() == Color.White){
+				if(pieceAt(square).getPieceColor() == WBColor.White){
 					return SquareState.OccupiedByWhite;
 				} else {
 					return SquareState.OccupiedByBlack;
@@ -136,12 +136,12 @@ public abstract class Board implements Cloneable{
 			case OffBoard: return false;
 			case Empty: newMoves.add(new Move(position,s,MoveEnum.Move)); return true;
 			case OccupiedByBlack: 
-				if(pieceAt(position).getPieceColor() == Color.Black){
+				if(pieceAt(position).getPieceColor() == WBColor.Black){
 					newMoves.add(new Move(position,s,MoveEnum.Cover));
 				} else {newMoves.add(new Move(position,s,MoveEnum.Take));}
 				return false;
 			case OccupiedByWhite:
-				if(pieceAt(position).getPieceColor() == Color.White){
+				if(pieceAt(position).getPieceColor() == WBColor.White){
 					newMoves.add(new Move(position,s,MoveEnum.Cover));
 				} else {newMoves.add(new Move(position,s,MoveEnum.Take));}
 				return false;
@@ -183,10 +183,10 @@ public abstract class Board implements Cloneable{
 	 * @param color the color of the pawn
 	 * @return the array of new moves
 	 */
-	private ArrayList<Move> movesForPawnAt(int[] position, Color color) {
+	private ArrayList<Move> movesForPawnAt(int[] position, WBColor color) {
 		ArrayList<Move> newMoves = new ArrayList<Move>();
 		int delta = 1;
-		if(color == Color.Black){delta = -1;}
+		if(color == WBColor.Black){delta = -1;}
 //move up one
 		int[]     square    = {position[0], position[1] +delta};
 		SquareState status = statusOfSquare(square);
@@ -427,7 +427,7 @@ public abstract class Board implements Cloneable{
 	 */
 	public void addMovetoLog(Move m){
 		moveLog.add(m);
-		boolean mated = (playerMap.get(Color.White).isInCheckMate() || playerMap.get(Color.Black).isInCheck());
+		boolean mated = (playerMap.get(WBColor.White).isInCheckMate() || playerMap.get(WBColor.Black).isInCheck());
 		Output.printNotation(m, mated);
 	}
 	/**
@@ -677,7 +677,7 @@ public abstract class Board implements Cloneable{
 	/**
 	 * @return the turn
 	 */
-	public Color getTurn() {
+	public WBColor getTurn() {
 		return turn;
 	}
 	/**
@@ -689,7 +689,7 @@ public abstract class Board implements Cloneable{
 	/**
 	 * @return the playerMap
 	 */
-	public Map<Color, Player> getPlayerMap() {
+	public Map<WBColor, Player> getPlayerMap() {
 		return playerMap;
 	}
 	/**
@@ -715,7 +715,7 @@ public abstract class Board implements Cloneable{
 	 */
 	public void resetBoard(){
 		pieces = new ArrayList<Piece>();
-		turn = Color.White;
+		turn = WBColor.White;
 		boardStatus.clearBoardState();
 		resetMoveLog();
 		Output.resetOutput();
@@ -740,7 +740,7 @@ public abstract class Board implements Cloneable{
 				else{
 					if(blankSquares > 0){FEN += blankSquares;}
 					blankSquares = 0;
-					if(pieceAt(column,rank).getPieceColor() == Color.White){
+					if(pieceAt(column,rank).getPieceColor() == WBColor.White){
 						FEN += pieceAt(column,rank).getType().toString();
 					} else {
 						FEN += pieceAt(column,rank).getType().toString().toLowerCase();
