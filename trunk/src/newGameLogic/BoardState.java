@@ -6,13 +6,13 @@ import java.util.LinkedList;
 
 public class BoardState {
 
-	private HashMap<int[], LinkedList<Piece>> map;
+	private HashMap<Position, LinkedList<Piece>> map;
 
 	/**
 	 * Creates a new BoardState object
 	 */
 	public BoardState(){
-		 map = new HashMap<int[], LinkedList<Piece>>(64);
+		 map = new HashMap<Position, LinkedList<Piece>>(64);
 	}
 	
 	/**
@@ -40,7 +40,7 @@ public class BoardState {
 	 * @param square square to add a Piece to
 	 * @param p Piece to add to the given square
 	 */
-	public void addPiece(int[] square, Piece p){
+	public void addPiece(Position square, Piece p){
 		if(map.get(square) == null){map.put(square,new LinkedList<Piece>());}
 		map.get(square).add(p);
 	}
@@ -52,15 +52,14 @@ public class BoardState {
 	 * @param p Piece to add to the given square
 	 */
 	public void addPiece(int x, int y, Piece p){
-		int[] square = {x,y};
-		this.addPiece(square, p);
+		this.addPiece(new Position(x,y), p);
 	}
 	/**
 	 * Remove a Piece from the given square's list
 	 * @param square square to remove the Piece from
 	 * @param p Piece to remove from the given square
 	 */
-	public void removePiece(int[] square, Piece p){
+	public void removePiece(Position square, Piece p){
 		map.get(square).remove(p);
 	}
 	
@@ -71,16 +70,13 @@ public class BoardState {
 	 * @param p Piece to remove from the given square
 	 */
 	public void removePiece(int x, int y, Piece p){
-		int[] square = {x,y};
-		this.removePiece(square, p);
+		this.removePiece(new Position(x,y), p);
 	}
-	
-	
 	
 	/**
 	 * Clear the BoardState and re-initialize it to empty
 	 */
 	public void clearBoardState(){
-		map = new HashMap<int[], LinkedList<Piece>>();
+		map = new HashMap<Position, LinkedList<Piece>>();
 	}
 }

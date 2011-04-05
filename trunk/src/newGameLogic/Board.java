@@ -95,7 +95,7 @@ public abstract class Board implements Cloneable{
 	 */
 	public void addPieceToBoardState(Piece currentPiece) {
 		for(Move currentMove: currentPiece.getMoves()){
-			boardStatus.addPiece(currentMove.getFinalPos(), currentPiece);
+			boardStatus.addPiece(new Position(currentMove.getFinalPos()), currentPiece);
 		}		
 	}
 	/**
@@ -359,7 +359,7 @@ public abstract class Board implements Cloneable{
 	 */
 	private void removePieceFromBoardState(Piece currentPiece) {
 		for(Move currentMove: currentPiece.getMoves()){
-			boardStatus.removePiece(currentMove.getFinalPos(), currentPiece);
+			boardStatus.removePiece(new Position(currentMove.getFinalPos()), currentPiece);
 		}		
 	}
 	
