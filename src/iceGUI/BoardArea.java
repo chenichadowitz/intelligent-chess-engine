@@ -139,7 +139,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	 */
 	private PieceGraphicOld findPiece(int[] pt){
 		int[] pgPt;
-		Color turn = gb.getTurn();
+		WBColor turn = gb.getTurn();
 		for(PieceGraphicOld pg : pieceGraphics){
 			pgPt = pg.getBoardPos();
 			if(Arrays.equals(pgPt, pt) && (pg.getPiece().getColor() == turn)){
