@@ -18,17 +18,19 @@ public class PieceGraphic {
 	private static String imageExt = ".png";
 	private static Dimension lastSize;
 	private static Map<Piece, ImageIcon> map = new HashMap<Piece, ImageIcon>();
-	private static ClassLoader cldr;
 	private static boolean boardFlipped = false;
 
 	
 	public static void setupMap(BoardArea ba){
-		cldr = ba.getClass().getClassLoader();
+		ClassLoader cldr = ba.getClass().getClassLoader();
 		for(WBColor col : WBColor.values()){
 			for(PieceEnum type : PieceEnum.values()){
-				map.put(new Piece(col, type, -1, -1), //Use a new Piece with the correct color and type (offscreen) for key
-						new ImageIcon(cldr.getResource( //Create a new ImageIcon for the value, getting the image
-								imagePath + col.toString() + type.toString() + imageExt))); //from the path+color+type+extension
+				Piece p = new Piece(col, type, -1, -1);
+				ImageIcon img = new ImageIcon(cldr.getResource(
+						imagePath + col.name() + type.name() + imageExt));
+				map.put(p, //Use a new Piece with the correct color and type (offscreen) for key
+						img //Create a new ImageIcon for the value, getting the image
+								); //from the path+color+type+extension
 			}
 		}
 	}

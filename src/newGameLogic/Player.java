@@ -5,7 +5,7 @@ public abstract class Player {
 	private boolean inCheck = false;
 	private boolean isInCheckMate = false;
 	private String name;
-	private Move nextMove = null;
+	private Move nextMove;
 
 	/**
 	 * @return returns the char of the piece to promote the pawn to
@@ -60,8 +60,8 @@ public abstract class Player {
 	 * for use with CLI inside getNextMove()
 	 * @param nextMove the nextMove to set
 	 */
-	protected void setNextMove(Move nextMove){
-		this.nextMove = nextMove;
+	public void setNextMove(Move nextMove){
+		//this.nextMove = nextMove;
 	}
 
 	/**

@@ -25,7 +25,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	
 	private boolean flipBoard = false;
 	private int[] lastClick = null;
-	private boolean dragging = true;
+	private boolean dragging = false;
 	private Piece draggingPiece;
 	private int[] mouseDragLocation;
 	private Piece clickedPiece;
@@ -48,6 +48,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		
 	public void setupBoard(GameBoard gb){
 		this.gb = gb;
+		PieceGraphic.setupMap(this);
 		flipBoard = false;
 		repaint();
 	}
@@ -85,7 +86,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		PieceGraphic.setFlip(flipBoard);
 		Image img;
 		for(Piece p : gb.getPieces()){
-			if(!dragging || !draggingPiece.equalsPiece(p)){
+			if(!dragging || (draggingPiece != null && !draggingPiece.equalsPiece(p))){
 				img = PieceGraphic.getImg(p);
 				g.drawImage(img, PieceGraphic.getX(p), PieceGraphic.getY(p), width, height, this);
 			}
@@ -146,7 +147,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	}
 	
 	private void makeMove(int[] start, int[] end){
-		gb.setNextMove(new Move(start, end, MoveEnum.Unknown));
+		gb.getPlayerMap().get(gb.getTurn()).setNextMove(new Move(start, end, MoveEnum.Unknown));
 		repaint();
 	}
 

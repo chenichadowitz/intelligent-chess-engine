@@ -31,7 +31,7 @@ public class BoardGUI{
 		Player black = new HumanPlayer(WBColor.Black);
 		white.setName("Player1");
 		black.setName("Player2");
-		bp.setOpponents(white.toString(), black.toString());
+		bp.setOpponents(white.getName(), black.getName());
 		gb = new GameBoard(white, black);
 		bp.setupBoard(gb);
 		bp.setVisible(true);
