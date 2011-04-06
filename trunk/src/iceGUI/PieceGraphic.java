@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
+import newGameLogic.Position;
 import newGameLogic.WBColor;
 import newGameLogic.Piece;
 import newGameLogic.PieceEnum;
@@ -35,32 +36,16 @@ public class PieceGraphic {
 		}
 	}
 	
-	public static int[] guiCoord(Piece p){
-		int[] oldXY = p.getPosition().clone();
-		int[] xy = convertCoordToGUI(oldXY);
-		return xy;
-	}
-
-	public static int[] convertCoordToGUI(int[] xy){
-		xy[0] += 1;
-		xy[1] = 8 - xy[1];
-		return xy;
-	}
-	
 	public static int getX(Piece p){
-		int[] boardCoord = guiCoord(p); 
-		if(boardFlipped){
-			return (9 - boardCoord[0]) * lastSize.height / 10;
-		}
-		return boardCoord[0] * lastSize.width / 10;
+		return Position.fromGuiToPixel(
+				Position.fromGbToGui( p.getPosition().clone(),
+						boardFlipped), lastSize)[0];		
 	}
 	
 	public static int getY(Piece p){
-		int[] boardCoord = guiCoord(p);
-		if(boardFlipped){
-			return (9 - boardCoord[1]) * lastSize.height / 10;
-		}
-		return boardCoord[1] * lastSize.height / 10;
+		return Position.fromGuiToPixel(
+				Position.fromGbToGui( p.getPosition().clone(),
+						boardFlipped), lastSize)[1];
 	}
 	
 	public static Image getImg(Piece p){

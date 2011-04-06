@@ -93,7 +93,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		}
 		if(dragging){
 			img = PieceGraphic.getImg(draggingPiece);
-			int[] boardXY = convertPixelToBoard(mouseDragLocation);
+			int[] boardXY = Position.fromGuiToPixel(mouseDragLocation, this.getSize());
 			g.drawImage(img, boardXY[0], boardXY[1], width, height, this);
 		}
 	}
@@ -105,12 +105,13 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		g2.setColor(Color.magenta);
 		int widthAdj = size.width / 10;
 		int heightAdj = size.height / 10;
-		g2.drawRect(lastClick[0] * widthAdj, lastClick[1] * heightAdj, widthAdj, heightAdj);
+		int[] drawPos = Position.fromGuiToPixel(Position.fromGbToGui(lastClick, flipBoard), size);
+		g2.drawRect(drawPos[0] * widthAdj, drawPos[1] * heightAdj, widthAdj, heightAdj);
 		g2.setColor(Color.red);
 		for(Move m : clickedPiece.getMoves()){
 			//TODO: WILL NEED TO WEED OUT LISTENERS AND COVERS EVENTUALLY//
 			int[] temp = m.getFinalPos().clone();
-			temp = PieceGraphic.convertCoordToGUI(temp);
+			temp = Position.fromGbToGui(temp, flipBoard);
 			g2.drawRect(temp[0] * widthAdj, temp[1] * heightAdj, widthAdj, heightAdj); 
 		}
 		g2.setStroke(oldstroke);
@@ -136,32 +137,27 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		}
 	}
 	
-	private int[] convertPixelToBoard(int[] pixels){
-		Dimension size = this.getSize();
-		int[] transPt = {pixels[0] / (size.width / 10), pixels[1] / (size.height / 10)};
-		if(flipBoard){
-			transPt[0] = 9 - transPt[0];
-			transPt[1] = 9 - transPt[1];
-		}
-		return transPt;
-	}
-	
 	private void makeMove(int[] start, int[] end){
+		Output.debug(Arrays.toString(start)+","+Arrays.toString(end), 2);
 		gb.getPlayerMap().get(gb.getTurn()).setNextMove(new Move(start, end, MoveEnum.Unknown));
 		repaint();
 	}
 
 	public void mouseClicked(MouseEvent e) {
+		Output.debug("Mouse clicked", 2);
 		int[] mXY = {e.getX(), e.getY()};
-		int[] pt = convertPixelToBoard(mXY);
+		int[] pt = Position.fromPixelToGb(mXY, flipBoard, this.getSize());
+		//Output.debug(Arrays.toString(pt), 2);
 		if(lastClick == null){
 			Piece p = gb.pieceAt(pt);
 			if(p != null){
+				Output.debug("Piece selected:"+p.toString(), 2);
 				lastClick = pt;
 				clickedPiece = p;
-				repaint();
+//				repaint();
 			}
 		} else {
+			Output.debug("Piece moved", 2);
 			makeMove(lastClick, pt);
 			lastClick = null;
 			clickedPiece = null;
@@ -180,10 +176,16 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	}
 
 	public void mousePressed(MouseEvent e) {
+		Output.debug("MousePressed", 2);
 		int[] mXY = {e.getX(), e.getY()};
-		Piece p = gb.pieceAt(convertPixelToBoard(mXY));
+		Piece p = gb.pieceAt(Position.fromPixelToGb(mXY, flipBoard, this.getSize()));
+		if(p!=null){
+			//Output.debug(p.toString(), 2);
+		} else { //Output.debug("Piece is null!", 2); 
+		}
 		if(lastClick == null && p != null && (p.getPieceColor() == gb.getTurn())){
 			dragging = true;
+			Output.debug("Dragging=true", 2);
 			draggingPiece = p;
 		} else {
 			dragging = false;
@@ -192,9 +194,11 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	}
 
 	public void mouseReleased(MouseEvent e) {
+		Output.debug("Mouse released", 2);
 		if(dragging){
+			
 			int[] mXY = {e.getX(), e.getY()};
-			int[] mouseLocation = convertPixelToBoard(mXY);
+			int[] mouseLocation = Position.fromPixelToGb(mXY, flipBoard, this.getSize());
 			makeMove(draggingPiece.getPosition(), mouseLocation);	
 			dragging = false;
 			draggingPiece = null;
@@ -205,7 +209,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		//Debug.debug("mouse dragged", 3);
 		if(dragging){
 			int[] mXY = {e.getX(), e.getY()};
-			int[] move = convertPixelToBoard(mXY);
+			int[] move = Position.fromPixelToGui(mXY, this.getSize());
 			if(move[0] < 1) move[0] = 1;
 			if(move[0] > 8) move[0] = 8;
 			if(move[1] < 1) move[1] = 1;
