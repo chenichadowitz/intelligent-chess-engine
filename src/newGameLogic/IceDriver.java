@@ -59,7 +59,7 @@ public class IceDriver {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void run(String[] args) {
 		System.out.print("Max debug level: ");
 		if(genericScanner.hasNextInt()){
 			Output.setDebugLevel(genericScanner.nextInt());
