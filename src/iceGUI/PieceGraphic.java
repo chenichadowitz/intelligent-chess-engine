@@ -35,11 +35,11 @@ public class PieceGraphic {
 	
 	public static int[] guiCoord(Piece p){
 		int[] oldXY = p.getPosition().clone();
-		int[] xy = convertCoord(oldXY);
+		int[] xy = convertCoordToGUI(oldXY);
 		return xy;
 	}
 
-	public static int[] convertCoord(int[] xy){
+	public static int[] convertCoordToGUI(int[] xy){
 		xy[0] += 1;
 		xy[1] = 8 - xy[1];
 		return xy;
