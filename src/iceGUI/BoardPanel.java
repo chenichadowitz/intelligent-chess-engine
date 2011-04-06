@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-import gameLogic.gameBoard;
+import newGameLogic.GameBoard;
 
 @SuppressWarnings("serial")
 public class BoardPanel extends JPanel implements ActionListener{
@@ -29,7 +29,7 @@ public class BoardPanel extends JPanel implements ActionListener{
 	private JToggleButton flip = new JToggleButton("Flip Board");
 	private JTextArea logViewer;
 	private BoardArea ba;
-	private gameBoard gb;
+	private GameBoard gb;
 	
 	private void setupMenus(JMenuBar bar){
 		
@@ -114,7 +114,7 @@ public class BoardPanel extends JPanel implements ActionListener{
 		logViewer.setCaretPosition(logViewer.getText().length());
 	}
 	
-	public void setupBoard(gameBoard gb){
+	public void setupBoard(GameBoard gb){
 		this.gb = gb;
 		flip.setSelected(false);
 		ba.setupBoard(gb);
