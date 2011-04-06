@@ -64,6 +64,11 @@ public class HumanPlayer extends Player {
 		// TODO Auto-generated method stub
 
 	}
+	
+	public void setNextMove(Move nextMove){
+		
+		
+	}
 
 	private void ahMoveToInt(String s){
 		s = s.toLowerCase();

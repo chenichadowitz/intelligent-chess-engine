@@ -134,4 +134,8 @@ public class Piece implements Cloneable{
 				p.type == this.type && 
 				Arrays.equals(p.position, this.position));
 	}
+	
+	public int hashCode(){
+		return ( pieceColor.hashCode() + 31 * type.hashCode() );
+	}
 }
