@@ -79,7 +79,7 @@ public abstract class Board implements Cloneable{
 		ArrayList<Piece> piecesToUpdate = new ArrayList<Piece>();
 		for(int[] square : squares){
 			System.out.println(square[0] + " " + square[1]);
-			for(Piece p : boardStatus.getPieceList(square)){
+			for(Piece p : boardStatus.getPieceList(new Position(square))){
 				if(!piecesToUpdate.contains(p)){piecesToUpdate.add(p);}
 			}
 		}
@@ -437,7 +437,7 @@ public abstract class Board implements Cloneable{
 		for(Piece kingFinder: pieces){
 			boolean inCheck = false;
 			if(kingFinder.getType() == PieceEnum.King){
-				for(Piece affectingPiece: boardStatus.getPieceList(kingFinder.getPosition())){
+				for(Piece affectingPiece: boardStatus.getPieceList(new Position(kingFinder.getPosition()))){
 					inCheck = inCheck || (affectingPiece.getPieceColor() != kingFinder.getPieceColor() && affectingPiece.getMoveTo(kingFinder.getPosition()).getType() == MoveEnum.Take);
 				}
 				Player curPlayer = playerMap.get(kingFinder.getPieceColor());
@@ -507,7 +507,7 @@ public abstract class Board implements Cloneable{
 			notation += numToLet.charAt(p.getPosition()[0]) + "x";
 		} else {
 			notation += p.getType().toString();
-			for(Piece pieceFinder : boardStatus.getPieceList(m.getFinalPos())){
+			for(Piece pieceFinder : boardStatus.getPieceList(new Position(m.getFinalPos()))){
 				if(pieceFinder.getPieceColor() == p.getPieceColor() && pieceFinder != p){
 					if(p.getPosition()[0] != pieceFinder.getPosition()[0]){
 						notation += numToLet.charAt(p.getPosition()[0]);

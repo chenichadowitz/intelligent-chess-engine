@@ -12,7 +12,19 @@ public class BoardState {
 	 * Creates a new BoardState object
 	 */
 	public BoardState(){
-		 map = new HashMap<Position, LinkedList<Piece>>(64);
+		 initializeBoard();
+	}
+	
+	/**
+	 * Initializes the map so that each value is an initialized LinkedList<Piece>
+	 */
+	private void initializeBoard(){
+		map = new HashMap<Position, LinkedList<Piece>>(64);
+		for(int i=0; i<8; i++){
+			for(int j=0; j<8; j++){
+				map.put(new Position(i,j),new LinkedList<Piece>());
+			}
+		}
 	}
 	
 	/**
@@ -20,7 +32,7 @@ public class BoardState {
 	 * @param square the square to look for
 	 * @return LinkedList<Piece> for the given square
 	 */
-	public LinkedList<Piece> getPieceList(int[] square){
+	public LinkedList<Piece> getPieceList(Position square){
 		return map.get(square);
 	}
 	
@@ -31,8 +43,7 @@ public class BoardState {
 	 * @return LinkedList<Piece> for the given square
 	 */
 	public LinkedList<Piece> getPieceList(int x, int y){
-		int[] square = {x, y};
-		return this.getPieceList(square);
+		return this.getPieceList(new Position(x,y));
 	}
 		
 	/**
@@ -41,7 +52,6 @@ public class BoardState {
 	 * @param p Piece to add to the given square
 	 */
 	public void addPiece(Position square, Piece p){
-		if(map.get(square) == null){map.put(square,new LinkedList<Piece>());}
 		map.get(square).add(p);
 	}
 	
@@ -77,6 +87,6 @@ public class BoardState {
 	 * Clear the BoardState and re-initialize it to empty
 	 */
 	public void clearBoardState(){
-		map = new HashMap<Position, LinkedList<Piece>>();
+		initializeBoard();
 	}
 }

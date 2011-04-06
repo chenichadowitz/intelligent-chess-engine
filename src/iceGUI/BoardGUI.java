@@ -1,7 +1,9 @@
 package iceGUI;
 
-import gameLogic.HumanPlayer;
-import gameLogic.gameBoard;
+import newGameLogic.GameBoard;
+import newGameLogic.HumanPlayer;
+import newGameLogic.Player;
+import newGameLogic.WBColor;
 
 import javax.swing.*;
 
@@ -11,6 +13,7 @@ public class BoardGUI{
 	
 	private static DisplayWindow dw;
 	private static BoardPanel bp;
+	private static GameBoard gb;
 
 	public static void run(String[] args){
 		
@@ -23,23 +26,17 @@ public class BoardGUI{
 	    dw.setJMenuBar(menuBar);
 		bp = new BoardPanel(menuBar);
 		Output.setGUI(bp);
-		humanVShuman();
+		Output.setDebugLevel(0);
+		Player white = new HumanPlayer(WBColor.White);
+		Player black = new HumanPlayer(WBColor.Black);
+		white.setName("Player1");
+		black.setName("Player2");
+		bp.setOpponents(white.toString(), black.toString());
+		gb = new GameBoard(white, black);
+		bp.setupBoard(gb);
 		bp.setVisible(true);
 		dw.addPanel(bp);
 		dw.showFrame();
 		bp.repaint();
 	}
-	
-	public static void humanVShuman(){
-		Output.setDebugLevel(0);
-		HumanPlayer white = new HumanPlayer(true);
-		white.setName("Player1");		
-		HumanPlayer black = new HumanPlayer(false);
-		black.setName("Player2");
-		bp.setOpponents(white.toString(), black.toString());
-		gameBoard gb = new gameBoard(white, black);
-		gb.setUpBoard();
-		bp.setupBoard(gb);
-	}
-	
 }

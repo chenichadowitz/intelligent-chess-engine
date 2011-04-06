@@ -128,7 +128,7 @@ public class BoardPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		Object src = e.getSource();
 		if(src == newgame){
-			gb.setUpBoard();
+			gb.resetBoard();
 			this.setupBoard(gb);
 			logViewer.setText("");
 			turn.setText("White");
