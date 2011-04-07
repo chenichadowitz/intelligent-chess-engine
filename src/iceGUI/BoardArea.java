@@ -206,7 +206,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	}
 
 	public void mouseDragged(MouseEvent e) {
-		//Debug.debug("mouse dragged", 3);
+		Output.debug("mouse dragged", 2);
 		if(dragging){
 			int[] mXY = {e.getX(), e.getY()};
 			int[] move = Position.fromPixelToGui(mXY, this.getSize());
