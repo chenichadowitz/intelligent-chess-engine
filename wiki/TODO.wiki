@@ -1,24 +1,23 @@
 #summary List of TODO items to keep track of
 #labels Phase-Requirements,Phase-Implementation
 
-==GUI Items==
+=General Items=
 
- * separate debug/output message view from notation view (perhaps another text area underneath the board)
- * Debug message view area will print all messages 
- * Setup game dialog
- * Computer difficulty level
-
-
-==General Items==
-
-=Debug levels===
+===Debug levels===
  * 0 = None
  * 1 = Errors or warnings (things that are occurring but should not - a.k.a. _NeedToBeFixed_)
  * 2 = Dialogue with player (e.g. moving into check, etc)
  * 3 = Process changes (moving, generating moves, displaying, etc)
  * 4 = Repeated messages (updating pieces, etc)
 
+==Other General Items==
+ * pipe everything through input/output classes
+ * pulling out boardState into Board, then making Game and StaticPosition
 
-pipe everything through input/output classes
 
-pulling out boardState into Board, then making Game and StaticPosition
+=GUI-specific Items=
+
+ * separate debug/output message view from notation view (perhaps another text area underneath the board)
+ * Debug message view area will print all messages 
+ * Setup game dialog
+ * Computer difficulty level
