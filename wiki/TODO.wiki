@@ -4,7 +4,7 @@
 =General Items=
 
 ===Debug levels===
- * 0 = None
+ * 0 = Testing
  * 1 = Errors or warnings (things that are occurring but should not - a.k.a. _NeedToBeFixed_)
  * 2 = Dialogue with player (e.g. moving into check, etc)
  * 3 = Process changes (moving, generating moves, displaying, etc)
