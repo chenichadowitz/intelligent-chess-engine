@@ -83,10 +83,24 @@ public class Piece implements Cloneable{
 	 * @param position the position to set (only works for {0-7,0-7})
 	 */
 	public void setPosition(int[] position) {
-		if(position[0] < 0 || position[0] >7 || position[1] < 0 || position[1] > 7){
+		if(between0And7(position)){
 			Output.debug("Warning: set position off board... FAILED", 1);
 		} else {this.position = position;}
 	}
+	
+	/**
+	 * checks if a list of numbers is between 0 and 7 i.e. on the board
+	 * @param numbers the numbers to check
+	 * @return if all numbers satisfy the requirements
+	 */
+	private boolean between0And7(int... numbers) {
+		for(int number: numbers){
+			if(number > 7 || number < 0){return false;}
+		}
+		return true;
+	}
+	
+	
 	/**
 	 * @return the moves
 	 */

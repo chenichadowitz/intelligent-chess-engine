@@ -58,6 +58,7 @@ public class GameBoard extends Board {
 				return true;
 			}
 		}
+		Output.debug("cannot locate the correct move", 2);
 		return false;
 	}
 }

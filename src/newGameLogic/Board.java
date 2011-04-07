@@ -49,7 +49,7 @@ public abstract class Board implements Cloneable{
 	 * @param square square to get the state of
 	 * @return the state of the square
 	 */
-	private  SquareState statusOfSquare(int[] square){
+	public  SquareState statusOfSquare(int[] square){
 		if(square[0] < 0 || square[1] < 0 || square[0] > 7  || square[1] > 7){
 			return SquareState.OffBoard;
 		}else{
@@ -85,7 +85,7 @@ public abstract class Board implements Cloneable{
 		}
 		for(Piece currentPiece: piecesToUpdate){
 			removePieceFromBoardState(currentPiece);
-			generateMovesfor(currentPiece);
+			moveFactory.generateMovesfor(currentPiece,this);
 			addPieceToBoardState(currentPiece);
 		}
 	}
@@ -97,260 +97,6 @@ public abstract class Board implements Cloneable{
 		for(Move currentMove: currentPiece.getMoves()){
 			boardStatus.addPiece(new Position(currentMove.getFinalPos()), currentPiece);
 		}		
-	}
-	/**
-	 * generates moves for the given piece
-	 * @param currentPiece piece to generate moves for
-	 */
-	private void generateMovesfor(Piece currentPiece) {
-		ArrayList<Move> newMoves = new ArrayList<Move>();
-		switch(currentPiece.getType()){
-			case Bishop:
-				newMoves.addAll(movesForBishopAt(currentPiece.getPosition())); break;
-			case King:
-				newMoves.addAll(movesForKingAt(currentPiece.getPosition(),currentPiece.canCastle())); break;
-			case Knight:
-				newMoves.addAll(movesForKnightAt(currentPiece.getPosition())); break;
-			case Pawn:
-				newMoves.addAll(movesForPawnAt(currentPiece.getPosition(),currentPiece.getPieceColor())); break;
-			case Rook:
-				newMoves.addAll(movesForRookAt(currentPiece.getPosition())); break;
-			case Queen:
-				newMoves.addAll(movesForRookAt(currentPiece.getPosition()));
-				newMoves.addAll(movesForBishopAt(currentPiece.getPosition()));  break;				
-		}
-		currentPiece.setMoves(newMoves);
-	}
-	/**
-	 * processes the given square correctly for most pieces
-	 * @param position the position of the piece generating the moves
-	 * @param newMoves the move array to add the new move to
-	 * @param i the x coordinate of the move
-	 * @param j the y coordinate of the move
-	 * @return returns whether that square was empty or not
-	 */
-	private boolean processSquare(int[] position, ArrayList<Move> newMoves,
-			int i, int j) {
-		int[] s = {i,j};
-		switch(statusOfSquare(s)){
-			case OffBoard: return false;
-			case Empty: newMoves.add(new Move(position,s,MoveEnum.Move)); return true;
-			case OccupiedByBlack: 
-				if(pieceAt(position).getPieceColor() == WBColor.Black){
-					newMoves.add(new Move(position,s,MoveEnum.Cover));
-				} else {newMoves.add(new Move(position,s,MoveEnum.Take));}
-				return false;
-			case OccupiedByWhite:
-				if(pieceAt(position).getPieceColor() == WBColor.White){
-					newMoves.add(new Move(position,s,MoveEnum.Cover));
-				} else {newMoves.add(new Move(position,s,MoveEnum.Take));}
-				return false;
-		}
-		return false;
-	}
-	/**
-	 * generates moves for a rook at the given square
-	 * @param position rook location
-	 * @return the new moves array
-	 */
-	private ArrayList<Move> movesForRookAt(int[] position) {
-		ArrayList<Move> newMoves = new ArrayList<Move>();
-		//backwards
-		int length = 1;
-		while(processSquare(position,newMoves,position[0],position[1] -length)){
-			length++;
-		}
-		//forwards
-		length = 1;
-		while(processSquare(position,newMoves,position[0],position[1] + length)){
-			length++;
-		}
-		//left
-		length = 1;
-		while(processSquare(position,newMoves,position[0] - length,position[1])){
-			length++;
-		}
-		//right
-		length = 1;
-		while(processSquare(position,newMoves,position[0] + length,position[1])){
-			length++;
-		}
-		return newMoves;
-	}
-	/**
-	 * generates moves for a pawn at the given location
-	 * @param position the position of the pawn
-	 * @param color the color of the pawn
-	 * @return the array of new moves
-	 */
-	private ArrayList<Move> movesForPawnAt(int[] position, WBColor color) {
-		ArrayList<Move> newMoves = new ArrayList<Move>();
-		int delta = 1;
-		if(color == WBColor.Black){delta = -1;}
-//move up one
-		int[]     square    = {position[0], position[1] +delta};
-		SquareState status = statusOfSquare(square);
-		if(status == SquareState.OccupiedByBlack || status == SquareState.OccupiedByWhite){
-			newMoves.add(new Move(position,square,MoveEnum.Listen));
-		}
-		if (status == SquareState.Empty){
-			newMoves.add(new Move(position,square,MoveEnum.Move));
-//move up two
-			if(position[1] == 1 || position[1] == 6){
-				square[1] += delta;
-				status = statusOfSquare(square);
-				if(status == SquareState.OccupiedByBlack || status == SquareState.OccupiedByWhite){
-					newMoves.add(new Move(position,square,MoveEnum.Listen));
-				}
-				if (status == SquareState.Empty){
-					newMoves.add(new Move(position,square,MoveEnum.Move));	
-				}
-			}
-		}
-		int[] row = {3,4};
-//take/cover right
-		if(position[0] != 7){
-			square[0]  = position[0] +1;
-			square[1]  = position[1] +delta;
-			status = statusOfSquare(square);
-			if(status == SquareState.Empty){
-				newMoves.add(new Move(position,square,MoveEnum.Listen));
-				if(position[1] == row[(delta+1)/2]){
-					int[] toTheRight = {position[0]+1,position[1]};
-					if(Arrays.equals(prevMove.getFinalPos(),toTheRight) && pieceAt(toTheRight).getType() == PieceEnum.Pawn){
-						newMoves.add(new Move(position,square,MoveEnum.EnPassant));
-					} else {
-						newMoves.add(new Move(position,square[0],position[1],MoveEnum.Listen));
-					}
-				}
-			}
-			else if(status != SquareState.OffBoard){
-				newMoves.add(new Move(position,square,MoveEnum.Take));
-			}
-		}
-//take/cover left
-		if(position[0] != 0){
-			square[0]  = position[0] -1;
-			square[1]  = position[1] +delta;
-			status = statusOfSquare(square);
-			if(status == SquareState.Empty){
-				newMoves.add(new Move(position,square,MoveEnum.Listen));
-				if(position[1] == row[(delta+1)/2]){
-					int[] toTheLeft = {position[0]+1,position[1]};
-					if(Arrays.equals(prevMove.getFinalPos(),toTheLeft) && pieceAt(toTheLeft).getType() == PieceEnum.Pawn){
-						newMoves.add(new Move(position,square,MoveEnum.EnPassant));
-					} else {
-						newMoves.add(new Move(position,square[0],position[1],MoveEnum.Listen));
-					}
-				}
-			}
-			else if(status != SquareState.OffBoard){
-				newMoves.add(new Move(position,square,MoveEnum.Take));
-			}
-		}
-		return newMoves;
-	}
-	/**
-	 * generates moves for a knight at the given square
-	 * @param position the position of the knight
-	 * @return the array of new moves
-	 */
-	private ArrayList<Move> movesForKnightAt(int[] position) {
-		ArrayList<Move> newMoves = new ArrayList<Move>();
-		processSquare(position,newMoves,position[0] -2,position[1] -1);
-		processSquare(position,newMoves,position[0] -2,position[1] +1);
-		processSquare(position,newMoves,position[0] +2,position[1] -1);
-		processSquare(position,newMoves,position[0] +2,position[1] +1);
-		processSquare(position,newMoves,position[0] -1,position[1] +2);
-		processSquare(position,newMoves,position[0] +1,position[1] +2);
-		processSquare(position,newMoves,position[0] -1,position[1] -2);
-		processSquare(position,newMoves,position[0] +1,position[1] -2);
-		return newMoves;
-	}
-	/**
-	 * generates new moves for a king at the given location
-	 * @param position the position of the king
-	 * @param castle whether that king can castle
-	 * @return returns the new moves array
-	 */
-	private ArrayList<Move> movesForKingAt(int[] position, boolean castle) {
-		ArrayList<Move> newMoves = new ArrayList<Move>();
-		processSquare(position,newMoves,position[0] -1,position[1] -1);//down left
-		processSquare(position,newMoves,position[0] -1,position[1]   );//down
-		processSquare(position,newMoves,position[0] -1,position[1] +1);//down right
-		processSquare(position,newMoves,position[0] +1,position[1] -1);//up right
-		processSquare(position,newMoves,position[0] +1,position[1]   );//up
-		processSquare(position,newMoves,position[0] +1,position[1] +1);//up left
-		if(processSquare(position,newMoves,position[0]   ,position[1] -1)){//left
-			if(castle){
-				Output.debug("checking queenside castling", 3);
-				//castle Queen side
-				int delta = 1;
-				int[] edge = {(int)(3.5+3.5*delta),position[1]};
-				if(pieceAt(edge) != null && pieceAt(edge).canCastle()){
-					Move moveChecker = newMoves.get(newMoves.size()-1);
-					if(moveChecker.getType() == MoveEnum.Move){
-						int[]     square = {position[0] +2*delta, position[1]};
-						SquareState status = statusOfSquare(square);
-						if (status == SquareState.Empty){
-							newMoves.add(new Move(position,square,MoveEnum.Castle));
-						} else {
-							newMoves.add(new Move(position,square,MoveEnum.Listen));
-						}
-					}
-				}
-			}
-		}
-		if(processSquare(position,newMoves,position[0]   ,position[1] +1)){//right
-			if(castle){
-				Output.debug("checking kingside castling", 3);
-				//castle king side
-				int delta = 1;
-				int[] edge = {(int)(3.5+3.5*delta),position[1]};
-				if(pieceAt(edge) != null && pieceAt(edge).canCastle()){
-					Move moveChecker = newMoves.get(newMoves.size()-1);
-					if(moveChecker.getType() == MoveEnum.Move){
-						int[]     square = {position[0] +2*delta, position[1]};
-						SquareState status = statusOfSquare(square);
-						if (status == SquareState.Empty){
-							newMoves.add(new Move(position,square,MoveEnum.Castle));
-						} else {
-							newMoves.add(new Move(position,square,MoveEnum.Listen));
-						}
-					}
-				}
-			}
-		}
-		return newMoves;
-	}
-	/**
-	 * generates moves for a bishop at the given location
-	 * @param position the position of the bishop
-	 * @return returns the new array of moves
-	 */
-	private ArrayList<Move> movesForBishopAt(int[] position) {
-		ArrayList<Move> newMoves = new ArrayList<Move>();
-		//down-left
-		int length = 1;
-		while(processSquare(position,newMoves,position[0] -length,position[1] -length)){
-			length++;
-		}
-		//down-right
-		length = 1;
-		while(processSquare(position,newMoves,position[0] +length,position[1] -length)){
-			length++;
-		}
-		//up-left
-		length = 1;
-		while(processSquare(position,newMoves,position[0] - length,position[1] +length)){
-			length++;
-		}
-		//up-right
-		length = 1;
-		while(processSquare(position,newMoves,position[0] + length,position[1] +length)){
-			length++;
-		}
-		return newMoves;
 	}
 	
 	/**
@@ -395,7 +141,7 @@ public abstract class Board implements Cloneable{
 		Output.debug("building boardState",3);
 		boardStatus.clearBoardState();
 		for(Piece currentPiece: pieces){
-			generateMovesfor(currentPiece);
+			moveFactory.generateMovesfor(currentPiece,this);
 			addPieceToBoardState(currentPiece);
 		}
 	}
@@ -474,31 +220,31 @@ public abstract class Board implements Cloneable{
 		switch(m.getType()){
 		case Take:
 			if(pieceAt(m.getFinalPos()) == null){
-				Output.debug("no piece to take", 1);
+				Output.debug("no piece to take", 2);
 			}
 			break;
 		case Castle:
 			if(pieceAt(m.getOrigPos()) == null || pieceAt(m.getFinalPos()).getType() != PieceEnum.King){
-				Output.debug("no king there", 1);
+				Output.debug("no king there", 2);
 				return false;
 			}
 			if(m.getAffectedPiece().getType() != PieceEnum.Rook){
-				Output.debug("can't castle...", 1);
+				Output.debug("can't castle...", 2);
 				return false;
 			}
 			if(m.getAffectedPiece().getPosition()[1] == p.getPosition()[1]){
-				Output.debug("rook in the wrong place...", 1);
+				Output.debug("rook in the wrong place...", 2);
 			}
 			break;
 		case EnPassant:
 			if(Arrays.equals(prevMove.getFinalPos(),m.getAffectedPiece().getPosition())){
-				Output.debug("you lost your chance, sorry", 1);
+				Output.debug("you lost your chance, sorry", 2);
 				return false;
 			}
 			break;
-		case Cover: return false;
-		case Listen: return false;
-		case Rubbish: return false;
+		case Cover: Output.debug("that move cannot be executed", 2);return false;
+		case Listen:Output.debug("that move cannot be executed", 2);return false;
+		case Rubbish: Output.debug("that move cannot be executed", 2);return false;
 		case Unknown: Output.debug("something has gone horribly wrong", 1); return false;
 		}
 //string builder
@@ -540,7 +286,7 @@ public abstract class Board implements Cloneable{
 		}
 		removePieceFromBoardState(p);
 		p.setPosition(m.getFinalPos());
-		generateMovesfor(p);
+		moveFactory.generateMovesfor(p,this);
 		if(p.canCastle()){m.setOldCastle(true);}
 		if(m.getType() == MoveEnum.Take || m.getType() == MoveEnum.EnPassant){
 			takePiece(m.getAffectedPiece());
@@ -548,7 +294,7 @@ public abstract class Board implements Cloneable{
 		if(m.getType() == MoveEnum.Castle){
 			removePieceFromBoardState(m.getAffectedPiece());
 			m.getAffectedPiece().setPosition(rookMove);
-			generateMovesfor(m.getAffectedPiece());
+			moveFactory.generateMovesfor(m.getAffectedPiece(),this);
 		}
 		switch(m.getType()){
 		case Move:
@@ -566,14 +312,14 @@ public abstract class Board implements Cloneable{
 		}
 		setKingCheck();
 		if(playerMap.get(p.getPieceColor()).isInCheck()){
-			Output.debug("that move results in check", 1);
+			Output.debug("that move results in check", 2);
 			undo(m);
 			return false;
 		}
 		if(p.getType() == PieceEnum.Pawn && m.getFinalPos()[1]%7 == 0){
 			p.setType(playerMap.get(p.getPieceColor()).getPromotion());
 			notation += "=" + p.getType().toString();
-			generateMovesfor(p);
+			moveFactory.generateMovesfor(p,this);
 			addPieceToBoardState(p);
 			setKingCheck();
 		}
@@ -600,10 +346,10 @@ public abstract class Board implements Cloneable{
 			rookunMove[0] = (m.getAffectedPiece().getPosition()[0]-3)*7;
 			rookunMove[1] = m.getAffectedPiece().getPosition()[1];
 			m.getAffectedPiece().setPosition(rookunMove);
-			generateMovesfor(m.getAffectedPiece());
+			moveFactory.generateMovesfor(m.getAffectedPiece(),this);
 			addPieceToBoardState(m.getAffectedPiece());
 		}
-		generateMovesfor(p);
+		moveFactory.generateMovesfor(p,this);
 		addPieceToBoardState(p);
 		setKingCheck();
 		switch(m.getType()){
@@ -761,6 +507,12 @@ public abstract class Board implements Cloneable{
 				FEN += numToLet.charAt(prevMove.getFinalPos()[0]) + (prevMove.getFinalPos()[1]-prevMove.getOrigPos()[1])/2 + prevMove.getOrigPos()[1];
 		} else {FEN += "-";}
 		return FEN;
+	}
+	/**
+	 * @return returns the previous move
+	 */
+	public Move getprevMove() {
+		return prevMove;
 	}
 	
 	
