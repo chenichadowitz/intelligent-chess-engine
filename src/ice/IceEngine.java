@@ -1,44 +1,58 @@
 package ice;
 
-import gameLogic.*;
+import newGameLogic.*;
 import java.util.*;
 
 public class IceEngine {
-	int difficulty;
-	ComputerPlayer me;
+	int depth;
+	WBColor myColor;
 	
-	public IceEngine(int level, ComputerPlayer thisPlayer){
-		difficulty = level;
-		me = thisPlayer;
+	public IceEngine(int level, WBColor color){
+		depth = level;
+		myColor = color;
 	}
 	
-	public Listener getNextMove(){
-		ArrayList<staticBoard> staticBoards = new ArrayList<staticBoard>();
-		ArrayList<Listener> possibleMoves = me.getBoard().allValidMovesOf(me);
-		int[] scores = new int[possibleMoves.size()];
-		for(Listener curMove: possibleMoves){
-			staticBoards.add(new staticBoard(me.getBoard(),curMove));
+	public Move getNextMove(){
+		BoardTree myTree = new BoardTree(depth,myColor);
+		scoreTree(myTree);
+		BoardTree bestChild = myTree.getChildren().get(0);
+		for(BoardTree child: myTree.getChildren()){
+			if(myColor == WBColor.White){
+				if(bestChild.getScore() < child.getScore()){bestChild = child;}
+			} else {
+				if(bestChild.getScore() > child.getScore()){bestChild = child;}
+			}
 		}
-		for(Board curBoard: staticBoards){
-			scores[staticBoards.indexOf(curBoard)] = scoreBoard(curBoard);
-		}
-		int movenum = 0;
-		for(int a = 0; a < scores.length; a++){
-			if(scores[a] > scores[movenum]){movenum = a;}
-		}
-		return possibleMoves.get(movenum);
+		return bestChild.getThisMove();
 	}
-	public int scoreBoard(Board curBoard){
-		int score = 0;
+	private void scoreTree(BoardTree bt){
+		if(bt.getChildren() != null){
+			for(BoardTree thisBt: bt.getChildren()){
+				scoreTree(thisBt);
+			}
+			bt.setScore(bt.getAverageOfChildren());
+		} else {
+			bt.setScore(scoreBoard(bt.getThisBoard()));
+		}
+	}
+	
+	public float scoreBoard(Board curBoard){
+		float totalScore = 0;
+		totalScore += BoardStateSubScore(curBoard);
+		return totalScore;
+	}
+	public float BoardStateSubScore(Board curBoard){
+		int whiteBoardCount = 0;
+		int BlackBoardCount = 0;
 		for(int row = 0; row < 8; row++){
 			for(int col = 0; col < 8; col++){
-				for(Piece pieceCounter: curBoard.getBoardState()[row][col]){
-					if(pieceCounter.getColor() == me.getColor()){score++;}
-					else{score--;}
+				for(Piece pieceCounter: curBoard.getBoardStatus().getPieceList(row,col)){
+					if(pieceCounter.getPieceColor() == WBColor.White){whiteBoardCount++;}
+					else{BlackBoardCount--;}
 				}
 			}
 		}
-		return score;
+		return whiteBoardCount/BlackBoardCount;
 	}
 	
 	

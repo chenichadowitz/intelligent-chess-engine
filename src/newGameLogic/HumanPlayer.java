@@ -61,17 +61,6 @@ public class HumanPlayer extends Player {
 		return null;
 	}
 
-	@Override
-	public void ponder() {
-		// TODO Auto-generated method stub
-
-	}
-	
-	public void setNextMove(Move nextMove){
-		Output.debug("found a move",0);
-		this.nextMove = nextMove;		
-	}
-
 	private void ahMoveToInt(String s){
 		s = s.toLowerCase();
 		int let1 = s.charAt(0) - 'a' + 1;

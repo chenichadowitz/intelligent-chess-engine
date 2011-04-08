@@ -1,23 +1,23 @@
 package newGameLogic;
 
+import ice.IceEngine;
+
 public class ComputerPlayer extends Player {
 
-	@Override
-	public Move getMove() {
-		return null;
-		// TODO Auto-generated method stub
+	IceEngine engine;
+	
+	public ComputerPlayer(WBColor color,int level){
+		setColor(color);
+		engine = new IceEngine(level, getPlayerColor());
 	}
-
+	
 	@Override
 	public PieceEnum getPromotion() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public void ponder() {
-		// TODO Auto-generated method stub
-
+	public void findMove(){
+		setNextMove(engine.getNextMove());
 	}
-
 }
