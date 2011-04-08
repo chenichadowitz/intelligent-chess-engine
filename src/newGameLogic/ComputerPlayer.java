@@ -3,7 +3,8 @@ package newGameLogic;
 public class ComputerPlayer extends Player {
 
 	@Override
-	public void getMove() {
+	public Move getMove() {
+		return null;
 		// TODO Auto-generated method stub
 	}
 
