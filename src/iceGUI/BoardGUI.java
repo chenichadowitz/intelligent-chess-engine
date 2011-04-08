@@ -45,8 +45,8 @@ public class BoardGUI{
 		while(!gb.getPlayerMap().get(WBColor.White).isInCheckMate() && !gb.getPlayerMap().get(WBColor.Black).isInCheckMate()){
 			currentPlayer = gb.getPlayerMap().get(gb.getTurn());
 			while(currentPlayer.getMove() == null){
-				Output.debug("no move", 0);
 			}
+			Output.debug("Got move!", 0);
 			gb.makeMove(currentPlayer.getMove());
 		}
 	}
