@@ -4,6 +4,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import main.Output;
+
 public class HumanPlayer extends Player {
 
 	private Scanner moveReader = new Scanner(System.in);
@@ -66,8 +68,8 @@ public class HumanPlayer extends Player {
 	}
 	
 	public void setNextMove(Move nextMove){
-		
-		
+		Output.debug("found a move",0);
+		this.nextMove = nextMove;		
 	}
 
 	private void ahMoveToInt(String s){

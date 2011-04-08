@@ -5,7 +5,7 @@ public abstract class Player {
 	private boolean inCheck = false;
 	private boolean isInCheckMate = false;
 	private String name;
-	private Move nextMove;
+	protected Move nextMove;
 
 	/**
 	 * @return returns the char of the piece to promote the pawn to
