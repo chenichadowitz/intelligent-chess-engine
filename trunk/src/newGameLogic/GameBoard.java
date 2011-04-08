@@ -3,8 +3,33 @@ package newGameLogic;
 import main.Output;
 
 public class GameBoard extends Board {
+	/**
+	 * creates a single GameBoard object
+	 * @param player1 player1 for the board
+	 * @param player2 player2 for the board
+	 * @return returns the GameBoard just created
+	 */
+	public static GameBoard createGameBoard(Player player1, Player player2){
+		setCurrentGB(new GameBoard(player1,player2));
+		return currentGB;
+	}	
+	private static GameBoard currentGB;
+	
+	/**
+	 * @param currentGB the currentGB to set
+	 */
+	public static void setCurrentGB(GameBoard currentGB) {
+		GameBoard.currentGB = currentGB;
+	}
 
-	public GameBoard(Player player1, Player player2){
+	/**
+	 * @return the currentGB
+	 */
+	public static GameBoard getCurrentGB() {
+		return currentGB;
+	}
+
+	private GameBoard(Player player1, Player player2){
 		getPlayerMap().put(WBColor.White, player1);
 		getPlayerMap().put(WBColor.Black, player2);
 		setUpBoard();
@@ -50,6 +75,7 @@ public class GameBoard extends Board {
 		Move move = pieceAt(action.getOrigPos()).getMoveTo(action.getFinalPos());	
 		if(move.equals(action)){
 			if(this.execute(move)){
+				getPlayerMap().get(getTurn()).setNextMove(null);
 				getPlayerMap().get(WBColor.White).setInCheckMate((isGameOver((getPlayerMap().get(WBColor.White)))));
 				getPlayerMap().get(WBColor.Black).setInCheckMate((isGameOver((getPlayerMap().get(WBColor.Black)))));
 				addMovetoLog(move);

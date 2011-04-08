@@ -2,10 +2,10 @@ package newGameLogic;
 
 import main.Output;
 
-public class StaticBoardTree extends Board {
-
-	public StaticBoardTree(Board b, Move m){
-		Output.debug("//////staticBoard created",3);
+public class StaticBoard extends Board {
+	
+	public StaticBoard(Board b, Move m){
+		Output.debug("staticBoard created",5);
 		for(Piece newPiece : b.getPieces()){
 			addPiece(newPiece.clone());
 			addPieceToBoardState(newPiece);
@@ -18,15 +18,10 @@ public class StaticBoardTree extends Board {
 		}
 		switchTurn();
 	}
-	
-	
-	
-	
-	
-	
-	@Override
+	/**
+	 * does nothing can't move the staticBoard
+	 */
 	boolean makeMove(Move action) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
