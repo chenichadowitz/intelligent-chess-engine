@@ -147,14 +147,13 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		Output.debug("Mouse clicked", 2);
 		int[] mXY = {e.getX(), e.getY()};
 		int[] pt = Position.fromPixelToGb(mXY, flipBoard, this.getSize());
-		//Output.debug(Arrays.toString(pt), 2);
+		Output.debug(Arrays.toString(pt), 2);
 		if(lastClick == null){
 			Piece p = gb.pieceAt(pt);
 			if(p != null){
 				Output.debug("Piece selected:"+p.toString(), 2);
 				lastClick = pt;
 				clickedPiece = p;
-//				repaint();
 			}
 		} else {
 			Output.debug("Piece moved", 2);
@@ -162,6 +161,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 			lastClick = null;
 			clickedPiece = null;
 		}
+		repaint();
 	}
 
 	@Override
@@ -177,20 +177,8 @@ public class BoardArea extends JPanel implements MouseInputListener {
 
 	public void mousePressed(MouseEvent e) {
 		Output.debug("MousePressed", 2);
-		int[] mXY = {e.getX(), e.getY()};
-		Piece p = gb.pieceAt(Position.fromPixelToGb(mXY, flipBoard, this.getSize()));
-		if(p!=null){
-			//Output.debug(p.toString(), 2);
-		} else { //Output.debug("Piece is null!", 2); 
-		}
-		if(lastClick == null && p != null && (p.getPieceColor() == gb.getTurn())){
-			dragging = true;
-			Output.debug("Dragging=true", 2);
-			draggingPiece = p;
-		} else {
-			dragging = false;
-			draggingPiece = null;
-		}
+		
+		
 	}
 
 	public void mouseReleased(MouseEvent e) {
@@ -207,9 +195,28 @@ public class BoardArea extends JPanel implements MouseInputListener {
 
 	public void mouseDragged(MouseEvent e) {
 		Output.debug("mouse dragged", 2);
-		if(dragging){
+		if(!dragging){
 			int[] mXY = {e.getX(), e.getY()};
-			int[] move = Position.fromPixelToGui(mXY, this.getSize());
+			Piece p = gb.pieceAt(Position.fromPixelToGb(mXY, flipBoard, this.getSize()));
+			if(p!=null){
+			//Output.debug(p.toString(), 2);
+			} else {
+				//Output.debug("Piece is null!", 2);
+			}
+			if(lastClick == null && p != null && (p.getPieceColor() == gb.getTurn())){
+				dragging = true;
+				Output.debug("Dragging=true", 2);
+				draggingPiece = p;
+			} else {
+				dragging = false;
+				draggingPiece = null;
+			}
+		
+		}
+		
+		if(dragging){
+			int[] mXYDrag = {e.getX(), e.getY()};
+			int[] move = Position.fromPixelToGui(mXYDrag, this.getSize());
 			if(move[0] < 1) move[0] = 1;
 			if(move[0] > 8) move[0] = 8;
 			if(move[1] < 1) move[1] = 1;
