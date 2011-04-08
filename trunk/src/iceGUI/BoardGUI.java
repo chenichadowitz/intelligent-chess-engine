@@ -26,7 +26,7 @@ public class BoardGUI{
 	    dw.setJMenuBar(menuBar);
 		bp = new BoardPanel(menuBar);
 		Output.setGUI(bp);
-		Output.setDebugLevel(0);
+		Output.setDebugLevel(2);
 		Player white = new HumanPlayer(WBColor.White);
 		Player black = new HumanPlayer(WBColor.Black);
 		white.setName("Player1");
@@ -45,8 +45,9 @@ public class BoardGUI{
 		while(!gb.getPlayerMap().get(WBColor.White).isInCheckMate() && !gb.getPlayerMap().get(WBColor.Black).isInCheckMate()){
 			currentPlayer = gb.getPlayerMap().get(gb.getTurn());
 			while(currentPlayer.getMove() == null){
+//				Output.debug("no move", 3);
 			}
-			Output.debug("Got move!", 0);
+			Output.debug("Loop got move!", 0);
 			gb.makeMove(currentPlayer.getMove());
 		}
 	}
