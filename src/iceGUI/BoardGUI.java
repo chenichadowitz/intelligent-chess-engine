@@ -32,11 +32,22 @@ public class BoardGUI{
 		white.setName("Player1");
 		black.setName("Player2");
 		bp.setOpponents(white.getName(), black.getName());
-		gb = new GameBoard(white, black);
+		gb = GameBoard.createGameBoard(white, black);
 		bp.setupBoard(gb);
 		bp.setVisible(true);
 		dw.addPanel(bp);
 		dw.showFrame();
 		bp.repaint();
+		play();
+	}
+	public static void play(){
+		Player currentPlayer;
+		while(!gb.getPlayerMap().get(WBColor.White).isInCheckMate() && !gb.getPlayerMap().get(WBColor.Black).isInCheckMate()){
+			currentPlayer = gb.getPlayerMap().get(gb.getTurn());
+			while(currentPlayer.getMove() == null){
+				Output.debug("no move", 0);
+			}
+			gb.makeMove(currentPlayer.getMove());
+		}
 	}
 }

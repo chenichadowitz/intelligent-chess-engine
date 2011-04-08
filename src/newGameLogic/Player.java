@@ -51,13 +51,7 @@ public abstract class Player {
 	}
 
 	/**
-	 * asks the player for their move
-	 */
-	public abstract void getNextMove();
-
-	/**
-	 * for use with GUI inside ponder()
-	 * for use with CLI inside getNextMove()
+	 * sets the move the player is to make
 	 * @param nextMove the nextMove to set
 	 */
 	public void setNextMove(Move nextMove){

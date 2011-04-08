@@ -40,7 +40,7 @@ public class IceDriver {
 				black.setName(genericScanner.next());
 			}
 		}
-		gb = new GameBoard(white, black);
+		gb = GameBoard.createGameBoard(white, black);
 	}
 	public static void play(){
 		Player currentPlayer;
@@ -49,7 +49,7 @@ public class IceDriver {
 			currentPlayer = gb.getPlayerMap().get(gb.getTurn());
 			while(currentPlayer.getMove() == null){
 				System.out.println("Current player: " + currentPlayer);
-				currentPlayer.getNextMove();
+//				currentPlayer.getNextMove();
 			}
 			gb.makeMove(currentPlayer.getMove());
 			System.out.println(gb.toString());
