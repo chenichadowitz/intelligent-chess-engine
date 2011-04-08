@@ -1,5 +1,7 @@
 package newGameLogic;
 
+import main.Output;
+
 public abstract class Player {
 	private WBColor playerColor;
 	private boolean inCheck = false;
@@ -11,11 +13,6 @@ public abstract class Player {
 	 * @return returns the char of the piece to promote the pawn to
 	 */	
 	public abstract PieceEnum getPromotion();
-	
-	/**
-	 * sets the player thinking sets nextMove to a non-null move
-	 */	
-	public abstract void ponder(); 
 	
 	/**
 	 * @return the player's next move
@@ -55,7 +52,8 @@ public abstract class Player {
 	 * @param nextMove the nextMove to set
 	 */
 	public void setNextMove(Move nextMove){
-		//this.nextMove = nextMove;
+		Output.debug("found a move",0);
+		this.nextMove = nextMove;	
 	}
 
 	/**

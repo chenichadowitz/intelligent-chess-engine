@@ -3,40 +3,50 @@ package ice;
 import java.util.ArrayList;
 
 import newGameLogic.Board;
+import newGameLogic.GameBoard;
 import newGameLogic.Move;
 import newGameLogic.StaticBoard;
+import newGameLogic.WBColor;
 
 public class BoardTree {
 	private BoardTree parent;
 	private ArrayList<BoardTree> children;
 	private Move thisMove;
 	private Board thisBoard;
-	private long score;
+	private float score;
+	private WBColor turnColor;
 	
-
-	public BoardTree(Board b, Move currentMove, int depth, BoardTree p){
+	public BoardTree(Board b, Move currentMove, int depth, BoardTree p, WBColor thisColor){
 		parent = p;
 		thisBoard = b;
 		thisMove = currentMove;
+		turnColor = thisColor;
 		if(depth > 1){
 			for(Move m: thisBoard.allValidMovesOf(thisBoard.getPlayerMap().get(thisBoard.getTurn()))){
-				children.add(new BoardTree(new StaticBoard(thisBoard,m), m,depth-1,this));
+				children.add(new BoardTree(new StaticBoard(thisBoard,m), m,depth-1,this, turnColor.next()));
 			}
 		}
 	}
-	public BoardTree(Board b,int depth){
-		this(b,null,depth,null);
+	public BoardTree(int depth, WBColor thisColor){
+		this(GameBoard.getCurrentGB(),null,depth,null, thisColor);
 	}
+	
+	/**
+	 * @return the turnColor
+	 */
+	public WBColor getTurnColor() {
+		return turnColor;
+	}	
 	/**
 	 * @return the score
 	 */
-	public long getScore() {
+	public float getScore() {
 		return score;
 	}
 	/**
 	 * @param score the score to set
 	 */
-	public void setScore(long score) {
+	public void setScore(float score) {
 		this.score = score;
 	}
 	/**
@@ -62,5 +72,12 @@ public class BoardTree {
 	 */
 	public Move getThisMove() {
 		return thisMove;
+	}
+	public float getAverageOfChildren() {
+		float average = 0;
+		for(BoardTree child: children){
+			average += child.getScore();
+		}
+		return average/children.size();
 	}
 }
