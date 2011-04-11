@@ -28,6 +28,8 @@ public class BoardPanel extends JPanel implements ActionListener{
 	private JLabel opponents;
 	private JToggleButton flip = new JToggleButton("Flip Board");
 	private JTextArea logViewer;
+	private TextView console;
+	private TextView notation;
 	private BoardArea ba;
 	private GameBoard gb;
 	
@@ -63,23 +65,33 @@ public class BoardPanel extends JPanel implements ActionListener{
 		gbc.insets = new Insets(2, 10, 2, 10);
 		gbc.weighty = 0.0; gbc.gridy = 0; gbc.gridx = 0;		
 		northInfo.add(opponents, gbc);
-		gbc.gridy++; northInfo.add(turn, gbc);
-		gbc.gridy++; gbc.weighty = 1.0;
-		JLabel logTitle = new JLabel("Game Log:");
-		gbc.gridy++; northInfo.add(logTitle,gbc);
-		gbc.gridy++;
-		logViewer = new JTextArea(0, 10);
-		JScrollPane scrollPane = new JScrollPane(logViewer,
-				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		logViewer.setEditable(false);
-		logViewer.setCaretPosition(0);
-		northInfo.add(scrollPane, gbc);
+		gbc = (GridBagConstraints)gbc.clone();
+		gbc.gridy = 1; northInfo.add(turn, gbc);
+		gbc.gridy = 2; gbc.weighty = 1.0;
+		//JLabel logTitle = new JLabel("Game Log:");
+		//gbc.gridy++; northInfo.add(logTitle,gbc);
+		//gbc.gridy++;
+		//logViewer = new JTextArea(0, 10);
+		notation = new TextView("Game Log", 0, 10);
+		//JScrollPane scrollPane = new JScrollPane(logViewer,
+		//		JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		//		JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		//logViewer.setEditable(false);
+		//logViewer.setCaretPosition(0);
+		//northInfo.add(scrollPane, gbc);
+		northInfo.add(notation, gbc);
 		gbc.gridy++; northInfo.add(flip, gbc);
 		infoPanel.add(northInfo, BorderLayout.NORTH);
 		add(infoPanel, BorderLayout.EAST);
 		ba = new BoardArea(this);
 		add(ba, BorderLayout.CENTER);
+		console = new TextView("Console", 0, 0);
+		JPanel southPanel = new JPanel(new GridBagLayout());
+		gbc.gridx = 0; gbc.gridy = 0;
+		southPanel.add(console.getTag(), gbc);
+		gbc.gridx++;
+		southPanel.add(console, gbc);
+		add(southPanel, BorderLayout.SOUTH);
 	}
 	
 	public void switchTurn(){
@@ -110,8 +122,12 @@ public class BoardPanel extends JPanel implements ActionListener{
 	
 	public void logGUI(String str){
 		//str += "\n";
-		logViewer.append(str);
-		logViewer.setCaretPosition(logViewer.getText().length());
+		notation.append(str);
+		//logViewer.setCaretPosition(logViewer.getText().length());
+	}
+	
+	public void printNotation(String str){
+		
 	}
 	
 	public void setupBoard(GameBoard gb){

@@ -30,13 +30,16 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	private int[] mouseDragLocation;
 	private Piece clickedPiece;
 	private GameBoard gb;
-	private BoardPanel bp;
+	//private BoardPanel bp;
+	private GamePanel panel;
 	private ImageIcon boardImage;
 	private ImageIcon boardRevImage;
 	
-	public BoardArea(BoardPanel bp){
+	public BoardArea(){ this(null);}
+	
+	public BoardArea(GamePanel gp){
 		super();
-		this.bp = bp;
+		this.panel = gp;
 		ClassLoader cldr = this.getClass().getClassLoader();
 		java.net.URL imageURL = cldr.getResource("resources/images/board.png");
 		boardImage = new ImageIcon(imageURL);
