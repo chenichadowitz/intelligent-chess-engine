@@ -3,15 +3,16 @@ package main;
 import java.util.Scanner;
 
 import iceGUI.BoardPanel;
+import iceGUI.GamePanel;
 
 public class Input {
 
-	private static BoardPanel gui;
+	private static GamePanel gui;
 	private static Scanner scan = new Scanner(System.in);
 
 
-	public static void setGUI(BoardPanel bp){
-		gui = bp;
+	public static void setGUI(GamePanel panel){
+		gui = panel;
 	}
 	
 	public static char getPromotion(){
