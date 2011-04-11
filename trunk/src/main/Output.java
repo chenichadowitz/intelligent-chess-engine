@@ -2,10 +2,11 @@ package main;
 
 import newGameLogic.Move;
 import iceGUI.BoardPanel;
+import iceGUI.GamePanel;
 
 public class Output {
 	private static int maxLevel = 5;
-	private static BoardPanel gui;
+	private static GamePanel gui;
 	private static boolean whiteTurn = true;
 	private static int moveCounter = 1;
 	private static int halfMoveCounter = 0;
@@ -20,24 +21,24 @@ public class Output {
 		maxLevel = lvl;
 	}
 	
-	public static void setGUI(BoardPanel bp){
-		gui = bp;
-		Input.setGUI(bp);
+	public static void setGUI(GamePanel panel){
+		gui = panel;
+		Input.setGUI(panel);
 	}
 	
 	public static void printNotation(Move l, boolean mated){
 		halfMoveCounter++;
 		if(whiteTurn){
-			print(moveCounter + ". " + l.toString());
+			printToNotation(moveCounter + ". " + l.toString());
 			if(mated){
-				print("+\n  1 - 0\n");
+				printToNotation("+\n  1 - 0\n");
 			}
 		} else {
-			print("  " + l.toString());
+			printToNotation("  " + l.toString());
 			if(mated){
-				print("+\n  0 - 1\n");
+				printToNotation("+\n  0 - 1\n");
 			} else {
-				 print("\n");
+				 printToNotation("\n");
 			}
 			moveCounter++;
 		}
@@ -45,9 +46,17 @@ public class Output {
 		whiteTurn = !whiteTurn;
 	}
 	
-	private static void print(String s){
+	private static void printToNotation(String s){
 		if(gui != null){
-			gui.logGUI(s);
+			gui.printNotation(s);
+		} else {
+			System.out.println(s);
+		}
+	}
+	
+	private static void printToConsole(String s){
+		if(gui != null){
+			gui.printConsole(s);
 		} else {
 			System.out.println(s);
 		}
@@ -55,7 +64,7 @@ public class Output {
 	
 	public static void debug(String action, int level){
 		if(level <= maxLevel){
-			print("\n" + action + "\n");
+			printToConsole("\n" + action + "\n");
 			//possibly write to file
 		}
 	}
