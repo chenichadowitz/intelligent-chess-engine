@@ -12,7 +12,7 @@ import main.Output;
 public class BoardGUI{
 	
 	private static DisplayWindow dw;
-	private static BoardPanel bp;
+	private static GamePanel panel;
 	private static GameBoard gb;
 
 	public static void run(String[] args){
@@ -24,20 +24,26 @@ public class BoardGUI{
 		dw = new DisplayWindow("ICE", 800, 600);
 		JMenuBar menuBar = new JMenuBar();
 	    dw.setJMenuBar(menuBar);
-		bp = new BoardPanel(menuBar);
-		Output.setGUI(bp);
+		//bp = new BoardPanel(menuBar);
+	    panel = new GamePanel(menuBar);
+		//Output.setGUI(bp);
+	    Output.setGUI(panel);
 		Output.setDebugLevel(2);
 		Player white = new HumanPlayer(WBColor.White);
 		Player black = new HumanPlayer(WBColor.Black);
 		white.setName("Player1");
 		black.setName("Player2");
-		bp.setOpponents(white.getName(), black.getName());
+		//bp.setOpponents(white.getName(), black.getName());
+		panel.setOpponents(white.getName(), black.getName());
 		gb = GameBoard.createGameBoard(white, black);
-		bp.setupBoard(gb);
-		bp.setVisible(true);
-		dw.addPanel(bp);
+		//bp.setupBoard(gb);
+		panel.setupGame(gb);
+		//bp.setVisible(true);
+		//dw.addPanel(bp);
+		dw.addPanel(panel);
 		dw.showFrame();
-		bp.repaint();
+		//bp.repaint();
+		panel.repaint();
 		play();
 	}
 	public static void play(){
