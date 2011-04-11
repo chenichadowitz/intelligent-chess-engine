@@ -14,6 +14,15 @@ public class Input {
 		gui = panel;
 	}
 	
+	public static void undoMove(){
+		//Attempt to undo a move
+	}
+	
+	public static void loadGame(){
+		//Load game from FEN or un-serialize it
+	}
+	
+	
 	public static char getPromotion(){
 		if(gui != null){
 			String s = gui.promotionPrompt();
