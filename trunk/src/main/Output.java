@@ -25,6 +25,10 @@ public class Output {
 		Input.setGUI(panel);
 	}
 	
+	public static void saveGame(){
+		//Write game to FEN or serialize it
+	}
+	
 	public static void printNotation(Move l, boolean mated){
 		halfMoveCounter++;
 		if(whiteTurn){
