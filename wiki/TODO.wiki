@@ -18,7 +18,7 @@
 
 =GUI-specific Items=
 
- * separate debug/output message view from notation view (perhaps another text area underneath the board)
- * Debug message view area will print all messages 
+ * ~~separate debug/output message view from notation view (perhaps another text area underneath the board)~~
+ * ~~Debug message view area will print all messages~~
  * Setup game dialog
  * Computer difficulty level
