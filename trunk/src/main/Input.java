@@ -2,7 +2,6 @@ package main;
 
 import java.util.Scanner;
 
-import iceGUI.BoardPanel;
 import iceGUI.GamePanel;
 
 public class Input {

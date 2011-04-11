@@ -1,7 +1,6 @@
 package main;
 
 import newGameLogic.Move;
-import iceGUI.BoardPanel;
 import iceGUI.GamePanel;
 
 public class Output {
