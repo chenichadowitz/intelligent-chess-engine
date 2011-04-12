@@ -3,6 +3,10 @@ package newerGameLogic;
 import java.util.HashMap;
 import java.util.Map;
 
+import newGameLogic.Board;
+import newGameLogic.Player;
+import newGameLogic.WBColor;
+
 
 public class Game {
 	Board gameBoard;

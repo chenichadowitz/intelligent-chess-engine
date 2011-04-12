@@ -2,8 +2,6 @@ package newerGameLogic;
 
 import java.util.LinkedList;
 
-import main.Output;
-
 public class MoveLog {
 	LinkedList<Move> log = new LinkedList<Move>();
 	

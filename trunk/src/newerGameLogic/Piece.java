@@ -1,15 +1,16 @@
 package newerGameLogic;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 
 public class Piece implements Cloneable{
 	private WBColor pieceColor;
 	private PieceEnum type;
 	private int value;
 	private boolean castle = false;
-	private Position position; // [x-coord,y-coord]
-	private ArrayList<Move> moves = new ArrayList<Move>();
+	private Position position;
+	private HashMap<Position,Move> moves = new HashMap<Position, Move>();
 	
 	/**
 	 *  creates a piece
@@ -25,16 +26,17 @@ public class Piece implements Cloneable{
 		else{castle = false;}
 	}
 	
+	public Piece(WBColor ownerColor, PieceEnum pieceType, int x, int y){
+		this(ownerColor,pieceType,new Position(x,y));
+	}
+	
 	/**
 	 * returns move of the piece to the given square
 	 * @param square where the move is to
 	 * @return the move to that square
 	 */
-	public Move getMoveTo(int[] square){
-		for(Move thisMove: moves){
-			if(Arrays.equals(thisMove.getFinalPos(), square)){return thisMove;}
-		}
-		return null; //no move to that sqaure BOOM!!!
+	public Move getMoveTo(Position square){
+		return moves.get(square);
 	}
 	
 	/**
@@ -85,15 +87,24 @@ public class Piece implements Cloneable{
 	/**
 	 * @return the moves
 	 */
-	public ArrayList<Move> getMoves() {
-		return moves;
+	public Collection<Move> getMoves() {
+		return moves.values();
 	}
 	/**
 	 * @param moves the moves to set
 	 */
 	public void setMoves(ArrayList<Move> moves) {
-		this.moves = moves;
+		for(Move currentMove: moves){
+			this.moves.put(currentMove.getFinalPos(), currentMove);
+		}
 	}
+	/**
+	 * removes all moves
+	 */
+	public void resetMoves(){
+		moves = new HashMap<Position, Move>();
+	}
+	
 	/**
 	 * @return the pieceColor
 	 */
