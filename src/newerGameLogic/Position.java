@@ -1,9 +1,5 @@
 package newerGameLogic;
 
-import java.util.Arrays;
-
-import main.Output;
-
 public class Position {
 	
 	private final Integer x;
@@ -93,6 +89,15 @@ public class Position {
 		result[0] = size.width * from[0] / 10;
 		result[1] = size.height * from[1] / 10;
 		return result;
+	}
+
+	public Position shift(int i, int j) {
+		return new Position(x + i, y + j);
+	}
+
+	public boolean isOffBoard() {
+		if(x > 7 || x < 0 || y > 7 || y < 0){return true;}
+		return false;
 	}
 
 }

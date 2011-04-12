@@ -9,6 +9,5 @@ public enum WBColor {
 		public String toString(){return "b";}
 		public WBColor next(){return White;}
 	};
-	
 	public WBColor next(){return White;}
 }
