@@ -2,6 +2,7 @@ package iceGUI;
 
 import main.Output;
 import newGameLogic.GameBoard;
+import newerGameLogic.Player;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics;
@@ -13,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -27,6 +29,7 @@ public class GamePanel extends JPanel implements ActionListener{
 	JButton flip;
 	JLabel opponentsLabel;
 	JLabel turn;
+	SetupDialog setupDialog;
 	ArrayList<JMenuItem> debugLevels;
 	ArrayList<JMenuItem> mainMenuItems;
 	SidePanel eastPanel;
@@ -141,11 +144,18 @@ public class GamePanel extends JPanel implements ActionListener{
 		notation.append(str);
 	}
 	
+	public void newGame(Player w, Player b){
+		
+	}
+	
 	public void actionPerformed(ActionEvent e) {
 		Object src = e.getSource();
 		if(mainMenuItems.contains(src)){
 			JMenuItem selected = (JMenuItem) src;
 			if(selected.getText().equals("New Game")){
+				setupDialog = new SetupDialog(this);
+				setupDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				setupDialog.setVisible(true);
 				gb.resetBoard();
 				setupGame(gb);
 			} else if(selected.getText().equals("Clear Console")){

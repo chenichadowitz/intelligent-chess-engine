@@ -29,7 +29,7 @@ import newerGameLogic.HumanPlayer;
 import newerGameLogic.Player;
 import newerGameLogic.WBColor;
 
-public class SetupDialog extends JDialog  implements ChangeListener, ActionListener{
+public class SetupDialog extends JDialog implements ChangeListener, ActionListener{
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtPlayerW;
@@ -53,6 +53,7 @@ public class SetupDialog extends JDialog  implements ChangeListener, ActionListe
 	/**
 	 * Launch the application.
 	 */
+	/*
 	public static void main(String[] args) {
 		try {
 			SetupDialog dialog = new SetupDialog();
@@ -62,6 +63,7 @@ public class SetupDialog extends JDialog  implements ChangeListener, ActionListe
 			e.printStackTrace();
 		}
 	}
+	*/
 
 	public SetupDialog(GamePanel gp){
 		this();
@@ -72,6 +74,8 @@ public class SetupDialog extends JDialog  implements ChangeListener, ActionListe
 	 * Create the dialog.
 	 */
 	public SetupDialog() {
+		setModal(true);
+		setAlwaysOnTop(true);
 		setBounds(100, 100, 450, 300);
 		setTitle("Setup Game");
 		getContentPane().setLayout(new BorderLayout());
@@ -288,7 +292,7 @@ public class SetupDialog extends JDialog  implements ChangeListener, ActionListe
 		Player black = collectPlayerInfo(WBColor.Black);
 		
 		if(parent != null){
-			//parent.newGame(white, black);
+			parent.newGame(white, black);
 		} else {
 			System.out.println(white.getClass().getName() + " " + white.getName());
 			System.out.println(black.getClass().getName() + " " + black.getName());

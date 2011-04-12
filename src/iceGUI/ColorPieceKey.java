@@ -22,6 +22,6 @@ public class ColorPieceKey {
 	}
 	
 	public int hashCode() {
-		return ( hashCode() + 31 * hashCode() );
+		return ( color.hashCode() + 31 * pieceType.hashCode() );
 	}
 }
