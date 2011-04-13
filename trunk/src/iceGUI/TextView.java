@@ -6,7 +6,7 @@ import javax.swing.JTextArea;
 
 public class TextView extends JPanel {
 	
-	private JTextArea textArea;	
+	private	JTextArea textArea;	
 	
 	public TextView(int rows, int cols){
 		super();
