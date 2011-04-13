@@ -4,30 +4,26 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.security.InvalidParameterException;
 
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 
-import newerGameLogic.ComputerPlayer;
-import newerGameLogic.HumanPlayer;
-import newerGameLogic.Player;
-import newerGameLogic.WBColor;
+//import newerGameLogic.ComputerPlayer;
+//import newerGameLogic.HumanPlayer;
+//import newerGameLogic.Player;
 
 public class SetupDialog extends JDialog implements ChangeListener, ActionListener{
 
@@ -53,7 +49,7 @@ public class SetupDialog extends JDialog implements ChangeListener, ActionListen
 	/**
 	 * Launch the application.
 	 */
-	/*
+	
 	public static void main(String[] args) {
 		try {
 			SetupDialog dialog = new SetupDialog();
@@ -63,7 +59,7 @@ public class SetupDialog extends JDialog implements ChangeListener, ActionListen
 			e.printStackTrace();
 		}
 	}
-	*/
+	
 
 	public SetupDialog(GamePanel gp){
 		this();
@@ -153,7 +149,7 @@ public class SetupDialog extends JDialog implements ChangeListener, ActionListen
 			sliderW = new JSlider();
 			sliderW.setValue(5);
 			sliderW.setSnapToTicks(true);
-			sliderW.setMaximum(10);
+			sliderW.setMaximum(9);
 			sliderW.addChangeListener(this);
 			GridBagConstraints gbc_sliderW = new GridBagConstraints();
 			gbc_sliderW.fill = GridBagConstraints.HORIZONTAL;
@@ -228,9 +224,11 @@ public class SetupDialog extends JDialog implements ChangeListener, ActionListen
 			sliderB = new JSlider();
 			sliderB.setValue(5);
 			sliderB.setSnapToTicks(true);
-			sliderB.setMaximum(10);
+			sliderB.setMaximum(9);
 			sliderB.addChangeListener(this);
 			GridBagConstraints gbc_sliderB = new GridBagConstraints();
+			gbc_sliderB.insets = new Insets(0, 0, 5, 0);
+			gbc_sliderB.fill = GridBagConstraints.HORIZONTAL;
 			gbc_sliderB.gridx = 4;
 			gbc_sliderB.gridy = 3;
 			contentPanel.add(sliderB, gbc_sliderB);
@@ -259,6 +257,10 @@ public class SetupDialog extends JDialog implements ChangeListener, ActionListen
 	
 	}
 
+	/**
+	 * Toggles the White human components' visibility, and White computer components' the opposite 
+	 * @param visible Human components' visibility (computer components are opposite)
+	 */
 	private void toggleWhiteHuman(boolean visible){
 		rbHumanW.setSelected(visible);
 		txtPlayerW.setVisible(visible);
@@ -266,6 +268,11 @@ public class SetupDialog extends JDialog implements ChangeListener, ActionListen
 		toggleWhiteComp(!visible);
 	}
 	
+	/**
+	 * Toggles the White computer components' visibility
+	 * (SHOULD ONLY BE CALLED FROM toggleWhiteHuman(boolean visible)
+	 * @param visible Computer components' visibility
+	 */
 	private void toggleWhiteComp(boolean visible){
 		rbComputerW.setSelected(visible);
 		lblDifficultyW.setVisible(visible);
@@ -273,6 +280,10 @@ public class SetupDialog extends JDialog implements ChangeListener, ActionListen
 		sliderW.setVisible(visible);
 	}
 	
+	/**
+	 * Toggles the Black human components' visibility, and Black computer components' the opposite 
+	 * @param visible Human components' visibility (computer components are opposite)
+	 */
 	private void toggleBlackHuman(boolean visible){
 		rbHumanB.setSelected(visible);
 		txtPlayerB.setVisible(visible);
@@ -280,6 +291,11 @@ public class SetupDialog extends JDialog implements ChangeListener, ActionListen
 		toggleBlackComp(!visible);
 	}
 	
+	/**
+	 * Toggles the Black computer components' visibility
+	 * (SHOULD ONLY BE CALLED FROM toggleBlackHuman(boolean visible)
+	 * @param visible Computer components' visibility
+	 */
 	private void toggleBlackComp(boolean visible){
 		rbComputerB.setSelected(visible);
 		lblDifficultyB.setVisible(visible);
@@ -287,6 +303,7 @@ public class SetupDialog extends JDialog implements ChangeListener, ActionListen
 		sliderB.setVisible(visible);
 	}
 	
+	/*
 	private void gatherAndReturnChoices(){
 		Player white = collectPlayerInfo(WBColor.White);
 		Player black = collectPlayerInfo(WBColor.Black);
@@ -319,28 +336,37 @@ public class SetupDialog extends JDialog implements ChangeListener, ActionListen
 			throw new InvalidParameterException("Color enum unrecognized....");
 		}
 	}
+	*/
 	
-	
-	public void stateChanged(ChangeEvent arg0) {
+	//Called when the sliders are changed
+	public void stateChanged(ChangeEvent e) {
+		//Keep the slider label values locked to the slider values
 		if(sliderW.getValue() != Integer.parseInt(lblDiffValW.getText()))
 			lblDiffValW.setText(Integer.toString(sliderW.getValue()));
-		if(sliderB.getValue() != Integer.parseInt(lblDiffValW.getText()))
+		if(sliderB.getValue() != Integer.parseInt(lblDiffValB.getText()))
 			lblDiffValB.setText(Integer.toString(sliderB.getValue()));				
 	}
 
+	//Called when a radio button or regular button is clicked
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(rbHumanW)){
+			//White player is human, toggle visible elements accordingly
 			toggleWhiteHuman(true);
 		} else if(e.getSource().equals(rbComputerW)){
+			//White player is computer, toggle visible elements accordingly
 			toggleWhiteHuman(false);
 		} else if(e.getSource().equals(rbHumanB)){
+			//Black player is human, toggle visible elements accordingly
 			toggleBlackHuman(true);
 		} else if(e.getSource().equals(rbComputerB)){
+			//Black player is computer, toggle visible elements accordingly
 			toggleBlackHuman(false);
 		} else if(e.getSource().equals(okButton)){
-			gatherAndReturnChoices();
+			//Choices made, return choices to 'parent' and dispose of self
+			//gatherAndReturnChoices();
 			this.dispose();
 		} else if(e.getSource().equals(cancelButton)){
+			//Canceled, dispose of self
 			this.dispose();
 		}
 	}

@@ -21,7 +21,7 @@ public class BoardGUI{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e){}
 		
-		dw = new DisplayWindow("ICE", 800, 600);
+		dw = new DisplayWindow("ICE", 630, 630);
 		JMenuBar menuBar = new JMenuBar();
 	    dw.setJMenuBar(menuBar);
 		//bp = new BoardPanel(menuBar);

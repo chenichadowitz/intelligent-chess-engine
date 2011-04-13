@@ -2,13 +2,11 @@ package iceGUI;
 
 import main.Output;
 import newGameLogic.GameBoard;
-import newerGameLogic.Player;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
-import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -21,17 +19,20 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import java.awt.GridBagLayout;
 
 public class GamePanel extends JPanel implements ActionListener{
 
 	JMenuBar menuBar;
 	JButton flip;
+	JButton toggleNotation;
+	JButton toggleConsole;
 	JLabel opponentsLabel;
 	JLabel turn;
 	SetupDialog setupDialog;
 	ArrayList<JMenuItem> debugLevels;
 	ArrayList<JMenuItem> mainMenuItems;
+	ArrayList<JMenuItem> viewMenuItems;
+	SidePanel northPanel;
 	SidePanel eastPanel;
 	SidePanel southPanel;
 	TextView notation;
@@ -47,22 +48,38 @@ public class GamePanel extends JPanel implements ActionListener{
 	
 	private void setupMenus(JMenuBar bar){
 		this.menuBar = bar;
+		//Build Debug Menu items
 		debugLevels = new ArrayList<JMenuItem>(6);
 		for(int i=0; i<6; i++){
 			debugLevels.add(new JMenuItem(""+i));
 		}
 		JMenu mainMenu = new JMenu("Menu");
 		menuBar.add(mainMenu);
+		//Build main menu items
 		mainMenuItems = new ArrayList<JMenuItem>(3);
 		mainMenuItems.add(new JMenuItem("New Game"));
 		mainMenuItems.add(new JMenuItem("Clear Console"));
 		mainMenuItems.add(new JMenuItem("Quit"));
+		//Add the menu items to the menu and add action listeners
 		for(JMenuItem item : mainMenuItems){
 			mainMenu.add(item);
 			item.addActionListener(this);
 		}
+		//Let's do the View menu now....
+		JMenu viewMenu = new JMenu("View");
+		menuBar.add(viewMenu);
+		viewMenuItems = new ArrayList<JMenuItem>(3);
+		viewMenuItems.add(new JMenuItem("Flip Board"));
+		viewMenuItems.add(new JMenuItem("Toggle Notation"));
+		viewMenuItems.add(new JMenuItem("Toggle Console"));
+		for(JMenuItem menuitem : viewMenuItems){
+			viewMenu.add(menuitem);
+			menuitem.addActionListener(this);
+		}
+		//Debug menu
 		JMenu debugMenu = new JMenu("Debug");
 		menuBar.add(debugMenu);
+		//Add the debug menu items to the debug menu and add action listeners
 		for(JMenuItem menuitem : debugLevels){
 			debugMenu.add(menuitem);
 			menuitem.addActionListener(this);
@@ -70,8 +87,7 @@ public class GamePanel extends JPanel implements ActionListener{
 	}
 	
 	private void initialize(){
-		setLayout(new BorderLayout());		
-
+		setLayout(new BorderLayout());	
 		//Build the east panel
 		eastPanel = new SidePanel();
 		opponentsLabel = new JLabel();
@@ -80,9 +96,6 @@ public class GamePanel extends JPanel implements ActionListener{
 		eastPanel.addItem(turn, 0, 1);
 		notation = new TextView(30, 10);
 		eastPanel.addItem(notation, 0, 2);
-		flip = new JButton("Flip Board");
-		flip.addActionListener(this);
-		eastPanel.addItem(flip, 0, 3);
 		add(eastPanel, BorderLayout.EAST);
 		//Build the south panel
 		southPanel = new SidePanel();
@@ -92,8 +105,20 @@ public class GamePanel extends JPanel implements ActionListener{
 		console = new TextView(5, 40);
 		southPanel.constraints.insets.top = top;
 		southPanel.addItem(console, 0, 1);
-		add(southPanel, BorderLayout.SOUTH);
+		/*
+		flip = new JButton("Flip Board");
+		flip.addActionListener(this);
+		southPanel.addItem(flip, 0, 2);
+		toggleNotation = new JButton("Toggle Notation");
+		toggleNotation.addActionListener(this);
+		southPanel.addItem(toggleNotation, 1, 2);
+		toggleConsole = new JButton("Toggle Console");
+		toggleConsole.addActionListener(this);
+		southPanel.addItem(toggleConsole, 2, 2);
+		*/
 		
+		add(southPanel, BorderLayout.SOUTH);
+		//Spawn a BoardArea
 		ba = new BoardArea();
 		add(ba, BorderLayout.CENTER);
 	}
@@ -101,7 +126,8 @@ public class GamePanel extends JPanel implements ActionListener{
 	public void switchTurn(){
 		if(turn.getText().equals("Black"))
 			turn.setText("White");
-		else turn.setText("Black");
+		else 
+			turn.setText("Black");
 	}
 	
 	public String promotionPrompt(){
@@ -127,26 +153,32 @@ public class GamePanel extends JPanel implements ActionListener{
 		this.gb = gb;
 		notation.clear();
 		turn.setText("White");
-		flip.setSelected(false);
+		//flip.setSelected(false);
 		ba.setupBoard(gb);
 	}
 	
 	protected void paintComponent(Graphics g){
-		notation.setRows(this.getSize().height / 16 - 15);
-		console.setColumns(this.getSize().width / 16 );//- 15);
+		Dimension size = this.getSize();
+		System.out.println("height:"+size.height+" - width:"+size.width);
+		System.out.println(size.height/16 - 15);
+		notation.setRows(size.height / 16 - 15);
+		console.setColumns(size.width / 16 );//- 15);
 	}
 	
 	public void printConsole(String str){
 		console.append(str);
+		//notation.append(str);
 	}
 	
 	public void printNotation(String str){
 		notation.append(str);
 	}
 	
+	/*
 	public void newGame(Player w, Player b){
 		
 	}
+	*/
 	
 	public void actionPerformed(ActionEvent e) {
 		Object src = e.getSource();
@@ -169,8 +201,23 @@ public class GamePanel extends JPanel implements ActionListener{
 			Output.debug("Setting debug level to: " + level, 3);
 			Output.setDebugLevel(level);
 		}
-		else if(src == flip){
+		else if(viewMenuItems.contains(src)){
+			JMenuItem selected = (JMenuItem) src;
+			if(selected.getText().equals("Flip Board")){
+				ba.flipBoard();
+			} else if(selected.getText().equals("Toggle Notation")){
+				eastPanel.setVisible(!eastPanel.isVisible());
+			} else if(selected.getText().equals("Toggle Console")){
+				southPanel.setVisible(!southPanel.isVisible());
+			}
+		}/* else if(src == flip){
 			ba.flipBoard();
+		} else if(src == toggleNotation){
+			eastPanel.setVisible(!eastPanel.isVisible());
+		} else if(src == toggleConsole){
+			southPanel.setVisible(!southPanel.isVisible());
 		}
+		repaint();
+		*/
 	}
 }
