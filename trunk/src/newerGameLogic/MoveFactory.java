@@ -2,7 +2,7 @@ package newerGameLogic;
 
 import java.util.ArrayList;
 
-public class moveFactory {
+public class MoveFactory {
 	private static PieceManager currentBoard;
 	
 	/**

@@ -3,12 +3,12 @@ package newerGameLogic;
 public class Board {
 	PieceManager pieces;
 	MoveLog log;
-	PlayerStatus color;
+	PlayerStatus playerStatus;
 	WBColor turn;
 	
 	Board(){
 		log = new MoveLog();
-		color = new PlayerStatus();
+		playerStatus = new PlayerStatus();
 		turn = WBColor.White;
 		pieces = new PieceManager();
 	}
@@ -39,11 +39,20 @@ public class Board {
 	public Piece pieceAt(Position Pos) {
 		return pieces.pieceAt(Pos);
 	}
+	
 	public WBColor getTurn() {
 		return turn;
 	}
 	public Move getPrevMove() {
 		return log.LastMove();
+	}
+	public void setKingCheck() {
+		// TODO Auto-generated method stub
+		
+	}
+	public void resetBoard() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

@@ -1,5 +1,5 @@
 package newerGameLogic;
 
-public enum gameState {
+public enum GameState {
 	Setup,Paused,WhiteTurn,BlackTurn,GotMove,Saving,Restoring,Quitting,GameOver;
 }

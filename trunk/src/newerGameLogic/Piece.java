@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-public class Piece implements Cloneable{
+import newerGameLogic.PieceEnum;
+
+public class Piece {
 	private WBColor pieceColor;
 	private PieceEnum type;
 	private int value;
@@ -52,11 +54,11 @@ public class Piece implements Cloneable{
 		return type;
 	}
 	/**
-	 * @param type the type to set (only works if is pawn)
+	 * @param pieceEnum the type to set (only works if is pawn)
 	 */
-	public void setType(PieceEnum type) {
+	public void setType(PieceEnum pieceEnum) {
 		if(this.type == PieceEnum.Pawn){
-			this.type = type;
+			this.type = pieceEnum;
 		}
 	}
 	/**
@@ -80,8 +82,9 @@ public class Piece implements Cloneable{
 	/**
 	 * @param position the position to set (only works for {0-7,0-7})
 	 */
-	public void setPosition(Position position) {
+	public void moveTo(Position position) {
 		this.position = position;
+		generateMoves();
 	}
 
 	/**
@@ -117,6 +120,7 @@ public class Piece implements Cloneable{
 	public int getValue() {
 		return value;
 	}
+	
 	public boolean equals(Object obj){
 		if(obj == null) return false;
 		Piece p = (Piece) obj;
@@ -133,5 +137,15 @@ public class Piece implements Cloneable{
 	
 	public int hashCode(){
 		return ( pieceColor.hashCode() + 31 * type.hashCode() );
+	}
+	
+	private void generateMoves(){
+		
+	}
+
+	public void update(PieceManager pm){
+		pm.removeFromAffectedPieces(this);
+		//p.generateMoves();
+		pm.addToAffectedPieces(this);
 	}
 }

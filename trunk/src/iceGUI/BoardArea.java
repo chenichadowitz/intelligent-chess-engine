@@ -1,6 +1,6 @@
 package iceGUI;
 
-import newGameLogic.*;
+import newerGameLogic.*;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -29,7 +29,7 @@ public class BoardArea extends JPanel implements MouseInputListener {
 	private Piece draggingPiece;
 	private int[] mouseDragLocation;
 	private Piece clickedPiece;
-	private GameBoard gb;
+	private Board gb;
 	//private BoardPanel bp;
 	private GamePanel panel;
 	private ImageIcon boardImage;
@@ -49,8 +49,8 @@ public class BoardArea extends JPanel implements MouseInputListener {
 		addMouseMotionListener(this);
 	}
 		
-	public void setupBoard(GameBoard gb){
-		this.gb = gb;
+	public void setupBoard(Board gb2){
+		this.gb = gb2;
 		PieceGraphic.setupMap(this);
 		flipBoard = false;
 		repaint();

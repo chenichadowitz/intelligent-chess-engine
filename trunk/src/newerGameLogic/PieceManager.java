@@ -1,5 +1,6 @@
 package newerGameLogic;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -7,18 +8,24 @@ public class PieceManager {
 	private HashMap<Position,Piece> pieces;
 	private HashMap<Position,LinkedList<Piece>> affectedPieces;
 	
-	public void resetPieceManager(){
-		pieces = new HashMap<Position,Piece>();
-		affectedPieces = new HashMap<Position,LinkedList<Piece>>();
-	}
-	
 	public PieceManager(){
 		resetPieceManager();
 	}
+	
+	public void resetPieceManager(){
+		pieces = new HashMap<Position,Piece>();
+		affectedPieces = new HashMap<Position,LinkedList<Piece>>();
+	}	
+	
+	public LinkedList<Piece> getAffectedPieces(Position p){
+		return affectedPieces.get(p);
+	}
+
 	public void removePiece(Piece oldPiece){
 		pieces.remove(oldPiece);
 		removeFromAffectedPieces(oldPiece);			
-	}	
+	}
+	
 	public void addPiece(Piece newPiece){
 		pieces.put(newPiece.getPosition(),newPiece);
 		NewMovesFor(newPiece);
@@ -26,17 +33,16 @@ public class PieceManager {
 	}
 
 	private void NewMovesFor(Piece currentPiece) {
-		moveFactory.generateMovesfor(currentPiece, this);		
+		MoveFactory.generateMovesfor(currentPiece, this);		
 	}
 
-	private void removeFromAffectedPieces(Piece currentPiece){
+	public void removeFromAffectedPieces(Piece currentPiece){
 		for(Move currentMove: currentPiece.getMoves()){
 			affectedPieces.get(currentMove.getFinalPos()).remove(currentPiece);
 		}
 	}
 	
-	
-	private void addToAffectedPieces(Piece currentPiece) {
+	public void addToAffectedPieces(Piece currentPiece) {
 		for(Move currentMove: currentPiece.getMoves()){
 			affectedPieces.get(currentMove.getFinalPos()).add(currentPiece);
 		}
@@ -59,7 +65,20 @@ public class PieceManager {
 	public void makeMove(Move move){
 		Piece movingPiece = pieces.get(move.getOrigPos());
 		removePiece(movingPiece);
-		movingPiece.setPosition(move.getFinalPos());
+		movingPiece.moveTo(move.getFinalPos());
 		addPiece(movingPiece);
 	}
+
+	public void notifyPieces(ArrayList<Position> positions) {
+		ArrayList<Piece> pieces = new ArrayList<Piece>();
+		for(Position pos : positions){
+			for(Piece p : affectedPieces.get(pos)){
+				if(!pieces.contains(p)) { 
+					pieces.add(p);
+					p.update(this);
+				}
+			}
+		}
+	}
+	
 }

@@ -1,7 +1,7 @@
 package iceGUI;
 
 import main.Output;
-import newGameLogic.GameBoard;
+import newerGameLogic.Board;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -37,7 +37,7 @@ public class GamePanel extends JPanel implements ActionListener{
 	SidePanel southPanel;
 	TextView notation;
 	TextView console;
-	GameBoard gb;
+	Board gb;
 	BoardArea ba;
 	
 	public GamePanel(JMenuBar menuBar){
@@ -149,7 +149,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		opponentsLabel.setText(white + " vs. " + black);
 	}
 	
-	public void setupGame(GameBoard gb){
+	public void setupGame(Board gb){
 		this.gb = gb;
 		notation.clear();
 		turn.setText("White");
