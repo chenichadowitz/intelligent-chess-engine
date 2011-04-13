@@ -1,5 +1,7 @@
 package newerGameLogic;
 
+import java.util.ArrayList;
+
 public class Move implements Cloneable{
 	private MoveEnum type;
 	private Position OrigPos;
@@ -114,5 +116,18 @@ public class Move implements Cloneable{
 	 */
 	public Piece getAffectedPiece() {
 		return affectedPiece;
+	}
+	public ArrayList<Position> getAffectedPositions() {
+		ArrayList<Position> positions = new ArrayList<Position>();
+		positions.add(OrigPos); 
+		positions.add(FinalPos);
+		if(type == MoveEnum.EnPassant){
+			positions.add(affectedPiece.getPosition());
+		} else if(type == MoveEnum.Castle){
+			positions.add(affectedPiece.getPosition());
+			//TODO: Rooks final position
+			//positions.add(e)
+		}
+		return positions;
 	}
 }

@@ -3,18 +3,18 @@ package newerGameLogic;
 import java.util.HashMap;
 import java.util.Map;
 
-import newGameLogic.Board;
+import newerGameLogic.Board;
 import newGameLogic.Player;
-import newGameLogic.WBColor;
+import newerGameLogic.WBColor;
 
 
 public class Game {
 	Board gameBoard;
 	private Map<WBColor, Player> playerMap = new HashMap<WBColor, Player>();
-	gameState state;
+	GameState state;
 	
 	private Game(){
-		state = gameState.Setup;
+		state = GameState.Setup;
 		gameBoard = new Board();
 	}
 	
@@ -30,6 +30,9 @@ public class Game {
 		}
 	}
 	
+	public Player getPlayer(newerGameLogic.WBColor wbColor){
+		return playerMap.get(wbColor);
+	}
 	
 	
 }

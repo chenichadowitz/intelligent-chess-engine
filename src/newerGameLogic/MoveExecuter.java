@@ -4,20 +4,26 @@ import java.util.Arrays;
 
 import main.Output;
 
-public class moveExecuter {
+public class MoveExecuter {
+	
 	private static Board board;
+	private static Game game;
+	
+	public static void setGame(Game g){
+		game = g;
+	}
 	
 	/**
 	 * executes the given move
 	 * @param m move to execute
 	 * @return returns if the moves succeeded or not
 	 */
-	public boolean execute(Move m,Board here) {
-		board = here;
+	public static boolean execute(Move m, Board b) {
+		board = b;
 		String notation = "";
 		Piece p = board.pieceAt(m.getOrigPos());
-		int[] rookLocation = new int[2];
-		int[] rookMove = new int[2];
+		Position rookNew;
+		Position rookOld;
 		if(p.getPieceColor() != board.getTurn()){
 			Output.debug("wrong turn",1);
 			return false;
@@ -55,88 +61,75 @@ public class moveExecuter {
 //string builder
 		String numToLet = "abcdefgh";
 		if(p.getType() == PieceEnum.Pawn && (m.getType() == MoveEnum.Take || m.getType() == MoveEnum.EnPassant)){
-			notation += numToLet.charAt(p.getPosition()[0]) + "x";
+			notation += numToLet.charAt(p.getPosition().getX()) + "x";
 		} else {
 			notation += p.getType().toString();
-			for(Piece pieceFinder : boardStatus.getPieceList(new Position(m.getFinalPos()))){
+			for(Piece pieceFinder : board.pieces.getAffectedPieces(m.getFinalPos())){
 				if(pieceFinder.getPieceColor() == p.getPieceColor() && pieceFinder != p){
-					if(p.getPosition()[0] != pieceFinder.getPosition()[0]){
-						notation += numToLet.charAt(p.getPosition()[0]);
-					} else if(p.getPosition()[1] != pieceFinder.getPosition()[1]){
-						notation += p.getPosition()[1];
-					} else { notation += numToLet.charAt(p.getPosition()[0]) + p.getPosition()[1];}
+					if(p.getPosition().getX() != pieceFinder.getPosition().getX()){
+						notation += numToLet.charAt(p.getPosition().getX());
+					} else if(p.getPosition().getY() != pieceFinder.getPosition().getY()){
+						notation += p.getPosition().getY();
+					} else { notation += numToLet.charAt(p.getPosition().getX()) + p.getPosition().getY();}
 				}
 			}
 		}
-		notation += numToLet.charAt(m.getFinalPos()[0]) + m.getFinalPos()[1];
+		notation += numToLet.charAt(m.getFinalPos().getX()) + m.getFinalPos().getY();
 //end of string builder
+		
+		
 		switch(m.getType()){
-		case Take: 
-			m.setAffectedPiece(pieceAt(m.getFinalPos()));
-			break;
-		case EnPassant:
-			int[] takenPawnLoc = new int[2];
-			takenPawnLoc[0] = m.getFinalPos()[0];
-			takenPawnLoc[1] = m.getOrigPos()[1];
-			m.setAffectedPiece(pieceAt(takenPawnLoc));
-			break;
-		case Castle:
-			rookMove[0] = m.getFinalPos()[0]-(m.getFinalPos()[0] - m.getOrigPos()[0])/2;
-			rookMove[1] = m.getFinalPos()[1];
-			rookLocation[0] = 7*(m.getFinalPos()[0]-2)/4;
-			rookLocation[1] = m.getOrigPos()[1];
-			m.setAffectedPiece(pieceAt(rookLocation));
-			if(m.getFinalPos()[0] > m.getOrigPos()[0]){notation = "O-O";}
-			else {notation = "O-O-O";}
-		}
-		removePieceFromBoardState(p);
-		p.setPosition(m.getFinalPos());
-		moveFactory.generateMovesfor(p,this);
+			case Take: 
+				m.setAffectedPiece(board.pieceAt(m.getFinalPos()));
+				break;
+			case EnPassant:
+				int[] takenPawnLoc = new int[2];
+				Position takenPawnPos = new Position(m.getFinalPos().getX(), m.getOrigPos().getY());
+				m.setAffectedPiece(board.pieceAt(takenPawnPos));
+				break;
+			case Castle:
+				rookNew = new Position(m.getFinalPos().getX()-(m.getFinalPos().getX() - m.getOrigPos().getX())/2, m.getFinalPos().getY());
+				rookOld= new Position(7*(m.getFinalPos().getX()-2)/4,m.getOrigPos().getY());
+				m.setAffectedPiece(board.pieceAt(rookOld));
+				if(m.getFinalPos().getX() > m.getOrigPos().getX()){notation = "O-O";}
+				else {notation = "O-O-O";}
+		}		
 		if(p.canCastle()){m.setOldCastle(true);}
+		
 		if(m.getType() == MoveEnum.Take || m.getType() == MoveEnum.EnPassant){
-			takePiece(m.getAffectedPiece());
+			board.pieces.removePiece(m.getAffectedPiece());
 		}
+		board.pieces.makeMove(m);
+
 		if(m.getType() == MoveEnum.Castle){
-			removePieceFromBoardState(m.getAffectedPiece());
-			m.getAffectedPiece().setPosition(rookMove);
-			moveFactory.generateMovesfor(m.getAffectedPiece(),this);
+			board.pieces.makeMove(new Move(rookOld, rookNew, MoveEnum.Move));
 		}
-		switch(m.getType()){
-		case Move:
-			update(m.getOrigPos(),m.getFinalPos());
-			break;
-		case Take:
-			update(m.getOrigPos(),m.getFinalPos());
-			break;
-		case Castle:
-			update(m.getOrigPos(),m.getFinalPos(),rookLocation,rookMove);
-			break;
-		case EnPassant:
-			update(m.getOrigPos(),m.getFinalPos(),m.getAffectedPiece().getPosition());
-			break;
-		}
-		setKingCheck();
-		if(playerMap.get(p.getPieceColor()).isInCheck()){
+		
+		board.pieces.notifyPieces(m.getAffectedPositions());
+		
+		board.setKingCheck();
+		
+		if(board.playerStatus.isInCheck(p.getPieceColor())){
 			Output.debug("that move results in check", 2);
 			undo(m);
 			return false;
 		}
-		if(p.getType() == PieceEnum.Pawn && m.getFinalPos()[1]%7 == 0){
-			p.setType(playerMap.get(p.getPieceColor()).getPromotion());
+		if(p.getType() == PieceEnum.Pawn && m.getFinalPos().getY()%7 == 0){
+			p.setType(game.getPlayer(p.getPieceColor()).getPromotion());//ASK BOARD FOR PROMOTION
 			notation += "=" + p.getType().toString();
-			moveFactory.generateMovesfor(p,this);
+			MoveFactory.generateMovesfor(p,this);
 			addPieceToBoardState(p);
 			setKingCheck();
 		}
 		if(playerMap.get(p.getPieceColor().next()).isInCheck()){notation += "+";}
 		m.setNotation(notation);
-		return true;		
+		return true;
 	}
 	/**
 	 * undoes the given move
 	 * @param m move to undo
 	 */
-	private void undo(Move m) {
+	private static void undo(Move m) {
 		Piece p = pieceAt(m.getFinalPos());
 		removePieceFromBoardState(p);
 		p.setPosition(m.getOrigPos());
@@ -151,18 +144,18 @@ public class moveExecuter {
 			rookunMove[0] = (m.getAffectedPiece().getPosition()[0]-3)*7;
 			rookunMove[1] = m.getAffectedPiece().getPosition()[1];
 			m.getAffectedPiece().setPosition(rookunMove);
-			moveFactory.generateMovesfor(m.getAffectedPiece(),this);
+			MoveFactory.generateMovesfor(m.getAffectedPiece(),this);
 			addPieceToBoardState(m.getAffectedPiece());
 		}
-		moveFactory.generateMovesfor(p,this);
+		MoveFactory.generateMovesfor(p,this);
 		addPieceToBoardState(p);
 		setKingCheck();
 		switch(m.getType()){
 		case Move:
-			update(m.getOrigPos(),m.getFinalPos());
+			board.update(m.getOrigPos(),m.getFinalPos());
 			break;
 		case Take:
-			update(m.getOrigPos(),m.getFinalPos());
+			board.update(m.getOrigPos(),m.getFinalPos());
 			break;
 		case Castle:
 			int[] rookLocation = new int[2];
@@ -171,13 +164,21 @@ public class moveExecuter {
 			rookMove[1] = m.getFinalPos()[1];
 			rookLocation[0] = 7*(m.getFinalPos()[0]-2)/4;
 			rookLocation[1] = m.getOrigPos()[1];
-			update(m.getOrigPos(),m.getFinalPos(),rookLocation,rookMove);
+			board.update(m.getOrigPos(),m.getFinalPos(),rookLocation,rookMove);
 			break;
 		case EnPassant:
-			update(m.getOrigPos(),m.getFinalPos(),m.getAffectedPiece().getPosition());
+			board.update(m.getOrigPos(),m.getFinalPos(),m.getAffectedPiece().getPosition());
 			break;
 		}
 		
 		
+	}
+	
+	public static boolean ifValidMove(Move m, Board board){
+		if(execute(m, board)){
+			undo(m);
+			return true;
+		}
+		return false;
 	}
 }
