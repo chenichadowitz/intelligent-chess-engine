@@ -165,6 +165,10 @@ public class GamePanel extends JPanel implements ActionListener{
 		console.setColumns(size.width / 16 );//- 15);
 	}
 	
+	public void clearConsole(){
+		console.clear();
+	}
+	
 	public void printConsole(String str){
 		console.append(str);
 		//notation.append(str);
