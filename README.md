@@ -12,7 +12,7 @@ Chess engine capable of human-human, computer-human, and computer-computer chess
 #####Debug levels
  * 0 = Testing
  * 1 = Errors or warnings (things that are occurring but should not - a.k.a. _NeedToBeFixed_)
- * * 2 = _DEFAULT_: Dialogue with player (e.g. moving into check, etc)*
+ * **2 = _DEFAULT_: Dialogue with player (e.g. moving into check, etc)**
  * 3 = Process changes (moving, generating moves, displaying, etc)
  * 4 = GUI-related messages
  * 5 = Repeated messages (updating pieces, etc)
