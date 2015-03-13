@@ -5,6 +5,9 @@ Automatically exported from code.google.com/p/intelligent-chess-engine
 
 Chess engine capable of human-human, computer-human, and computer-computer chess games.
 
+#### Releases are ported from code.google.com/p/intelligent-chess-engine and are not guaranteed to work or function whatsoever. 
+#### You are welcome to submit issues and/or pull requests, but please be aware that this project has fallen by the wayside and is no longer maintained.
+
 ###List of TODO items to keep track of
 
 ####General Items
