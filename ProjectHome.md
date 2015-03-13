@@ -1,0 +1,1 @@
+Chess engine capable of human-human, computer-human, and computer-computer chess games.
